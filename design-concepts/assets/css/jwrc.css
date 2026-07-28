@@ -1,0 +1,328 @@
+@import url("../fonts/fonts.css");
+
+/* ============================================================
+   JWRC — Design system
+   Palette derived from the JWRC logo + business card:
+   vermilion wordmark, deep navy card, crimson block-print border,
+   Limca/Guinness navy, Hawa Mahal jharokha letterforms.
+   ============================================================ */
+
+:root {
+  /* Brand core */
+  --flame:        #E8461C;   /* logo vermilion */
+  --flame-deep:   #BE3411;
+  --ember:        #F4813A;   /* warm bridge to marigold */
+  --gold:         #D9A441;
+
+  --navy:         #1B2334;   /* card ground */
+  --navy-2:       #121828;
+  --navy-3:       #0C111D;
+  --indigo:       #23406B;   /* card banner blue */
+  --teal:         #2C6E80;   /* blue-pottery / card swoosh */
+  --crimson:      #B92B2C;   /* block-print border red */
+  --leaf:         #2E6A50;   /* meenakari green — used sparingly */
+
+  /* Neutrals — warm, never pure white */
+  --ivory:        #FCF8F0;
+  --sand:         #F3E8D6;
+  --sand-2:       #E8D9C0;
+  --ink:          #1A1611;
+  --ink-soft:     #4A4238;
+  --ink-faint:    #8A7F70;
+
+  /* Type */
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --body: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --deva: "Noto Sans Devanagari", var(--body);
+
+  --shadow-warm: 0 2px 4px rgba(74,50,30,.05), 0 12px 28px -12px rgba(74,50,30,.18);
+  --shadow-lift: 0 4px 8px rgba(74,50,30,.06), 0 28px 56px -20px rgba(74,50,30,.28);
+
+  --gut: clamp(20px, 5vw, 88px);
+  --maxw: 1240px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Paper grain — the single most important texture cue */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 900;
+  opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.08; letter-spacing: -.015em; margin: 0; }
+h1 { font-size: clamp(40px, 5vw, 74px); font-variation-settings: "SOFT" 20, "WONK" 1; }
+h2 { font-size: clamp(28px, 3.4vw, 48px); }
+h3 { font-size: clamp(20px, 1.9vw, 26px); }
+p  { margin: 0 0 1.1em; }
+a  { color: inherit; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); }
+.narrow { max-width: 780px; }
+
+/* ---------- Shared bits ---------- */
+.eyebrow {
+  font: 600 11.5px/1 var(--body); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--flame); display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; opacity: .55; }
+.eyebrow.on-dark { color: var(--gold); }
+
+.deva { font-family: var(--deva); font-weight: 500; }
+
+.lede { font-size: clamp(19px, 1.7vw, 23px); line-height: 1.6; color: var(--ink-soft); }
+.on-dark .lede, .dark .lede { color: rgba(252,248,240,.72); }
+
+.chapter-no {
+  font: 600 12px/1 var(--body); letter-spacing: .3em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+
+section { position: relative; }
+.pad { padding: clamp(72px, 9vw, 150px) 0; }
+.pad-sm { padding: clamp(52px, 6vw, 96px) 0; }
+
+.dark { background: var(--navy); color: var(--ivory); }
+.dark h1, .dark h2, .dark h3 { color: var(--ivory); }
+.deep { background: var(--navy-3); color: var(--ivory); }
+.sandbg { background: var(--sand); }
+
+/* ---------- Mockup label strip ---------- */
+.mockbar {
+  background: #10151F; color: rgba(255,255,255,.55);
+  font: 500 10.5px/1 var(--body); letter-spacing: .18em; text-transform: uppercase;
+  padding: 9px var(--gut); display: flex; justify-content: space-between; gap: 20px;
+}
+.mockbar b { color: var(--flame); font-weight: 600; }
+
+/* ---------- Logo lockup ---------- */
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo svg { display: block; }
+.logo-txt { line-height: 1; }
+.logo-txt .l1 {
+  font: 800 20px/1 var(--body); letter-spacing: -.02em; color: var(--flame);
+  text-transform: uppercase;
+}
+.logo-txt .l2 {
+  font: 600 8.6px/1.5 var(--body); letter-spacing: .19em; text-transform: uppercase;
+  color: var(--ink-soft); margin-top: 4px;
+}
+.on-dark .logo-txt .l2, .dark .logo-txt .l2 { color: rgba(252,248,240,.62); }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 800;
+  display: flex; align-items: center; justify-content: space-between; gap: 28px;
+  padding: 14px var(--gut);
+  background: rgba(27,35,52,.86);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border-bottom: 1px solid rgba(252,248,240,.10);
+}
+.nav .logo-txt .l2 { color: rgba(252,248,240,.6); }
+.nav-links { display: flex; gap: 26px; align-items: center; }
+.nav-links a {
+  font: 500 13px/1 var(--body); letter-spacing: .01em; text-decoration: none;
+  color: rgba(252,248,240,.78); padding: 6px 0; position: relative;
+}
+.nav-links a.is-active { color: var(--ivory); }
+.nav-links a.is-active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+  background: var(--flame); border-radius: 2px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 600 13.5px/1 var(--body); letter-spacing: .03em;
+  padding: 15px 26px 15px 28px; text-decoration: none; cursor: pointer; border: 0;
+  background: var(--flame); color: #fff;
+  border-radius: 999px 999px 999px 999px;
+  box-shadow: 0 10px 22px -10px rgba(232,70,28,.75);
+  position: relative;
+}
+.btn.ghost {
+  background: transparent; color: var(--ink); box-shadow: none;
+  border: 1.5px solid rgba(26,22,17,.24);
+}
+.dark .btn.ghost, .on-dark .btn.ghost, .hero .btn.ghost, .deep .btn.ghost { color: var(--ivory); border-color: rgba(252,248,240,.34); }
+.btn.gold { background: var(--gold); color: #241B08; box-shadow: 0 10px 22px -10px rgba(217,164,65,.7); }
+.btn svg { flex: none; }
+
+/* ---------- Jharokha arch frames ---------- */
+.arch { clip-path: url(#jw-arch); overflow: hidden; }
+.arch-cusp { clip-path: url(#jw-cusp); overflow: hidden; }
+
+.frame {
+  position: relative; padding: 12px;
+  background:
+    linear-gradient(180deg, rgba(232,70,28,.10), rgba(232,70,28,0) 55%),
+    var(--sand);
+  clip-path: url(#jw-cusp);
+}
+.frame > .inner { clip-path: url(#jw-cusp); overflow: hidden; display: block; }
+
+/* ---------- Photo slots (stand-ins for real photography) ---------- */
+.photo {
+  position: relative; display: block; width: 100%;
+  background: linear-gradient(155deg, var(--indigo), var(--navy) 55%, var(--flame-deep));
+  isolation: isolate;
+}
+.photo::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background-image:
+    radial-gradient(circle at 1.5px 1.5px, rgba(252,248,240,.42) 1.4px, transparent 1.6px);
+  background-size: 15px 15px;
+  mask-image: linear-gradient(180deg, transparent 34%, #000 66%, #000);
+}
+.photo::after {
+  content: attr(data-cap); position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: 46px 22px 18px;
+  font: 500 10.5px/1.5 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(252,248,240,.7);
+  background: linear-gradient(transparent, rgba(12,17,29,.85));
+}
+.photo.warm  { background: linear-gradient(150deg, var(--ember), var(--flame) 45%, var(--crimson)); }
+.photo.jewel { background: linear-gradient(150deg, var(--teal), var(--indigo) 60%, var(--navy-2)); }
+.photo.sun   { background: linear-gradient(150deg, var(--gold), var(--ember) 55%, var(--crimson)); }
+.photo.r43 { aspect-ratio: 4/3; }
+.photo.r11 { aspect-ratio: 1/1; }
+.photo.r34 { aspect-ratio: 3/4; }
+.photo.r169 { aspect-ratio: 16/9; }
+.photo.tall { aspect-ratio: 2/3; }
+
+/* ---------- Jharokha window band (direct nod to the logo) ---------- */
+.jband {
+  height: 46px; width: 100%; background-color: var(--ivory);
+  border-bottom: 2px solid rgba(232,70,28,.35);
+  background-repeat: repeat-x; background-position: center bottom; background-size: auto 46px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='46' viewBox='0 0 40 46'%3E%3Cpath d='M9 46V21c0-9 4.9-14 11-14s11 5 11 14v25z' fill='%23E8461C'/%3E%3Cpath d='M20 14.5c2.8 0 5 2.2 5 5v6.5H15v-6.5c0-2.8 2.2-5 5-5z' fill='%23FCF8F0'/%3E%3Ccircle cx='16' cy='33' r='1.9' fill='%23FCF8F0'/%3E%3Ccircle cx='24' cy='33' r='1.9' fill='%23FCF8F0'/%3E%3C/svg%3E");
+}
+.jband.gold { filter: hue-rotate(18deg) saturate(.8) brightness(1.25); }
+
+/* ---------- Block-print border strip (from the card edge) ---------- */
+.blockprint {
+  height: 30px; width: 100%;
+  background-repeat: repeat-x; background-size: auto 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='30' viewBox='0 0 44 30'%3E%3Cg fill='%23B92B2C'%3E%3Cpath d='M22 2l5 7c3 4 5 8 5 12v7H12v-7c0-4 2-8 5-12z'/%3E%3Ccircle cx='4' cy='24' r='3'/%3E%3Ccircle cx='40' cy='24' r='3'/%3E%3Ccircle cx='22' cy='27' r='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- Jaali (perforated screen) — our 'glassmorphism' ---------- */
+.jaali {
+  position: relative;
+  background: rgba(252,248,240,.06);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(252,248,240,.14);
+  overflow: hidden;
+}
+.jaali::before {
+  content: ""; position: absolute; inset: 0; opacity: .085; pointer-events: none;
+  background-size: 48px 48px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%23FCF8F0' stroke-width='1.1'%3E%3Cpath d='M17 1l16 16-16 16L1 17z'/%3E%3Ccircle cx='17' cy='17' r='5.4'/%3E%3Cpath d='M1 1h32v32H1z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.jaali > * { position: relative; z-index: 1; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--ivory); border: 1px solid rgba(26,22,17,.09);
+  padding: 30px 28px 32px; box-shadow: var(--shadow-warm);
+  position: relative; overflow: hidden;
+  border-radius: 3px;
+}
+.card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--flame), var(--gold));
+  transform: scaleX(0); transform-origin: left;
+}
+.card.lit::before { transform: scaleX(1); }
+.card h3 { margin-bottom: 10px; }
+.card p { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 0; }
+.card .num {
+  font: 600 11px/1 var(--body); letter-spacing: .2em; color: var(--flame);
+  display: block; margin-bottom: 16px;
+}
+
+.grid { display: grid; gap: 22px; }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ---------- Icon tile ---------- */
+.itile {
+  width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: 18px;
+  background: linear-gradient(150deg, rgba(232,70,28,.14), rgba(217,164,65,.16));
+  clip-path: url(#jw-arch);
+}
+.itile svg { width: 22px; height: 22px; stroke: var(--flame-deep); fill: none; stroke-width: 1.6; }
+
+/* ---------- Pull quote ---------- */
+.pull {
+  font-family: var(--display); font-size: clamp(26px, 3.2vw, 46px); line-height: 1.24;
+  font-weight: 400; font-style: italic; letter-spacing: -.02em;
+}
+
+/* ---------- Stat / crowd counter ---------- */
+.stat .n {
+  font-family: var(--display); font-size: clamp(40px, 4.6vw, 66px); font-weight: 600;
+  line-height: 1; color: var(--flame); letter-spacing: -.03em;
+}
+.dark .stat .n { color: var(--gold); }
+.stat .k {
+  font: 500 11px/1.5 var(--body); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-faint); margin-top: 10px;
+}
+.dark .stat .k { color: rgba(252,248,240,.55); }
+
+/* ---------- Credential row ---------- */
+.creds { display: flex; flex-wrap: wrap; gap: 10px; }
+.cred {
+  font: 500 11.5px/1 var(--body); letter-spacing: .11em; text-transform: uppercase;
+  padding: 11px 16px; border: 1px solid rgba(252,248,240,.22); border-radius: 999px;
+  color: rgba(252,248,240,.82); display: inline-flex; align-items: center; gap: 8px;
+}
+.cred::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+.creds.on-light .cred { border-color: rgba(26,22,17,.16); color: var(--ink-soft); }
+
+/* ---------- Chapter rail ---------- */
+.rail { position: absolute; top: 0; bottom: 0; right: calc(var(--gut) * .34); width: 1px; }
+.rail-inner { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
+.rail-dot { display: flex; align-items: center; gap: 10px; }
+.rail-dot i { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,22,17,.2); display: block; }
+.rail-dot.on i { background: var(--flame); box-shadow: 0 0 0 4px rgba(232,70,28,.16); }
+.rail-dot span {
+  font: 500 9.5px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  color: transparent;
+}
+.rail-dot.on span { color: var(--ink-faint); }
+
+/* ---------- Footer ---------- */
+.foot { background: var(--navy-3); color: rgba(252,248,240,.72); }
+.foot h4 { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.foot a { color: rgba(252,248,240,.72); text-decoration: none; display: block; padding: 5px 0; font-size: 14.5px; }
+.foot .bottom {
+  border-top: 1px solid rgba(252,248,240,.1); margin-top: 54px; padding-top: 24px;
+  display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  font-size: 12.5px; color: rgba(252,248,240,.45);
+}
+
+/* ---------- Utilities ---------- */
+.flex { display: flex; }
+.between { justify-content: space-between; }
+.center { align-items: center; }
+.wrapf { flex-wrap: wrap; }
+.gap-s { gap: 12px; } .gap-m { gap: 24px; } .gap-l { gap: 44px; }
+.mt-s { margin-top: 14px; } .mt-m { margin-top: 28px; } .mt-l { margin-top: 52px; } .mt-xl { margin-top: 80px; }
+.mb-m { margin-bottom: 28px; } .mb-l { margin-bottom: 52px; }
+.tc { text-align: center; }
+.mxa { margin-left: auto; margin-right: auto; }
