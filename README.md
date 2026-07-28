@@ -39,7 +39,4 @@ All record entries, participant figures and quotes are **illustrative demo
 content** pending verified information. See the checklist at the end of
 [`DOCS.md`](DOCS.md).
 
-## Contact
 
-Manmohan Agrawal — Founder
-+91 80030 03000 · manmohan.agarwal015@gmail.com · Jaipur, Rajasthan
