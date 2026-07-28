@@ -1,0 +1,3 @@
+shots/_*.png
+.DS_Store
+__pycache__/

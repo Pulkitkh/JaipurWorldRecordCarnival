@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Records &amp; Moments — Jaipur World Record Carnival</title>
+<meta name="description" content="The archive of Jaipur World Record Carnival attempts — each one the story of what a community did on one particular morning.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.phead { position:relative; overflow:hidden; color:var(--ivory);
+  background: radial-gradient(110% 100% at 80% 0%, rgba(232,70,28,.3), transparent 62%), var(--navy-2);
+  padding-block: clamp(58px,7vw,104px) clamp(52px,6vw,88px); }
+.phead h1 { color:var(--ivory); max-width:15ch; }
+.hstats { display:flex; gap:44px; flex-wrap:wrap; margin-top:40px; padding-top:26px;
+  border-top:1px solid var(--line-lt); }
+.hstats .n { font-family:var(--display); font-size:36px; font-weight:600; color:var(--gold);
+  line-height:1; font-variant-numeric:tabular-nums; }
+.hstats .k { font:500 10.5px/1.4 var(--body); letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(252,248,240,.55); margin-top:8px; }
+.fbar { position:sticky; top:var(--nav-h); z-index:600; background:rgba(252,248,240,.92);
+  backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding-block:18px; }
+.recgrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.bodies { display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:var(--line-lt); }
+.bodies > div { background:var(--navy); padding:32px 14px; text-align:center;
+  font:600 12.5px/1.4 var(--body); color:rgba(252,248,240,.84); transition:background .4s var(--ease); }
+.bodies > div:hover { background:#212B3F; }
+.bodies span { display:block; font-weight:500; font-size:10px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--gold); margin-top:8px; }
+@media (max-width:1080px){ .recgrid{grid-template-columns:repeat(2,minmax(0,1fr));} .bodies{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:620px){ .recgrid{grid-template-columns:1fr;} .bodies{grid-template-columns:repeat(2,1fr);} }
+</style>
+</head>
+<body>
+
+<header class="phead">
+  <div class="wrap">
+    <span class="eyebrow gold" data-rv>The Archive</span>
+    <h1 class="mt-m" data-rv>Records &amp; moments.</h1>
+    <p class="lede mt-m" data-rv style="max-width:56ch;color:rgba(252,248,240,.76)">
+      A museum wing, not a trophy cabinet. Each entry is the story of what a community
+      did on one particular morning — the number is the smallest part of it.
+    </p>
+    <div class="hstats" data-stagger="120">
+      <div><div class="n" data-stat="records">0</div><div class="k">Attempts in the archive</div></div>
+      <div><div class="n" data-stat="participants">0</div><div class="k">Participants</div></div>
+      <div><div class="n" data-stat="volunteers">0</div><div class="k">Volunteers</div></div>
+      <div><div class="n" data-stat="institutions">0</div><div class="k">Institutions</div></div>
+      <div><div class="n" data-stat="bodies">0</div><div class="k">Certifying bodies</div></div>
+    </div>
+  </div>
+</header>
+<div class="jband"></div>
+
+<div class="fbar">
+  <div class="wrap">
+    <div class="filters" id="recfilters">
+      <button class="chip on">All records</button>
+      <button class="chip" data-filter="body" data-value="Guinness World Records">Guinness</button>
+      <button class="chip" data-filter="body" data-value="Limca Book of Records">Limca</button>
+      <button class="chip" data-filter="body" data-value="Asia Book of Records">Asia Book</button>
+      <button class="chip" data-filter="body" data-value="India Book of Records">India Book</button>
+      <button class="chip" data-filter="body" data-value="Golden Book of Records">Golden Book</button>
+      <button class="chip" data-filter="body" data-value="Unique Book of Records">Unique Book</button>
+      <span style="flex:1"></span>
+      <button class="chip" data-filter="cause" data-value="Education">Education</button>
+      <button class="chip" data-filter="cause" data-value="Culture">Culture</button>
+      <button class="chip" data-filter="cause" data-value="Environment">Environment</button>
+      <button class="chip" data-filter="cause" data-value="Health">Health</button>
+      <button class="chip" data-filter="cause" data-value="Social cause">Social</button>
+    </div>
+  </div>
+</div>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <p style="font-size:13px;color:var(--ink-faint);margin-bottom:26px">
+      Select a record to read the full story. Every entry on this page is illustrative
+      demo content — replace with verified, certified records before publishing.
+    </p>
+    <div class="recgrid" id="recgrid"></div>
+    <p id="recempty" style="display:none;padding:60px 0;text-align:center;color:var(--ink-faint)">
+      No records in this category yet.</p>
+  </div>
+</section>
+
+<section class="pad dark">
+  <div class="wrap">
+    <div class="split gl mb-l" style="align-items:end">
+      <h2 data-rv="l">The bodies who<br>hold us to it.</h2>
+      <p class="lede" data-rv="r">We do not certify our own work. Every attempt is judged
+        against someone else’s rules, by someone else’s adjudicator — which is exactly the point.</p>
+    </div>
+    <div class="bodies" data-stagger="80">
+      <div>Guinness World Records<span>7 held by our founder</span></div>
+      <div>Limca Book of Records<span>India</span></div>
+      <div>Asia Book of Records<span>Continental</span></div>
+      <div>India Book of Records<span>National</span></div>
+      <div>Golden Book of Records<span>International</span></div>
+      <div>Unique Book of Records<span>International</span></div>
+    </div>
+
+    <div class="split gl mt-xl" style="align-items:center">
+      <p class="pull" data-rv="l">“And many more records…” — the line on the card that this
+        <span class="hl">page finally has room to finish.</span></p>
+      <div class="flex gs wrapf" data-rv="r">
+        <a class="btn" href="join.html">Propose the next one
+          <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
+        <a class="btn ghost" href="how-it-works.html">How an attempt is built</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- record detail -->
+<div class="modal" id="recmodal" role="dialog" aria-modal="true" aria-label="Record detail">
+  <div class="sheet">
+    <button class="x" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9"
+        stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    <div id="modalbody"></div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/art.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

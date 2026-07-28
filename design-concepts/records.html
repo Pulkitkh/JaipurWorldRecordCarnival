@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Records &amp; Moments — JWRC</title>
+<link rel="stylesheet" href="assets/css/jwrc.css">
+<style>
+.phead {
+  background: radial-gradient(100% 90% at 82% 0%, rgba(232,70,28,.26), transparent 62%), var(--navy-2);
+  color: var(--ivory); padding: clamp(64px,7vw,110px) 0 clamp(56px,6vw,92px);
+}
+.phead h1 { color: var(--ivory); max-width: 15ch; }
+
+.notice {
+  background: #FFF3E4; border-top: 2px solid var(--flame); border-bottom: 1px solid rgba(232,70,28,.28);
+  padding: 16px 0;
+}
+.notice .wrap { display: flex; gap: 14px; align-items: center; }
+.notice b { color: var(--flame-deep); }
+.notice p { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
+
+/* Filter bar */
+.filters { display: flex; gap: 10px; flex-wrap: wrap; padding: 26px 0; border-bottom: 1px solid rgba(26,22,17,.13); }
+.chip {
+  font: 600 12px/1 var(--body); letter-spacing: .06em; padding: 11px 18px;
+  border: 1px solid rgba(26,22,17,.18); border-radius: 999px; color: var(--ink-soft);
+}
+.chip.on { background: var(--navy); color: var(--ivory); border-color: var(--navy); }
+
+/* Featured record */
+.feature { display: grid; grid-template-columns: 1.05fr .95fr; gap: 52px; align-items: center; }
+.feature .photo { aspect-ratio: 4/3.4; }
+.hold {
+  display: inline-flex; align-items: center; gap: 7px; font: 700 9.5px/1 var(--body);
+  letter-spacing: .16em; text-transform: uppercase; padding: 6px 10px;
+  background: rgba(232,70,28,.12); color: var(--flame-deep); border: 1px dashed rgba(232,70,28,.5);
+}
+.hold.on-dark { background: rgba(252,248,240,.1); color: var(--gold); border-color: rgba(217,164,65,.5); }
+.rmeta { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(26,22,17,.13); margin-top: 32px; }
+.rmeta div { background: var(--ivory); padding: 18px 16px; }
+.rmeta .a { font: 600 9.5px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
+.rmeta .b { font-family: var(--display); font-size: 20px; margin-top: 8px; }
+
+/* Archive grid */
+.arch-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.rec { background: var(--ivory); border: 1px solid rgba(26,22,17,.1); box-shadow: var(--shadow-warm); }
+.rec .photo { aspect-ratio: 3/2; }
+.rec .in { padding: 22px 22px 26px; }
+.rec .cat { font: 600 10px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--flame); }
+.rec h3 { font-size: 20px; margin: 12px 0 12px; line-height: 1.22; }
+.rec .row {
+  display: flex; justify-content: space-between; gap: 12px; padding-top: 14px;
+  border-top: 1px solid rgba(26,22,17,.1); font-size: 12.5px; color: var(--ink-faint);
+}
+
+/* Certifying bodies */
+.bodies { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: rgba(252,248,240,.14); }
+.bodies div {
+  background: var(--navy); padding: 34px 16px; text-align: center;
+  font: 600 12.5px/1.4 var(--body); color: rgba(252,248,240,.8);
+}
+.bodies div span { display: block; font-weight: 500; font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<header class="phead">
+  <div class="wrap">
+    <span class="eyebrow on-dark">The Archive</span>
+    <h1 class="mt-m">Records &amp; moments.</h1>
+    <p class="lede mt-m" style="max-width:56ch;color:rgba(252,248,240,.74)">
+      A museum wing, not a trophy cabinet. Each entry is the story of what a
+      community did on one particular morning — the number is the smallest part of it.
+    </p>
+  </div>
+</header>
+<div class="jband"></div>
+
+<div class="notice">
+  <div class="wrap">
+    <span class="hold">Placeholder</span>
+    <p><b>Design mockup.</b> Every entry below is a layout placeholder showing the
+      template structure. Only verified, certified records should ever appear here —
+      titles, figures, dates and photographs to be supplied by JWRC.</p>
+  </div>
+</div>
+
+<!-- Filters -->
+<section style="background:var(--ivory)">
+  <div class="wrap">
+    <div class="filters">
+      <span class="chip on">All records</span>
+      <span class="chip">Guinness World Records</span>
+      <span class="chip">Limca Book of Records</span>
+      <span class="chip">Asia Book of Records</span>
+      <span class="chip">India Book of Records</span>
+      <span class="chip">Golden Book of Records</span>
+      <span class="chip">Unique Book of Records</span>
+      <span class="chip" style="margin-left:auto">Schools</span>
+      <span class="chip">Social causes</span>
+      <span class="chip">Culture</span>
+    </div>
+  </div>
+</section>
+
+<!-- Featured -->
+<section class="pad">
+  <div class="wrap">
+    <div class="feature">
+      <div class="frame"><span class="inner">
+        <span class="photo warm" data-cap="Lead photograph · the moment of the count"></span></span></div>
+      <div>
+        <span class="hold">Featured record · placeholder entry</span>
+        <h2 class="mt-m" style="max-width:16ch">The title of the record goes here.</h2>
+        <p class="lede mt-s" style="font-size:19px">
+          Two or three sentences on why this attempt existed — the cause it carried,
+          the community that assembled, and what it left behind.
+        </p>
+        <div class="rmeta">
+          <div><div class="a">Participants</div><div class="b">—</div></div>
+          <div><div class="a">Certified by</div><div class="b">—</div></div>
+          <div><div class="a">Date</div><div class="b">—</div></div>
+          <div><div class="a">Venue</div><div class="b">—</div></div>
+        </div>
+        <div class="mt-m">
+          <a class="btn ghost" href="#">Read the full story</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Archive -->
+<section class="pad-sm sandbg">
+  <div class="wrap">
+    <div class="chead"><span class="chapter-no">The archive</span><span class="rule"></span>
+      <span class="chapter-no">Newest first</span></div>
+
+    <div class="arch-grid mt-m">
+      <article class="rec">
+        <span class="photo jewel" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Community</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+      <article class="rec">
+        <span class="photo warm" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Education</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+      <article class="rec">
+        <span class="photo sun" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Culture</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+      <article class="rec">
+        <span class="photo" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Social cause</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+      <article class="rec">
+        <span class="photo warm" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Health</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+      <article class="rec">
+        <span class="photo jewel" data-cap=""></span>
+        <div class="in"><span class="cat">Category · Environment</span>
+          <h3>Record title placeholder — one to two lines.</h3>
+          <span class="hold">Awaiting verified entry</span>
+          <div class="row mt-s"><span>Certified by —</span><span>— participants</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Certifying bodies -->
+<section class="pad dark">
+  <div class="wrap">
+    <div class="grid g2 gap-l mb-l" style="align-items:end">
+      <h2>The bodies who<br>hold us to it.</h2>
+      <p class="lede">We do not certify our own work. Every attempt is judged against
+        someone else’s rules, by someone else’s adjudicator — which is exactly the point.</p>
+    </div>
+    <div class="bodies">
+      <div>Guinness World Records<span>7 held by our founder</span></div>
+      <div>Limca Book of Records<span>India</span></div>
+      <div>Asia Book of Records<span>Continental</span></div>
+      <div>India Book of Records<span>National</span></div>
+      <div>Golden Book of Records<span>International</span></div>
+      <div>Unique Book of Records<span>International</span></div>
+    </div>
+
+    <div class="grid g2 gap-l mt-xl" style="align-items:center">
+      <p class="pull" style="margin:0">
+        “And many more records…” — the line on the card that this
+        <span style="color:var(--flame)">page finally has room to finish.</span>
+      </p>
+      <div class="flex gap-s wrapf">
+        <a class="btn" href="join.html">Propose the next one
+          <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M2 6.5h9M7 2.5l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn ghost" href="how-it-happens.html">How an attempt is built</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="assets/js/include.js"></script>
+</body>
+</html>
