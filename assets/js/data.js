@@ -163,36 +163,39 @@
 
   const STORIES = [
     {
-      name: "Aarti Sharma", role: "Class 11 student, participant and steward",
+      name: "Aarti Sharma", role: "Class 11 · she arrived as a participant",
       seed: 12,
-      quote: "I joined because my friends were going. I stayed because on the day they " +
-             "gave me a clipboard, a section, and ninety people who had to listen to me. " +
-             "I have never been trusted with anything that size.",
+      quote: "I only came because my friends were coming. Then someone handed me a clipboard " +
+             "and a section and ninety people who had to listen to me. I went home and could " +
+             "not sleep. Nobody had ever trusted me with ninety people before.",
     },
     {
-      name: "Rajendra Meena", role: "Principal, participating school",
+      name: "Rajendra Meena", role: "Principal · twenty-two years of sports days",
       seed: 27,
-      quote: "I have organised sports days for twenty-two years. This was the first time " +
-             "my students ran the event instead of attending it. Half my staff learned " +
-             "something watching them.",
+      quote: "I have watched children attend events for two decades. That morning I watched " +
+             "them run one. Two of my teachers stood at the back and cried, and I am not going " +
+             "to pretend I know exactly why.",
     },
     {
-      name: "Sunita Devi", role: "Ward volunteer",
+      name: "Sunita Devi", role: "She lives four streets from the ground",
       seed: 41,
-      quote: "Our colony had never done anything together. Now there is a group of forty " +
-             "of us who still meet. The record was in January. The group is the part that stayed.",
+      quote: "Our colony had lived beside each other for eleven years without doing anything " +
+             "together. There are forty of us who still meet on Sundays. The morning was in " +
+             "January. The Sundays are the part that stayed.",
     },
     {
-      name: "Vikram Singh", role: "CSR lead, partner company",
+      name: "Vikram Singh", role: "He came for a work activity",
       seed: 58,
-      quote: "We have funded a lot of activities nobody remembered by March. Our team still " +
-             "argues about who counted faster. That is the difference.",
+      quote: "We have funded a great many things nobody remembered by March. My team still " +
+             "argues about who counted faster. I have stopped trying to explain to people " +
+             "why that matters.",
     },
     {
-      name: "Fatima Khan", role: "Folk artist and rehearsal lead",
+      name: "Fatima Khan", role: "Folk artist · she taught two thousand people",
       seed: 73,
-      quote: "They did not ask us to perform. They asked us to teach. Two thousand people " +
-             "learned Ghoomar properly, from us, and were paid attention while doing it.",
+      quote: "For thirty years we have been invited to perform at the edge of other people’s " +
+             "events. This time they asked us to teach. Two thousand people learned it properly, " +
+             "from us, and looked at us while we spoke.",
     },
   ];
 

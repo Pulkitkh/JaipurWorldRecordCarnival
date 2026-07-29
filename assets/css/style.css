@@ -688,3 +688,9 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 /* belt and braces: nothing may create a horizontal scrollbar */
 html { overflow-x: clip; }
+
+/* upcoming cards sit on a dark ground in chapter seven */
+.deep #upcoming .card { background: rgba(252,248,240,.05); border-color: var(--line-lt); color: var(--ivory); }
+.deep #upcoming .card h3 { color: var(--ivory); }
+.deep #upcoming .card p { color: rgba(252,248,240,.66); }
+.deep #upcoming .card .row { border-top-color: var(--line-lt) !important; color: rgba(252,248,240,.5) !important; }

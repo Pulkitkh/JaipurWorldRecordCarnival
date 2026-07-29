@@ -13,8 +13,8 @@ OUT = HERE / "shots"
 OUT.mkdir(exist_ok=True)
 
 PAGES = sys.argv[1:] or [
-    "index.html", "about.html", "why-records.html",
-    "how-it-works.html", "records.html", "join.html",
+    "index.html", "gather.html", "why-records.html",
+    "what-we-build.html", "moments.html", "join.html",
 ]
 
 DSF = 2
