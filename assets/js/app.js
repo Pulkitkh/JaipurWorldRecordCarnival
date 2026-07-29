@@ -12,12 +12,12 @@
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
   const NAV = [
-    ["index.html", "Home"],
-    ["about.html", "Who We Are"],
-    ["why-records.html", "Why Records Matter"],
-    ["how-it-works.html", "How It Works"],
-    ["records.html", "Records"],
-    ["join.html", "Join Us"],
+    ["index.html", "Welcome"],
+    ["gather.html", "Why We Gather"],
+    ["why-records.html", "Why Records"],
+    ["what-we-build.html", "What We Build"],
+    ["moments.html", "Moments"],
+    ["join.html", "Join the Journey"],
   ];
 
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
@@ -70,13 +70,13 @@
       <nav class="nav" id="nav">
         ${logo()}
         <div class="nav-links">${links}</div>
-        <a class="btn sm" href="join.html">Get involved ${ARROW}</a>
+        <a class="btn sm" href="join.html">Join the journey ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
       <div class="drawer" id="drawer">
         ${NAV.map(([h, t], i) =>
           `<a href="${h}"><span class="n">0${i + 1}</span>${t}</a>`).join("")}
-        <a href="join.html" class="btn mt-m" style="justify-content:center">Get involved ${ARROW}</a>
+        <a href="join.html" class="btn mt-m" style="justify-content:center">Join the journey ${ARROW}</a>
       </div>`);
 
     document.body.insertAdjacentHTML("beforeend", `
@@ -87,17 +87,17 @@
             <div>
               ${logo("on-dark")}
               <p class="mt-m" style="max-width:34ch;font-size:15px;color:rgba(252,248,240,.6)">
-                A movement that gathers people around achievements worth remembering —
-                rooted in the culture, craft and hospitality of Rajasthan.</p>
+                A movement built on one belief: that extraordinary things happen
+                when ordinary people decide to do them together.</p>
               <p style="font-family:var(--display);font-style:italic;font-size:17px;color:var(--gold);margin-top:20px">
                 “Find your passion, and it’s no longer work.”</p>
             </div>
-            <div><h4>The Journey</h4>
-              <a href="about.html">Who We Are</a><a href="why-records.html">Why Records Matter</a>
-              <a href="how-it-works.html">How It Works</a><a href="records.html">Records &amp; Moments</a></div>
-            <div><h4>Take Part</h4>
-              <a href="join.html">Participate</a><a href="join.html">Volunteer</a>
-              <a href="join.html">Partner with us</a><a href="join.html">Start an initiative</a></div>
+            <div><h4>The Story</h4>
+              <a href="gather.html">Why We Gather</a><a href="why-records.html">Why Records</a>
+              <a href="what-we-build.html">What We Build</a><a href="moments.html">Moments</a></div>
+            <div><h4>Join the Journey</h4>
+              <a href="join.html">Take part</a><a href="join.html">Volunteer</a>
+              <a href="join.html">Bring your institution</a><a href="join.html">Begin something</a></div>
             <div><h4>Reach Us</h4>
               <a href="tel:+918003003000">+91 80030 03000</a>
               <a href="mailto:manmohan.agarwal015@gmail.com">manmohan.agarwal015@gmail.com</a>

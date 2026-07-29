@@ -3,43 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Jaipur World Record Carnival — पधारो म्हारे देस</title>
-<meta name="description" content="A movement that gathers people around achievements worth remembering. Schools, colleges, NGOs, communities and volunteers, brought together for world record attempts rooted in the culture of Rajasthan.">
+<title>Jaipur World Record Carnival</title>
+<meta name="description" content="A movement built on one belief: that extraordinary things happen when ordinary people decide to do them together.">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-.hero-photo { position: relative; }
-.raj { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; align-items: end; }
-.raj > *:nth-child(odd) { transform: translateY(-22px); }
-.founder { display: grid; grid-template-columns: 270px 1fr; gap: 42px; align-items: center;
-  background: var(--ivory); border: 1px solid var(--line); padding: 32px; box-shadow: var(--sh-2); border-radius: 4px; }
-.badge7 { display: inline-flex; align-items: center; gap: 9px; padding: 9px 15px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: #2B1F05;
-  font: 700 11px/1 var(--body); letter-spacing: .13em; text-transform: uppercase; }
-.why { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line-lt); }
-.why > div { background: var(--navy); padding: 32px 26px 38px; transition: background .45s var(--ease); }
-.why > div:hover { background: #202A3E; }
-.why .k { display: block; font-family: var(--display); font-size: 42px; color: var(--flame); line-height: 1; margin-bottom: 16px; }
-.why h3 { font-size: 20px; margin-bottom: 10px; }
-.why p { font-size: 14.5px; color: rgba(252,248,240,.62); }
-.partners { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: var(--line); }
-.partners > div { background: var(--sand); color: var(--ink); padding: 26px 16px; text-align: center; }
-.partners .t { font: 600 13.5px/1.3 var(--body); }
-.partners .s { font: 500 10.5px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
-.crafts { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
-.craftcard { text-align: center; padding: 30px 22px 32px; border: 1px solid var(--line); border-radius: 4px;
-  background: var(--ivory); transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
-.craftcard:hover { transform: translateY(-6px); box-shadow: var(--sh-2); }
-.craftcard .motif { width: 92px; margin: 0 auto 20px; transition: transform .7s var(--ease-out), color .5s; }
-.craftcard:hover .motif { transform: rotate(22deg) scale(1.08); color: var(--crimson); }
-.craftcard h3 { font-size: 20px; }
-.craftcard p { font-size: 14px; color: var(--ink-soft); margin-top: 8px; }
+/* ---- cinematic hero ---- */
+.hero { min-height: min(88vh, 880px); display: flex; align-items: flex-end;
+  padding-block: clamp(80px,11vw,170px) clamp(50px,6vw,92px); }
+.hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-bg .scene { height: 100%; }
+.hero-bg::after { content:""; position:absolute; inset:0;
+  background: linear-gradient(102deg, rgba(9,13,22,.95) 6%, rgba(9,13,22,.80) 44%, rgba(9,13,22,.40) 100%),
+              linear-gradient(0deg, rgba(9,13,22,.92), transparent 48%); }
+.hero .wrap { position: relative; z-index: 2; }
+.hero h1 { max-width: 17ch; }
+.hero .lede { max-width: 50ch; }
+
+/* ---- chapter marker ---- */
+.chapter { display: flex; align-items: baseline; gap: 22px; margin-bottom: 44px; }
+.chapter .no { font-family: var(--display); font-size: clamp(36px,4.4vw,62px); font-weight: 600;
+  line-height: .82; color: var(--flame); letter-spacing: -.04em; }
+.chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
+  color: var(--ink-faint); }
+.dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.5); }
+.chapter .rule { flex: 1; height: 1px; background: var(--line); align-self: center; }
+.dark .chapter .rule, .deep .chapter .rule { background: var(--line-lt); }
+
+/* ---- full-bleed breather between chapters ---- */
+.breather { position: relative; min-height: clamp(320px,46vh,520px); display: grid;
+  place-items: center; overflow: hidden; text-align: center; }
+.breather .scene { position: absolute; inset: 0; height: 100%; }
+.breather::after { content:""; position:absolute; inset:0; background: rgba(9,13,22,.62); }
+.breather .said { position: relative; z-index: 2; padding: 40px var(--gut);
+  max-width: 34ch; margin-inline: auto; color: var(--ivory); text-wrap: balance;
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(23px,3.3vw,44px); line-height: 1.24; letter-spacing: -.02em; }
+
+/* ---- chapter two ---- */
+.reasons { display: grid; grid-template-columns: repeat(3,1fr); gap: 46px; }
+.reasons .r .t { font-family: var(--display); font-size: 25px; font-weight: 600; margin-bottom: 12px; }
+.reasons .r .t::before { content:""; display:block; width:34px; height:2px;
+  background: var(--flame); margin-bottom: 18px; }
+.reasons .r p { color: var(--ink-soft); font-size: 15.5px; }
+
+/* ---- chapter three ---- */
+.symbols .sym { display: grid; grid-template-columns: 54px 1fr; gap: 26px; align-items: start;
+  padding: 30px 0; border-top: 1px solid var(--line-lt); }
+.symbols .sym:last-child { border-bottom: 1px solid var(--line-lt); }
+.symbols .sym .k { font-family: var(--display); font-size: 30px; color: var(--gold); line-height: 1; }
+.symbols .sym p { font-size: clamp(18px,1.9vw,24px); line-height: 1.5; margin: 0;
+  color: rgba(252,248,240,.88); font-family: var(--display); font-weight: 400; }
+
+/* ---- chapter four ---- */
+.builds { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+.withwho { display: flex; flex-wrap: wrap; gap: 10px; }
+.withwho span { padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px;
+  font: 500 13.5px/1 var(--body); color: var(--ink-soft);
+  transition: border-color .35s, color .35s, transform .35s var(--ease-out); }
+.withwho span:hover { border-color: var(--flame); color: var(--flame); transform: translateY(-2px); }
+
+/* ---- chapter five ---- */
+.feature { display: grid; grid-template-columns: 1.02fr .98fr; gap: clamp(30px,4vw,64px); align-items: center; }
+.feature .txt p { font-size: 17px; line-height: 1.75; color: var(--ink-soft); }
+.moments { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.moment { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--ivory);
+  box-shadow: var(--sh-1); transition: transform .55s var(--ease-out), box-shadow .55s var(--ease-out); }
+.moment:hover { transform: translateY(-6px); box-shadow: var(--sh-2); }
+.moment .in { padding: 22px 22px 26px; }
+.moment .w { font: 600 10px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--flame); }
+.moment h3 { font-size: 19.5px; line-height: 1.25; margin: 12px 0 10px; }
+.moment p { font-size: 14.5px; color: var(--ink-soft); }
+
+/* ---- chapter six ---- */
+.horizon { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+.horizon .h .n { display: block; font: 600 10.5px/1 var(--body); letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.horizon .h h3 { font-size: 23px; margin-bottom: 10px; }
+.horizon .h p { font-size: 15px; color: rgba(252,248,240,.66); }
+
+/* ---- chapter seven ---- */
 .doors { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
-.door { position: relative; padding: 32px 26px 34px; overflow: hidden; border-radius: 4px;
-  transition: transform .5s var(--ease-out), border-color .4s; display: block; }
+.door { display: block; padding: 32px 26px 34px; border-radius: 4px; overflow: hidden;
+  transition: transform .5s var(--ease-out), border-color .4s; }
 .door:hover { transform: translateY(-6px); border-color: rgba(232,70,28,.55); }
-.door .n { font: 600 10.5px/1 var(--body); letter-spacing: .2em; color: var(--gold); text-transform: uppercase; }
-.door h3 { font-size: 25px; margin: 15px 0 10px; }
+.door .n { font: 600 10.5px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.door h3 { font-size: 24px; margin: 15px 0 10px; }
 .door p { font-size: 14.5px; color: rgba(252,248,240,.62); margin-bottom: 22px; }
+
+@media (max-width: 1080px) {
+  body .reasons, body .horizon { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 30px; }
+  body .builds { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 900px) { body .feature { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  body .reasons, body .horizon, body .moments, body .builds { grid-template-columns: 1fr; }
+  body .symbols .sym { grid-template-columns: 38px 1fr; gap: 16px; }
+}
 </style>
 </head>
 <body>
@@ -47,303 +106,299 @@
 <div id="preload">
   <div>
     <div class="mark motif" data-motif="mandana" style="width:132px;margin:0 auto"></div>
-    <div class="cap deva">पधारो म्हारे देस</div>
+    <div class="cap">Something is about to begin</div>
     <div class="bar"><i></i></div>
   </div>
 </div>
 
-<!-- ════════ HERO ════════ -->
+<!-- ══════ CHAPTER ONE · WELCOME ══════ -->
 <header class="hero">
+  <div class="hero-bg"><span class="scene" data-scene="attempt" data-seed="7"></span></div>
   <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <span class="eyebrow gold" data-rv>Chapter One · Padharo Mhare Des</span>
-        <p class="hero-deva mt-m" data-rv style="margin-bottom:12px">पधारो म्हारे देस</p>
-        <h1>
-          <span class="reveal-line"><span>Some records are set.</span></span>
-          <span class="reveal-line"><span>Ours are <em>gathered</em>.</span></span>
-        </h1>
-        <p class="lede mt-m" data-rv style="max-width:47ch;color:rgba(252,248,240,.76)">
-          In Jaipur, nothing worth doing is done alone. We bring schools, colleges,
-          villages, companies and whole neighbourhoods together around one attempt —
-          and what everyone walks away with is far larger than a certificate.
-        </p>
-        <div class="flex gs mt-m wrapf" data-rv>
-          <a class="btn" href="join.html">Become part of history
-            <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
-              stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
-          <a class="btn ghost" href="records.html">See what has been done</a>
-        </div>
-        <div class="mt-l" data-rv>
-          <span class="scrollcue">Scroll<i></i></span>
-        </div>
-      </div>
-
-      <div class="hero-photo floatart" data-rv="s">
-        <div class="frame on-dark">
-          <span class="in"><span class="scene r34" data-scene="attempt" data-seed="7"
-            data-cap="The moment of the count · Jaipur"></span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-strip">
-      <p style="font-family:var(--display);font-style:italic;font-size:20px;color:var(--gold);margin:0">
-        “Find your passion, and it’s no longer work.”
-      </p>
-      <div class="creds">
-        <span class="cred">Guinness ×7</span>
-        <span class="cred">Limca Book of Records</span>
-        <span class="cred">Asia Book of Records</span>
-        <span class="cred">India Book of Records</span>
-      </div>
+    <span class="eyebrow gold" data-rv>Chapter One · Welcome</span>
+    <h1 class="mt-m">
+      <span class="reveal-line"><span>Something extraordinary</span></span>
+      <span class="reveal-line"><span>happens when ordinary</span></span>
+      <span class="reveal-line"><span>people decide to do it</span></span>
+      <span class="reveal-line"><span><em>together.</em></span></span>
+    </h1>
+    <p class="lede mt-m" data-rv style="color:rgba(252,248,240,.78)">
+      This is not a place you visit. It is a decision — made by students, teachers,
+      volunteers, neighbours and complete strangers, to build something none of them
+      could have built alone.
+    </p>
+    <div class="flex gs mt-l wrapf center" data-rv>
+      <a class="btn ghost" href="#gather">Begin the story</a>
+      <span class="scrollcue" style="margin-left:18px"><i></i></span>
     </div>
   </div>
 </header>
 
+<section class="breather">
+  <span class="scene" data-scene="formation" data-seed="21"></span>
+  <p class="said">You will not find a hero in this story.<br>There are far too many people in it.</p>
+</section>
+
+<!-- ══════ CHAPTER TWO · WHY WE GATHER ══════ -->
+<section class="pad" id="gather">
+  <div class="wrap">
+    <div class="chapter" data-rv><span class="no">02</span><span class="lbl">Why we gather</span><span class="rule"></span></div>
+
+    <div class="split gl" style="align-items:start">
+      <h2 data-rv="l">We have always known<br>how to gather.</h2>
+      <div data-rv="r">
+        <p class="lede">A fair that fills a desert. A procession that closes a city.
+          A wedding street where nobody quite remembers who was invited, and nobody
+          was ever turned away.</p>
+        <p style="color:var(--ink-soft)">
+          Somewhere along the way, gathering became something reserved for weddings and
+          festivals and very little else. Everything we do is an attempt to give people
+          one more reason — and to make that reason worth the morning it costs them.
+        </p>
+      </div>
+    </div>
+
+    <div class="reasons mt-xl" data-stagger="140">
+      <div class="r"><div class="t">Connection</div>
+        <p>Most people will never meet the person standing beside them again. For four
+          minutes they will trust them completely, and neither of them will find that strange.</p></div>
+      <div class="r"><div class="t">Purpose</div>
+        <p>A shared goal does something encouragement cannot. It gives ordinary effort a
+          reason to be precise — and makes precision feel like belonging rather than pressure.</p></div>
+      <div class="r"><div class="t">Celebration</div>
+        <p>Something happens in the ten seconds afterwards. It is the only part nobody
+          rehearses, and the only part everybody remembers.</p></div>
+    </div>
+
+    <div class="mt-xl" data-rv>
+      <a class="link-arrow" href="gather.html">Read what we believe
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CHAPTER THREE · WHY RECORDS ══════ -->
+<section class="pad dark">
+  <div class="wrap">
+    <div class="chapter" data-rv><span class="no">03</span><span class="lbl">Why records</span><span class="rule"></span></div>
+
+    <div class="split gl mb-l" style="align-items:start">
+      <h2 data-rv="l">A record is not<br>a number. It is<br>a symbol.</h2>
+      <p class="lede" data-rv="r">We had been doing this for a while before anyone thought to
+        measure it. Measuring it turned out to be the most persuasive invitation anybody
+        has ever handed us.</p>
+    </div>
+
+    <div class="symbols mt-l" data-stagger="120">
+      <div class="sym"><span class="k">01</span>
+        <p>A symbol that thousands of people believed in one idea on the same morning.</p></div>
+      <div class="sym"><span class="k">02</span>
+        <p>That schools which had never spoken to each other picked up the phone.</p></div>
+      <div class="sym"><span class="k">03</span>
+        <p>That strangers had become teammates by nine o’clock, without being asked twice.</p></div>
+      <div class="sym"><span class="k">04</span>
+        <p>That a community celebrated something it had built entirely itself.</p></div>
+    </div>
+
+    <div class="split gl mt-xl" style="align-items:center">
+      <p class="pull" data-rv="l">The certificate is the receipt.
+        <span class="hl">The gathering was the purchase.</span></p>
+      <div data-rv="r">
+        <a class="btn" href="why-records.html">The full argument
+          <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="marquee" id="marquee"><div class="track"></div></div>
 
-<!-- ════════ 01 · WELCOME ════════ -->
+<!-- ══════ CHAPTER FOUR · WHAT WE BUILD ══════ -->
 <section class="pad">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">01 — Welcome</span><span class="rule"></span>
-      <span class="chapter-no">Rajasthan</span></div>
+    <div class="chapter" data-rv><span class="no">04</span><span class="lbl">What we build</span><span class="rule"></span></div>
+
     <div class="split gl" style="align-items:start">
-      <h2 data-rv="l">A state that has always<br>known how to gather.</h2>
+      <h2 data-rv="l">Now the practical part.</h2>
       <div data-rv="r">
-        <p class="lede">Fairs that fill a desert. Processions that close a city. A wedding
-          street where nobody remembers who was invited and nobody was turned away.</p>
-        <p style="color:var(--ink-soft)">Rajasthan has been assembling enormous numbers of
-          people, joyfully and without fuss, for centuries. The Jaipur World Record Carnival
-          simply points that instinct at something the world happens to count.</p>
-        <a class="link-arrow mt-s" href="about.html">Read our story
+        <p class="lede">We plan, organise and document large-scale record attempts —
+          properly, against somebody else’s rules, with somebody else’s adjudicator watching.</p>
+        <p style="color:var(--ink-soft)">Feasibility, paperwork, permissions, safety,
+          stewarding, counting, evidence. All the unglamorous machinery that decides whether
+          a morning becomes a memory or a mess. You bring the people.</p>
+      </div>
+    </div>
+
+    <div class="builds mt-xl" data-stagger="110">
+      <div class="card"><div class="itile"><svg viewBox="0 0 24 24"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5"/></svg></div>
+        <h3>Educational</h3><p>Attempts built so students run them rather than attend them.</p></div>
+      <div class="card"><div class="itile"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.7-8-10a5 5 0 019-3 5 5 0 019 3c0 5.3-8 10-8 10z"/></svg></div>
+        <h3>For a cause</h3><p>Awareness carried at a scale a pamphlet will never reach.</p></div>
+      <div class="card"><div class="itile"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div>
+        <h3>Cultural</h3><p>Where the artists are paid to teach, not booked to decorate.</p></div>
+      <div class="card"><div class="itile"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 14c2.8 0 5 2.2 5 5"/></svg></div>
+        <h3>Civic</h3><p>Public initiatives where participation is genuine, not attendance.</p></div>
+    </div>
+
+    <div class="mt-xl" data-rv>
+      <p style="font:600 10.5px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
+        color:var(--ink-faint);margin-bottom:18px">Built alongside</p>
+      <div class="withwho">
+        <span>Schools</span><span>Colleges &amp; universities</span><span>NGOs</span>
+        <span>Government bodies</span><span>Corporates</span><span>Cultural organisations</span>
+        <span>Volunteers</span><span>Anyone who turns up</span>
+      </div>
+      <a class="link-arrow mt-l" href="what-we-build.html">How an attempt is actually built
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="breather">
+  <span class="scene" data-scene="festival" data-seed="34"></span>
+  <p class="said">Nobody remembers the number.<br>Everybody remembers the noise.</p>
+</section>
+
+<!-- ══════ CHAPTER FIVE · STORIES ══════ -->
+<section class="pad sandbg">
+  <div class="wrap">
+    <div class="chapter" data-rv><span class="no">05</span><span class="lbl">Stories</span><span class="rule"></span></div>
+
+    <div class="feature" data-rv>
+      <div class="frame zoom"><span class="in">
+        <span class="scene r43" data-scene="school" data-seed="47"></span></span></div>
+      <div class="txt">
+        <span class="eyebrow">One morning in January</span>
+        <h2 class="mt-m" style="font-size:clamp(25px,2.9vw,38px);max-width:19ch">
+          The four minutes nobody in that stadium has stopped talking about.</h2>
+        <p class="mt-m">They arrived in the dark. Eight thousand of them, in school buses,
+          on scooters, walking in from the main road because the buses could not get closer.
+          Somebody’s mother had made two hundred parathas without being asked.</p>
+        <p>By six the markers were painted. By seven every one of them was standing on a
+          number they had practised finding for three weeks. Then a woman none of them had
+          ever met counted out loud, and eight thousand people lifted something over their
+          heads and did not move.</p>
+        <p>Four minutes and eleven seconds. From the ground it looked like nothing at all.
+          It took a drone, and two years, for most of them to understand what they had made.</p>
+        <a class="link-arrow mt-m" href="moments.html">Read the moments
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
             stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
       </div>
     </div>
 
-    <div class="raj mt-xl" data-stagger="120">
-      <div class="frame zoom"><span class="in"><span class="scene r34" data-scene="festival" data-seed="11" data-cap="Festival"></span></span></div>
-      <div class="frame zoom"><span class="in"><span class="scene r34" data-scene="heritage" data-seed="19" data-cap="Heritage"></span></span></div>
-      <div class="frame zoom"><span class="in"><span class="scene r34" data-scene="school" data-seed="23" data-cap="Schools"></span></span></div>
-      <div class="frame zoom"><span class="in"><span class="scene r34" data-scene="night" data-seed="31" data-cap="After dark"></span></span></div>
+    <div class="moments mt-xl" data-stagger="120">
+      <article class="moment zoom">
+        <span class="scene r32" data-scene="green" data-seed="55"></span>
+        <div class="in"><span class="w">The rota</span>
+          <h3>They argued about the watering longer than about the record.</h3>
+          <p>Twenty-eight institutions signed a two-year commitment before a single spade
+            was bought. It is in its second year.</p></div>
+      </article>
+      <article class="moment zoom">
+        <span class="scene r32" data-scene="heritage" data-seed="63"></span>
+        <div class="in"><span class="w">The teachers</span>
+          <h3>Sixty master printers were paid as teachers, not thanked as guests.</h3>
+          <p>Nineteen hundred pairs of hands learned properly, from the people who actually
+            know how. The cloth hangs in three schools.</p></div>
+      </article>
+      <article class="moment zoom">
+        <span class="scene r32" data-scene="night" data-seed="71"></span>
+        <div class="in"><span class="w">The silence</span>
+          <h3>Four thousand people read, and the park went completely quiet.</h3>
+          <p>Twenty minutes. Every book was donated onward the following week — a condition
+            of entry, not an afterthought.</p></div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ════════ 02 · WHO WE ARE ════════ -->
-<section class="pad sandbg" id="who">
+<section class="pad deep" id="stories">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">02 — Who we are</span><span class="rule"></span></div>
-    <div class="split gl mb-l" style="align-items:start">
-      <h2 data-rv="l">We are not an events<br>company. We are<br>a gathering.</h2>
-      <div data-rv="r">
-        <p class="lede">JWRC plans, organises and documents large-scale record attempts —
-          and treats every one of them as a reason for a community to meet.</p>
-        <p style="color:var(--ink-soft)">We work with schools, colleges, universities, NGOs,
-          government bodies, corporates, cultural groups, volunteers and individuals who simply
-          turn up. We handle feasibility, paperwork, logistics and evidence. You bring the people.</p>
-      </div>
-    </div>
-
-    <div class="founder" data-rv>
-      <div class="frame" style="background:var(--sand-2)"><span class="in">
-        <span class="portrait" data-seed="3"></span></span></div>
-      <div>
-        <span class="badge7">
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"
-            stroke-linejoin="round"><path d="M7 1l1.8 3.7L13 5.3l-3 2.9.7 4.1L7 10.4 3.3 12.3 4 8.2 1 5.3l4.2-.6z"/></svg>
-          Seven-time Guinness World Record holder
-        </span>
-        <h3 class="mt-m" style="font-size:32px">Manmohan Agrawal</h3>
-        <p style="font:500 11.5px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;
-          color:var(--ink-faint);margin:10px 0 18px">Founder · Jaipur World Record Carnival</p>
-        <p style="color:var(--ink-soft);max-width:62ch">
-          A builder by profession and a convenor by instinct. Secretary of the Rajasthan
-          Affordable Housing Development Association and a member of the RERA Conciliation
-          Forum, he has spent years proving that the hardest part of a world record is never
-          the record — it is getting ten thousand people to believe it is possible.
-        </p>
-        <div class="creds light mt-m">
-          <span class="cred">Guinness ×7</span><span class="cred">Limca World Records</span>
-          <span class="cred">Asia Book of Records</span><span class="cred">Unique Book of Records</span>
-        </div>
-      </div>
+    <div class="chapter" data-rv><span class="lbl">In their words</span><span class="rule"></span></div>
+    <div class="slider" data-rv><div class="slides"></div></div>
+    <div class="slider-nav">
+      <button class="sarrow" id="sprev" aria-label="Previous">
+        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M11 6.5H2M6 2.5l-4 4 4 4"/></svg></button>
+      <button class="sarrow" id="snext" aria-label="Next">
+        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></button>
+      <span style="flex:1"></span><span class="flex gs center" id="sdots"></span>
     </div>
   </div>
 </section>
 
-<!-- ════════ 03 · WHY RECORDS MATTER ════════ -->
+<!-- ══════ CHAPTER SIX · WHERE THIS GOES ══════ -->
 <section class="pad dark">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">03 — Why records matter</span><span class="rule"></span></div>
-    <div class="narrow mb-l" data-rv>
-      <p class="pull">A record is only ever the excuse. What we are really building is the
-        <span class="hl">reason ten thousand people had to stand in the same place, on the
-        same morning, for each other.</span></p>
-    </div>
-    <div class="why mt-l" data-stagger="110">
-      <div><span class="k">01</span><h3>It teaches</h3>
-        <p>A live lesson in planning, discipline, teamwork and leadership that no classroom can stage.</p></div>
-      <div><span class="k">02</span><h3>It unites</h3>
-        <p>Age, income, language and background stop mattering the moment everyone counts to the same number.</p></div>
-      <div><span class="k">03</span><h3>It carries a cause</h3>
-        <p>Cleanliness, literacy, health, water, tree cover — a record puts a message where a pamphlet never reaches.</p></div>
-      <div><span class="k">04</span><h3>It outlives itself</h3>
-        <p>Long after the certificate is framed, participants still say <em>“I was there.”</em> That is the actual record.</p></div>
-    </div>
-    <div class="mt-l" data-rv>
-      <a class="btn" href="why-records.html">Read the full case
-        <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
-          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
-    </div>
-  </div>
-</section>
+    <div class="chapter" data-rv><span class="no">06</span><span class="lbl">Where this goes</span><span class="rule"></span></div>
 
-<!-- ════════ 04 · OUR JOURNEY ════════ -->
-<section class="pad">
-  <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">04 — Our journey</span><span class="rule"></span>
-      <span class="chapter-no">Idea → History</span></div>
-    <div class="split gl" style="align-items:start">
-      <h2 data-rv="l">How an idea becomes<br>a world record.</h2>
-      <p class="lede" data-rv="r">Six stages, and we are beside you for all of them. Most people
-        arrive with nothing more than a thought and a rough sense of how many friends they can call.</p>
-    </div>
-    <div class="steps mt-xl" data-stagger="90">
-      <div class="step"><i>1</i><h3>The Spark</h3><p>You bring an idea. We check whether a category exists — or whether we build a new one.</p></div>
-      <div class="step"><i>2</i><h3>The Blueprint</h3><p>Rules, evidence standards, feasibility, budget, and a date that actually works.</p></div>
-      <div class="step"><i>3</i><h3>The Gathering</h3><p>Institutions, volunteers, partners and participants — mobilised and briefed.</p></div>
-      <div class="step"><i>4</i><h3>The Rehearsal</h3><p>Venue, safety, stewarding, timing, counting method. Nothing left to the day.</p></div>
-      <div class="step"><i>5</i><h3>The Moment</h3><p>Execution, independent witnesses, photography, videography, evidence capture.</p></div>
-      <div class="step"><i>6</i><h3>The Legacy</h3><p>Adjudication, certification, the story — and the community that stays behind.</p></div>
-    </div>
-    <div class="mt-xl" data-rv>
-      <a class="btn ghost" href="how-it-works.html">See the full process and what we handle
-        <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
-          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ 05 · IMPACT ════════ -->
-<section class="pad dark">
-  <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">05 — Our impact</span><span class="rule"></span></div>
     <div class="split gl mb-l" style="align-items:end">
       <h2 data-rv="l">Every dot is a person<br>who chose to show up.</h2>
-      <p class="lede" data-rv="r">Watch them arrive. Individual people, scattered — and then
-        arranged into a <em>mandana</em>, the pattern drawn in chalk on a swept Rajasthani floor.</p>
+      <p class="lede" data-rv="r">Watch them arrive. This is what we are actually building —
+        not a number, but the pattern that appears when enough people decide the same thing
+        on the same morning.</p>
     </div>
 
     <div class="crowdwrap"><svg viewBox="0 0 1200 210" preserveAspectRatio="xMidYMid slice"></svg></div>
 
-    <div class="grid g4 gl mt-l" style="border-top:1px solid var(--line-lt);padding-top:42px" data-stagger="120">
-      <div class="stat"><div class="n" data-stat="participants">0</div><div class="k">Participants gathered</div></div>
-      <div class="stat"><div class="n" data-stat="volunteers">0</div><div class="k">Volunteers trained</div></div>
-      <div class="stat"><div class="n" data-stat="institutions">0</div><div class="k">Institutions partnered</div></div>
-      <div class="stat"><div class="n" data-stat="guinness" data-suffix="×">0</div><div class="k">Guinness World Records held</div></div>
-    </div>
-
-    <div class="partners mt-xl" data-stagger="90">
-      <div><div class="t">Schools &amp; Colleges</div><div class="s">Students, teachers</div></div>
-      <div><div class="t">NGOs</div><div class="s">Awareness campaigns</div></div>
-      <div><div class="t">Government</div><div class="s">Public initiatives</div></div>
-      <div><div class="t">Corporates</div><div class="s">CSR &amp; engagement</div></div>
-      <div><div class="t">Communities</div><div class="s">Anyone who turns up</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ STORIES ════════ -->
-<section class="pad deep" id="stories">
-  <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">In their words</span><span class="rule"></span></div>
-    <div class="slider" data-rv><div class="slides"></div></div>
-    <div class="slider-nav">
-      <button class="sarrow" id="sprev" aria-label="Previous story">
-        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
-          stroke-linecap="round" stroke-linejoin="round"><path d="M11 6.5H2M6 2.5l-4 4 4 4"/></svg></button>
-      <button class="sarrow" id="snext" aria-label="Next story">
-        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
-          stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></button>
-      <span style="flex:1"></span>
-      <span class="flex gs center" id="sdots"></span>
+    <div class="horizon mt-xl" style="border-top:1px solid var(--line-lt);padding-top:48px" data-stagger="140">
+      <div class="h"><span class="n">The next ten years</span>
+        <h3>Beyond one city</h3>
+        <p>What works on a school ground here works in a district anywhere. The method
+          travels more easily than the reputation does.</p></div>
+      <div class="h"><span class="n">Why it matters</span>
+        <h3>A country that can organise itself</h3>
+        <p>Every attempt leaves behind people who have run a live operation and know what
+          it feels like when a plan holds. That capability does not go home afterwards.</p></div>
+      <div class="h"><span class="n">The generation after</span>
+        <h3>Children who expect to be trusted</h3>
+        <p>A fifteen-year-old handed real responsibility, once, in public, does not entirely
+          go back to waiting to be told what to do.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ 06 · CELEBRATE RAJASTHAN ════════ -->
-<section class="pad sandbg">
-  <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">06 — Celebrate Rajasthan</span><span class="rule"></span></div>
-    <div class="split gl mb-l" style="align-items:start">
-      <h2 data-rv="l">The craft is not<br>decoration. It is<br>the whole point.</h2>
-      <p class="lede" data-rv="r">Every visual element here is borrowed from something made by
-        hand in this state — the arch of a jharokha, the chalk of a mandana, the slightly
-        imperfect repeat of a wooden block.</p>
-    </div>
-    <div class="crafts" data-stagger="110">
-      <div class="craftcard"><div class="motif" data-motif="mandana"></div><h3>Mandana</h3>
-        <p>Chalk drawn on a swept floor. Our loading and counting animations.</p></div>
-      <div class="craftcard"><div class="motif" data-motif="pottery"></div><h3>Blue Pottery</h3>
-        <p>The indigo that grounds every page of orange.</p></div>
-      <div class="craftcard"><div class="motif" data-motif="block"></div><h3>Block Printing</h3>
-        <p>Section dividers, with the registration deliberately imperfect.</p></div>
-      <div class="craftcard"><div class="motif" data-motif="jharokha"></div><h3>Jharokha</h3>
-        <p>The arch already in our logo — now every image frame on this site.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════ UPCOMING ════════ -->
-<section class="pad">
-  <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">What’s next</span><span class="rule"></span>
-      <span class="chapter-no">Open to everyone</span></div>
-    <div class="split gl mb-l" style="align-items:end">
-      <h2 data-rv="l">The next ones are<br>already being built.</h2>
-      <p class="lede" data-rv="r">There is no fee and no audition. If you can be in Jaipur on
-        the morning, there is a place for you.</p>
-    </div>
-    <div class="grid g3" id="upcoming" data-stagger="120"></div>
-  </div>
-</section>
-
-<!-- ════════ 07 · BECOME PART OF HISTORY ════════ -->
+<!-- ══════ CHAPTER SEVEN · JOIN THE JOURNEY ══════ -->
 <section class="pad deep">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">07 — Become part of history</span><span class="rule"></span></div>
+    <div class="chapter" data-rv><span class="no">07</span><span class="lbl">Join the journey</span><span class="rule"></span></div>
+
     <div class="tc mxa narrow mb-l" data-rv>
-      <h2>Four doors. Every one of<br>them is already open.</h2>
-      <p class="lede mt-m">You do not need an organisation, a budget or an idea.
-        You need to decide that you would like to be in the photograph.</p>
+      <h2>Every great story begins<br>with one decision.</h2>
+      <p class="lede mt-m">Become part of ours. You do not need an organisation, a budget
+        or an idea — only the sense that you would like to be in the photograph.</p>
     </div>
+
     <div class="doors mt-l" data-stagger="110">
-      <a class="door jaali" href="join.html"><span class="n">Door one</span><h3>Participate</h3>
-        <p>Turn up to the next attempt. Bring your family, your class, your street.</p>
-        <span class="link-arrow">Find an attempt
-          <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></span></a>
-      <a class="door jaali" href="join.html"><span class="n">Door two</span><h3>Volunteer</h3>
-        <p>Steward, count, brief, document. The fastest leadership training in Rajasthan.</p>
-        <span class="link-arrow">Join the crew
-          <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></span></a>
-      <a class="door jaali" href="join.html"><span class="n">Door three</span><h3>Partner</h3>
-        <p>Bring your school, college, NGO, department or company into an attempt.</p>
-        <span class="link-arrow">Start a conversation
-          <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></span></a>
-      <a class="door jaali" href="join.html"><span class="n">Door four</span><h3>Start something</h3>
-        <p>You have an idea for a record. We will tell you honestly whether it can be done.</p>
-        <span class="link-arrow">Propose a record
-          <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></span></a>
+      <a class="door jaali" href="join.html"><span class="n">One</span><h3>Stand with us</h3>
+        <p>Come to the next one. Bring your family, your class, your entire street.</p>
+        <span class="link-arrow">Tell me when →</span></a>
+      <a class="door jaali" href="join.html"><span class="n">Two</span><h3>Help build it</h3>
+        <p>Steward, count, brief, document. Where the real education actually happens.</p>
+        <span class="link-arrow">Join the crew →</span></a>
+      <a class="door jaali" href="join.html"><span class="n">Three</span><h3>Bring your people</h3>
+        <p>A school, a college, an NGO, a department, a company. We start with an honest conversation.</p>
+        <span class="link-arrow">Start talking →</span></a>
+      <a class="door jaali" href="join.html"><span class="n">Four</span><h3>Begin something</h3>
+        <p>You have an idea. We will tell you honestly whether it can be done.</p>
+        <span class="link-arrow">Say it out loud →</span></a>
     </div>
+
+    <div class="mt-xl" data-rv>
+      <p style="font:600 10.5px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;
+        color:rgba(252,248,240,.5);margin-bottom:8px">The next ones are already being built</p>
+      <p class="lede" style="max-width:46ch;margin-bottom:34px">No fee, no audition.
+        If you can be there on the morning, there is a place for you.</p>
+    </div>
+    <div class="grid g3" id="upcoming" data-stagger="120"></div>
+
     <div class="tc mt-xl" data-rv>
-      <a class="btn gold" href="join.html" style="padding:19px 34px;font-size:15px">
-        <span class="deva">पधारो</span> — come and be part of it
+      <a class="btn gold" href="join.html" style="padding:19px 36px;font-size:15px">
+        Become part of ours
         <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
           stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
     </div>
