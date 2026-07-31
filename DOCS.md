@@ -110,6 +110,38 @@ Every module is optional — it looks for its own elements and stays silent
 otherwise. The whole system is disabled by `prefers-reduced-motion` and by
 appending `?nomotion=1` (which the screenshot harness uses).
 
+### Performance — and one rule worth keeping
+
+Measured with a scripted 120-frame scroll of the whole homepage, headless
+Chromium on software rendering (SwiftShader):
+
+| | median frame | fps |
+|---|---|---|
+| Plain text page (the renderer's ceiling) | 16.7 ms | 60 |
+| This site, motion disabled | 16.7 ms | 60 |
+| This site, full motion — **first build** | 149.9 ms | **7** |
+| This site, full motion — **after fixes** | 16.7 ms | **60** |
+
+The first build was genuinely broken, not merely slow in headless: the same
+renderer hit 60 fps on a plain page, so there was nowhere to hide.
+
+**The rule: under smooth scroll, every frame is a scroll frame.** Anything that
+repaints full-viewport stops running occasionally and starts running at 60Hz.
+Three things were doing exactly that and together cost ~85% of the frame budget:
+
+1. `filter: blur(70px)` on three animated full-bleed aurora layers — rewritten as
+   one composited layer of soft radial gradients, animated by transform only.
+2. `mix-blend-mode: multiply` on the fixed full-screen paper grain — the blend
+   forced a full-screen composite every frame. Now plain opacity.
+3. `backdrop-filter` on the sticky nav and the filter bar — re-blurring a
+   full-width strip on every frame. Now a solid gradient, visually identical
+   over a dark ground.
+
+`backdrop-filter` survives in exactly one place — the record modal — because
+scrolling is locked while it is open, so it never repaints per frame.
+
+If you add effects later, check them against that table before shipping.
+
 `app.js` keeps only the non-motion work: chrome, data rendering, filters, the
 modal, the slider and the form wizard.
 

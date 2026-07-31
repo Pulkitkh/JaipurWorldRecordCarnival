@@ -26,10 +26,15 @@
 .values .i { width: 34px; height: 34px; margin-bottom: 18px; color: var(--gold); }
 .tl { position: relative; padding-left: 34px; }
 .tl::before { content:""; position:absolute; left:5px; top:8px; bottom:8px; width:2px;
-  background: linear-gradient(var(--flame), var(--gold), transparent); }
+  background: rgba(25,21,16,.12); }
+.tl-spine { position:absolute; left:5px; top:8px; bottom:8px; width:2px;
+  background: linear-gradient(var(--flame), var(--gold)); transform-origin: top; }
+.no-motion .tl-spine { transform: none; }
 .tl .ev { position: relative; padding: 0 0 40px; }
-.tl .ev::before { content:""; position:absolute; left:-34px; top:7px; width:12px; height:12px;
-  border-radius:50%; background: var(--ivory); border:2.5px solid var(--flame); }
+.tl .ev .ev-dot { position:absolute; left:-34px; top:7px; width:12px; height:12px;
+  border-radius:50%; background: var(--ivory); border:2.5px solid var(--flame); display:block; }
+.no-motion .tl .ev::before { content:""; position:absolute; left:-34px; top:7px; width:12px;
+  height:12px; border-radius:50%; background: var(--ivory); border:2.5px solid var(--flame); }
 .tl .y { font: 600 11px/1 var(--body); letter-spacing:.2em; color: var(--flame); }
 .tl h3 { font-size: 22px; margin: 12px 0 8px; }
 .tl p { color: var(--ink-soft); font-size: 15.5px; max-width: 62ch; }
@@ -42,7 +47,7 @@
 </head>
 <body>
 
-<header class="phead">
+<header class="phead" data-chapter="Who we are">
   <div class="wrap">
     <span class="eyebrow gold" data-anim>Chapter Two · Why we gather</span>
     <h1 class="mt-m" data-anim>We are not an events company.<br>We are a gathering.</h1>
@@ -55,7 +60,7 @@
 <div class="jband"></div>
 
 <!-- Story -->
-<section class="pad">
+<section class="pad" data-chapter="Timeline">
   <div class="wrap">
     <div class="split gl" style="align-items:center">
       <div data-anim="left">
@@ -83,7 +88,7 @@
 </section>
 
 <!-- Vision & mission -->
-<section class="pad-sm sandbg">
+<section class="pad-sm sandbg" data-chapter="Vision">
   <div class="wrap">
     <div class="vm" data-stag="0.14">
       <div>
@@ -113,7 +118,7 @@
 </section>
 
 <!-- Values -->
-<section class="pad dark">
+<section class="pad dark" data-chapter="Values">
   <div class="wrap">
     <div class="chead" data-anim><span class="chapter-no">What we hold to</span><span class="rule"></span>
       <span class="chapter-no">Eight values</span></div>
@@ -162,7 +167,7 @@
         <p style="font-size:13px;color:var(--ink-faint);margin-top:22px">
           Milestones below are illustrative demo content pending verified dates.</p>
       </div>
-      <div class="tl" data-stag="0.13">
+      <div class="tl" data-stag="0.13"><span class="tl-spine"></span>
         <div class="ev"><span class="y">The beginning</span><h3>One record, one realisation</h3>
           <p>A first successful attempt makes it obvious that the interesting part was never
             the number — it was the months of people learning to work as one.</p></div>
@@ -224,6 +229,7 @@
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/Flip.min.js"></script>
 <script src="assets/vendor/SplitText.min.js"></script>
 <script src="assets/vendor/DrawSVGPlugin.min.js"></script>
 <script src="assets/vendor/CustomEase.min.js"></script>
