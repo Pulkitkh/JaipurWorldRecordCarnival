@@ -44,9 +44,9 @@
 
 <header class="phead">
   <div class="wrap">
-    <span class="eyebrow gold" data-rv>Chapter Two · Why we gather</span>
-    <h1 class="mt-m" data-rv>We are not an events company.<br>We are a gathering.</h1>
-    <p class="lede mt-m" data-rv style="max-width:56ch;color:rgba(252,248,240,.76)">
+    <span class="eyebrow gold" data-anim>Chapter Two · Why we gather</span>
+    <h1 class="mt-m" data-anim>We are not an events company.<br>We are a gathering.</h1>
+    <p class="lede mt-m" data-anim style="max-width:56ch;color:rgba(252,248,240,.76)">
       Jaipur World Record Carnival exists to give people a reason — and a professional,
       properly documented structure — to do something extraordinary together.
     </p>
@@ -58,7 +58,7 @@
 <section class="pad">
   <div class="wrap">
     <div class="split gl" style="align-items:center">
-      <div data-rv="l">
+      <div data-anim="left">
         <div class="chead"><span class="chapter-no">Our story</span><span class="rule"></span></div>
         <h2>It began with a simple,<br>slightly stubborn idea.</h2>
         <p class="lede mt-m">That a world record is not a trophy for one person.
@@ -76,7 +76,7 @@
           unforgettable. Leave something behind that outlasts the photograph.
         </p>
       </div>
-      <div data-rv="r" class="frame zoom"><span class="in">
+      <div data-anim="right" class="frame zoom"><span class="in">
         <span class="scene r43" data-scene="heritage" data-seed="5" data-cap="Where it started"></span></span></div>
     </div>
   </div>
@@ -85,7 +85,7 @@
 <!-- Vision & mission -->
 <section class="pad-sm sandbg">
   <div class="wrap">
-    <div class="vm" data-stagger="140">
+    <div class="vm" data-stag="0.14">
       <div>
         <div class="motif" data-motif="jharokha"></div>
         <span class="eyebrow">Our vision</span>
@@ -115,14 +115,14 @@
 <!-- Values -->
 <section class="pad dark">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">What we hold to</span><span class="rule"></span>
+    <div class="chead" data-anim><span class="chapter-no">What we hold to</span><span class="rule"></span>
       <span class="chapter-no">Eight values</span></div>
     <div class="split gl mb-l" style="align-items:end">
-      <h2 data-rv="l">Values are only real<br>when they cost you<br>something.</h2>
-      <p class="lede" data-rv="r">Each of these has, at some point, made us turn down an
+      <h2 data-anim="left">Values are only real<br>when they cost you<br>something.</h2>
+      <p class="lede" data-anim="right">Each of these has, at some point, made us turn down an
         attempt. That is how we know they are load-bearing rather than decorative.</p>
     </div>
-    <div class="values" data-stagger="80">
+    <div class="values" data-stag="0.08">
       <div><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
           <circle cx="9" cy="9" r="4"/><circle cx="15" cy="15" r="4"/></svg>
         <h3>Unity</h3><p>Great achievements happen when people work together, not when one person wins.</p></div>
@@ -155,14 +155,14 @@
 <section class="pad">
   <div class="wrap">
     <div class="split gl" style="align-items:start">
-      <div data-rv="l">
+      <div data-anim="left">
         <div class="chead"><span class="chapter-no">How we got here</span><span class="rule"></span></div>
         <h2>A movement, assembled<br>the same way we<br>assemble a crowd.</h2>
         <p class="lede mt-m">One conversation at a time.</p>
         <p style="font-size:13px;color:var(--ink-faint);margin-top:22px">
           Milestones below are illustrative demo content pending verified dates.</p>
       </div>
-      <div class="tl" data-stagger="130">
+      <div class="tl" data-stag="0.13">
         <div class="ev"><span class="y">The beginning</span><h3>One record, one realisation</h3>
           <p>A first successful attempt makes it obvious that the interesting part was never
             the number — it was the months of people learning to work as one.</p></div>
@@ -186,9 +186,9 @@
 <!-- People -->
 <section class="pad-sm sandbg">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">The people</span><span class="rule"></span>
+    <div class="chead" data-anim><span class="chapter-no">The people</span><span class="rule"></span>
       <span class="chapter-no">Demo placeholders</span></div>
-    <div class="team" data-stagger="110">
+    <div class="team" data-stag="0.11">
       <div class="m"><div class="frame" style="background:var(--sand-2)"><span class="in">
         <span class="portrait" data-seed="3"></span></span></div>
         <div class="nm">Manmohan Agrawal</div><div class="rl">Founder · 7× Guinness holder</div></div>
@@ -207,9 +207,9 @@
 
 <section class="pad-sm deep">
   <div class="wrap tc">
-    <p class="pull mxa narrow" data-rv>People here already know how to gather.
+    <p class="pull mxa narrow" data-anim>People here already know how to gather.
       <span class="hl">We only bring the paperwork, the plan and the adjudicator.</span></p>
-    <div class="flex gs mt-l" style="justify-content:center" data-rv>
+    <div class="flex gs mt-l" style="justify-content:center" data-anim>
       <a class="btn" href="what-we-build.html">See what we build
         <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
           stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
@@ -221,5 +221,14 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/art.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js"></script>
+<script src="assets/vendor/CustomEase.min.js"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js"></script>
+<script src="assets/js/motion.js"></script>
+
 </body>
 </html>
