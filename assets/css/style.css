@@ -67,7 +67,7 @@ a { color: inherit; text-decoration: none; }
 /* Paper grain over everything */
 body::after {
   content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 400;
-  opacity: .45; mix-blend-mode: multiply;
+  opacity: .28;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
 }
 
@@ -156,7 +156,7 @@ section { position: relative; }
 .btn.gold { --bg: var(--gold); --fg: #251B06; }
 .btn.ghost {
   --bg: transparent; --fg: var(--ink); box-shadow: none;
-  border: 1.5px solid var(--line); backdrop-filter: blur(6px);
+  border: 1.5px solid var(--line);
 }
 .btn.ghost:hover { border-color: var(--flame); color: var(--flame); box-shadow: none; }
 .dark .btn.ghost, .deep .btn.ghost, .hero .btn.ghost { --fg: var(--ivory); border-color: rgba(252,248,240,.32); }
@@ -208,7 +208,7 @@ section { position: relative; }
   position: sticky; top: 0; z-index: 900; height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding-inline: var(--gut);
-  background: rgba(18,24,40,.72); backdrop-filter: blur(18px) saturate(1.4);
+  background: linear-gradient(rgba(13,18,31,.94), rgba(13,18,31,.80));
   border-bottom: 1px solid rgba(252,248,240,.08);
   transition: background .45s var(--ease), height .45s var(--ease), box-shadow .45s var(--ease);
 }
@@ -311,8 +311,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 /* Jaali — our reading of "glassmorphism" */
 .jaali {
-  position: relative; background: rgba(252,248,240,.05);
-  backdrop-filter: blur(14px); border: 1px solid rgba(252,248,240,.14); overflow: hidden;
+  position: relative; background: rgba(252,248,240,.055);
+  border: 1px solid rgba(252,248,240,.14); overflow: hidden;
 }
 .jaali::before {
   content: ""; position: absolute; inset: 0; opacity: .07; pointer-events: none;
@@ -772,20 +772,23 @@ html { overflow-x: clip; }
 .no-motion [data-hscroll] { overflow-x: auto; }
 .no-motion .hs-track { padding-bottom: 20px; }
 
-/* ---------- aurora / mesh background ---------- */
-.aurora { position: absolute; inset: -20%; pointer-events: none; z-index: 0; filter: blur(70px);
-  opacity: .5; }
-.aurora span { position: absolute; display: block; border-radius: 50%; mix-blend-mode: screen;
-  animation: drift 22s ease-in-out infinite alternate; }
-.aurora span:nth-child(1) { width: 46%; height: 46%; left: 4%;  top: 6%;  background: #E8461C33; }
-.aurora span:nth-child(2) { width: 40%; height: 40%; right: 6%; top: 18%; background: #23406B4d; animation-delay: -7s; }
-.aurora span:nth-child(3) { width: 36%; height: 36%; left: 34%; bottom: 2%; background: #D9A4412e; animation-delay: -13s; }
+/* ---------- aurora / mesh background ----------
+   One composited layer, not three. Under smooth scroll every frame is a scroll
+   frame, so anything that repaints full-viewport runs at 60Hz — three stacked
+   gradient layers (and, before that, an animated blur) dominated the budget. */
+.aurora { position: absolute; inset: -18%; pointer-events: none; z-index: 0; opacity: .9;
+  will-change: transform; animation: drift 30s ease-in-out infinite alternate;
+  background:
+    radial-gradient(34% 38% at 26% 28%, rgba(232,70,28,.30), transparent 70%),
+    radial-gradient(30% 34% at 76% 34%, rgba(35,64,107,.42), transparent 72%),
+    radial-gradient(28% 32% at 52% 74%, rgba(217,164,65,.22), transparent 72%); }
+.aurora span { display: none; }
 @keyframes drift {
   0%   { transform: translate3d(0,0,0) scale(1); }
-  50%  { transform: translate3d(6%, -5%, 0) scale(1.16); }
-  100% { transform: translate3d(-5%, 4%, 0) scale(.94); }
+  50%  { transform: translate3d(3.5%, -3%, 0) scale(1.08); }
+  100% { transform: translate3d(-3%, 2.5%, 0) scale(.96); }
 }
-.no-motion .aurora span { animation: none; }
+.no-motion .aurora { animation: none; }
 
 /* ---------- gradient + outline typography ---------- */
 .grad-text { background: linear-gradient(96deg, var(--flame), var(--gold) 62%, var(--ember));
@@ -804,3 +807,18 @@ html { overflow-x: clip; }
   .cursor { display: none; }
   .has-cursor, .has-cursor a, .has-cursor button { cursor: auto; }
 }
+
+/* ---------- reading progress ring (essay pages) ---------- */
+.readring { position: fixed; left: 26px; bottom: 26px; z-index: 700; width: 54px; height: 54px;
+  display: grid; place-items: center; }
+.readring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.readring circle { fill: none; stroke: rgba(25,21,16,.14); stroke-width: 2.4; }
+.readring circle.p { stroke: var(--flame); stroke-linecap: round; }
+.readring em { font: 600 10px/1 var(--body); font-style: normal; letter-spacing: .06em;
+  color: var(--ink-soft); }
+
+/* ---------- arrival burst (form success) ---------- */
+.burst { position: absolute; inset: 0; pointer-events: none; display: grid; place-items: center; }
+.burst i { position: absolute; width: 8px; height: 8px; border-radius: 2px; display: block; }
+
+@media (max-width: 900px) { .readring { display: none; } }

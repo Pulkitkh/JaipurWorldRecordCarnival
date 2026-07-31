@@ -24,7 +24,7 @@
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, CustomEase, ScrollToPlugin);
+  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, CustomEase, ScrollToPlugin, Flip);
   document.documentElement.classList.add("has-motion");
 
   /* app.js injects the nav, footer and counter values on DOMContentLoaded and
@@ -243,7 +243,7 @@
   });
 
   /* ═══ 11 · Hero particle field — a crowd that reacts to you ═══ */
-  const canvas = $("#field");
+  const canvas = innerWidth > 760 ? $("#field") : null;
   if (canvas) {
     const ctx = canvas.getContext("2d");
     let W, H, pts = [], mouse = { x: -1e4, y: -1e4 }, raf;
@@ -253,8 +253,8 @@
       const dpr = Math.min(devicePixelRatio || 1, 2);
       W = canvas.width = r.width * dpr; H = canvas.height = r.height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round((r.width * r.height) / 9000);
-      pts = Array.from({ length: Math.min(n, 260) }, () => ({
+      const n = Math.round((r.width * r.height) / 14000);
+      pts = Array.from({ length: Math.min(n, 150) }, () => ({
         x: Math.random() * r.width, y: Math.random() * r.height,
         vx: (Math.random() - .5) * .16, vy: (Math.random() - .5) * .16,
         r: 1 + Math.random() * 2.2, c: COLS[(Math.random() * COLS.length) | 0],
@@ -415,6 +415,133 @@
     tl.to($(".cap", pre), { opacity: 1, y: 0, duration: .6, ease: EASE }, "-=.3")
       .to(pre, { yPercent: -100, duration: 1, ease: EASE, delay: .35,
         onComplete: () => { pre.style.display = "none"; ScrollTrigger.refresh(); } });
+  }
+
+  /* ═══ 19 · FLIP-animated archive filtering ═══ */
+  const recgrid = $("#recgrid");
+  if (recgrid) {
+    let state = null;
+    document.addEventListener("jwrc:filter-start", () => {
+      state = Flip.getState($$(".rec", recgrid));
+    });
+    document.addEventListener("jwrc:filter-end", () => {
+      if (!state) return;
+      Flip.from(state, {
+        duration: .72, ease: EASE_OUT, scale: true, absolute: true,
+        stagger: .035,
+        onEnter: (els) => gsap.fromTo(els,
+          { opacity: 0, scale: .82, filter: "blur(6px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: .6, ease: EASE_OUT, stagger: .045 }),
+        onLeave: (els) => gsap.to(els,
+          { opacity: 0, scale: .86, filter: "blur(6px)", duration: .35, ease: "power2.in" }),
+      });
+      state = null;
+    });
+  }
+
+  /* ═══ 20 · Record detail: choreographed modal entrance ═══ */
+  const modal = $("#recmodal");
+  if (modal) {
+    const sheet = $(".sheet", modal);
+    const obs = new MutationObserver(() => {
+      if (!modal.classList.contains("open")) return;
+      gsap.fromTo(sheet, { y: 60, scale: .96, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: .75, ease: EASE_OUT });
+      const bits = $$(".body > *", sheet);
+      gsap.from(bits, { y: 26, opacity: 0, duration: .7, ease: EASE, stagger: .055, delay: .12 });
+      const sc = $(".scene", sheet);
+      if (sc) gsap.from(sc, { scale: 1.14, duration: 1.4, ease: EASE });
+    });
+    obs.observe(modal, { attributes: true, attributeFilter: ["class"] });
+  }
+
+  /* ═══ 21 · Timeline spine draws itself as you read ═══ */
+  const spine = $(".tl-spine");
+  if (spine) {
+    gsap.fromTo(spine, { scaleY: 0 }, {
+      scaleY: 1, transformOrigin: "top", ease: "none",
+      scrollTrigger: { trigger: ".tl", start: "top 72%", end: "bottom 78%", scrub: .6 },
+    });
+    $$(".tl .ev").forEach((ev) => {
+      gsap.from(ev, {
+        opacity: 0, x: 28, duration: .9, ease: EASE,
+        scrollTrigger: { trigger: ev, start: "top 84%", once: true },
+      });
+      const dot = document.createElement("i");
+      dot.className = "ev-dot";
+      ev.appendChild(dot);
+      gsap.from(dot, {
+        scale: 0, duration: .7, ease: "back.out(2.4)",
+        scrollTrigger: { trigger: ev, start: "top 82%", once: true },
+      });
+    });
+  }
+
+  /* ═══ 22 · Essay: word-by-word pull quotes + reading progress ═══ */
+  $$("blockquote, .pull").forEach((q) => {
+    const sp = new SplitText(q, { type: "lines,words", linesClass: "sp-line" });
+    gsap.from(sp.words, {
+      opacity: .12, duration: .55, ease: "none", stagger: .028,
+      scrollTrigger: { trigger: q, start: "top 82%", end: "bottom 62%", scrub: .5 },
+    });
+  });
+
+  const essay = $(".essay .body");
+  if (essay) {
+    const ring = document.createElement("div");
+    ring.className = "readring";
+    ring.innerHTML = '<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/>'
+      + '<circle cx="22" cy="22" r="19" class="p"/></svg><em>0%</em>';
+    document.body.appendChild(ring);
+    const p = $(".p", ring), num = $("em", ring);
+    const C = 2 * Math.PI * 19;
+    gsap.set(p, { strokeDasharray: C, strokeDashoffset: C });
+    ScrollTrigger.create({
+      trigger: essay, start: "top 70%", end: "bottom bottom",
+      onUpdate: (self) => {
+        gsap.set(p, { strokeDashoffset: C * (1 - self.progress) });
+        num.textContent = Math.round(self.progress * 100) + "%";
+      },
+      onToggle: (self) => gsap.to(ring, { autoAlpha: self.isActive ? 1 : 0, duration: .4 }),
+    });
+    gsap.set(ring, { autoAlpha: 0 });
+  }
+
+  /* ═══ 23 · Enquiry wizard: step transitions + arrival burst ═══ */
+  const wiz = $("#enquiry");
+  if (wiz) {
+    const obs = new MutationObserver((muts) => {
+      muts.forEach((m) => {
+        const el = m.target;
+        if (el.classList.contains("fstep") && el.classList.contains("on")) {
+          gsap.from(el.children, { y: 30, opacity: 0, duration: .65, ease: EASE, stagger: .06 });
+        }
+        if (el.id === "wizdone" && el.classList.contains("on")) burst(el);
+      });
+    });
+    $$(".fstep, #wizdone", wiz).forEach(el =>
+      obs.observe(el, { attributes: true, attributeFilter: ["class"] }));
+
+    function burst(host) {
+      gsap.from($(".tick", host), { scale: 0, rotate: -40, duration: .9, ease: "back.out(2.6)" });
+      gsap.from($$("#wizdone > *:not(.tick)"), { y: 26, opacity: 0, duration: .7, ease: EASE, stagger: .07, delay: .15 });
+      const wrap = document.createElement("div");
+      wrap.className = "burst";
+      host.appendChild(wrap);
+      const cols = ["#E8461C", "#D9A441", "#FCF8F0", "#2C6E80"];
+      for (let i = 0; i < 34; i++) {
+        const d = document.createElement("i");
+        d.style.background = cols[i % cols.length];
+        wrap.appendChild(d);
+        const a = (i / 34) * Math.PI * 2, r = 90 + Math.random() * 150;
+        gsap.fromTo(d, { x: 0, y: 0, scale: 0, opacity: 1 }, {
+          x: Math.cos(a) * r, y: Math.sin(a) * r - 40,
+          scale: .5 + Math.random(), opacity: 0, rotate: Math.random() * 360,
+          duration: 1.1 + Math.random() * .7, ease: "power2.out", delay: i * .008,
+          onComplete: () => d.remove(),
+        });
+      }
+    }
   }
 
   /* keep pinning honest when fonts/art land late */

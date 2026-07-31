@@ -223,11 +223,13 @@
         btn.classList.add("on");
         const k = btn.dataset.filter, v = btn.dataset.value;
         let shown = 0;
+        document.dispatchEvent(new CustomEvent("jwrc:filter-start"));
         $$(".rec", grid).forEach(c => {
           const ok = !k || c.dataset[k] === v;
           c.classList.toggle("hide", !ok);
           if (ok) shown++;
         });
+        document.dispatchEvent(new CustomEvent("jwrc:filter-end"));
         const empty = $("#recempty");
         if (empty) empty.style.display = shown ? "none" : "block";
       });
