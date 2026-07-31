@@ -169,6 +169,22 @@ CHROME_PATH=/path/to/chrome python3 shoot.py
 Tall pages exceed Chromium's ~16384px capture limit, so `shoot.py` captures in
 bands and stitches them.
 
+## Site metadata
+
+Favicons (`favicon.svg` + `.ico` fallback), `apple-touch-icon.png`, PWA icons and
+`site.webmanifest`, canonical URLs, Open Graph and Twitter card tags on every
+page, `robots.txt`, `sitemap.xml`, and Organization JSON-LD on the homepage.
+
+`og-image.png` is rendered from the site's own stylesheet and artwork engine, so
+the share card can never drift from the design. To regenerate it after a copy or
+palette change, rebuild the template described in the repository history and
+screenshot it at 1200×630.
+
+Icon and manifest paths are **relative**, so the site works when served from a
+subpath (GitHub Pages project sites) as well as from a domain root. Canonical and
+`og:` URLs are absolute and point at `jaipurworldrecordcarnival.in` — change those
+if the domain changes.
+
 ## Before launch
 
 - [ ] Replace every entry in `data.js` with verified content
@@ -176,5 +192,5 @@ bands and stitches them.
 - [ ] Swap the SVG scenes for real photography
 - [ ] Replace the reconstructed logo mark in `app.js` with the official vector
 - [ ] Connect the enquiry form to a real destination
-- [ ] Add favicons, Open Graph images and a sitemap
 - [ ] Confirm names and roles on the team section
+- [x] Favicons, share card, manifest, sitemap and structured data
