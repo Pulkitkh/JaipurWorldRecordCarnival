@@ -147,37 +147,17 @@
     run();
   }
 
+  /* Entrance choreography lives in motion.js. This observer exists only to
+     build the mandana crowd once it is about to come into view. */
   function reveals() {
     const io = new IntersectionObserver((es) => {
       es.forEach((e) => {
         if (!e.isIntersecting) return;
-        const el = e.target;
-        el.classList.add("in");
-        if (el.hasAttribute("data-stagger")) {
-          const gap = parseInt(el.dataset.stagger, 10) || 90;
-          Array.from(el.children).forEach((c, i) => { c.style.transitionDelay = i * gap + "ms"; });
-        }
-        if (el.hasAttribute("data-count")) countUp(el);
-        if (el.classList.contains("crowdwrap")) crowd(el);
-        io.unobserve(el);
+        crowd(e.target);
+        io.unobserve(e.target);
       });
-    }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" });
-
-    $$("[data-rv],[data-stagger],[data-count],.crowdwrap,.reveal-line").forEach(el => io.observe(el));
-  }
-
-  function countUp(el) {
-    const target = parseFloat(el.dataset.count);
-    const suffix = el.dataset.suffix || "";
-    const dur = 1500;
-    if (REDUCED) { el.textContent = target.toLocaleString("en-IN") + suffix; return; }
-    const t0 = performance.now();
-    (function frame(t) {
-      const p = Math.min(1, (t - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * e).toLocaleString("en-IN") + suffix;
-      if (p < 1) requestAnimationFrame(frame);
-    })(t0);
+    }, { threshold: 0.1, rootMargin: "0px 0px 10% 0px" });
+    $$(".crowdwrap").forEach(el => io.observe(el));
   }
 
   /* crowd of dots settling into a mandana rosette */
@@ -215,24 +195,6 @@
       c.style.animation = "dotin .6s var(--ease-out) forwards";
       c.style.animationDelay = c.style.getPropertyValue("--d");
     });
-  }
-
-  /* hero parallax on the artwork */
-  function parallax() {
-    const els = $$("[data-para]");
-    if (!els.length || REDUCED) return;
-    let tick = false;
-    addEventListener("scroll", () => {
-      if (tick) return; tick = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        els.forEach(el => {
-          const k = parseFloat(el.dataset.para) || .06;
-          el.style.transform = `translate3d(0, ${(-y * k).toFixed(1)}px, 0)`;
-        });
-        tick = false;
-      });
-    }, { passive: true });
   }
 
   /* ---------- records archive ---------- */
@@ -460,24 +422,21 @@
     t.innerHTML = items + items;
   }
 
-  /* ---------- preloader ---------- */
+  /* ---------- boot ---------- */
 
-  function preload() {
+  function preloadFallback() {
     const p = $("#preload");
     if (!p) return;
-    const done = () => setTimeout(() => p.classList.add("done"), REDUCED ? 0 : 1500);
-    if (document.readyState === "complete") done();
-    else addEventListener("load", done);
-    setTimeout(() => p.classList.add("done"), 3600); // hard safety
+    if (!document.documentElement.classList.contains("no-motion")
+        && !location.search.includes("nomotion") && !REDUCED) return;
+    p.style.display = "none";
   }
-
-  /* ---------- boot ---------- */
 
   document.addEventListener("DOMContentLoaded", function () {
     mountChrome();
     if (window.JWRCArt) window.JWRCArt.build();
     stats(); marquee(); upcoming(); archive(); slider(); wizard();
-    reveals(); scrollFx(); parallax(); preload();
+    reveals(); scrollFx(); preloadFallback();
   });
 })();
 

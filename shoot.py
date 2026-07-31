@@ -34,7 +34,7 @@ CAPTURE_CSS = """
 
 async def shoot(page, f):
     src = HERE / f
-    await page.goto(src.as_uri())
+    await page.goto(src.as_uri() + "?nomotion=1")
     await page.wait_for_timeout(1600)
     await page.evaluate("document.fonts.ready")
     await page.add_style_tag(content=CAPTURE_CSS)

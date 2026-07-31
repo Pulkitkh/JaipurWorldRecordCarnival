@@ -34,15 +34,53 @@
 .aud .card .tag { display:inline-block; font:600 10px/1 var(--body); letter-spacing:.16em;
   text-transform:uppercase; color:var(--flame); margin-bottom:14px; }
 .aud .card h3 { font-size:20px; line-height:1.28; }
+
+/* horizontal pinned stage rail */
+.stagecard { background: var(--ivory); border: 1px solid var(--line); border-radius: 5px;
+  padding: 32px 28px 34px; box-shadow: var(--sh-1); display: flex; flex-direction: column;
+  transition: box-shadow .5s var(--ease-out), border-color .4s; }
+.stagecard:hover { box-shadow: var(--sh-2); border-color: rgba(232,70,28,.35); }
+.stagecard .mark { width: 62px; height: 62px; display: grid; place-items: center; margin-bottom: 22px;
+  background: linear-gradient(150deg, rgba(232,70,28,.16), rgba(217,164,65,.2));
+  clip-path: url(#jw-arch); }
+.stagecard .mark b { font-family: var(--display); font-size: 24px; color: var(--flame-deep); }
+.stagecard h3 { font-size: 24px; margin-bottom: 12px; }
+.stagecard .what { font-size: 14.5px; color: var(--ink-soft); }
+.stagecard .deliv { margin-top: auto; padding-top: 22px; border-top: 1px solid var(--line); }
+.stagecard .deliv .t { display: block; font: 600 10px/1 var(--body); letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px; }
+.stagecard .deliv ul { margin: 0; padding-left: 17px; font-size: 13.5px; color: var(--ink-soft); }
+.stagecard .deliv li { margin-bottom: 6px; }
+
+/* the pinned rail has to fit one screen, heading included */
+.hsec { min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(24px,3vw,44px); padding-block: clamp(40px,5vw,70px); overflow: hidden; }
+.hsec .chead { margin-bottom: 22px; }
+.hsec .mb-l { margin-bottom: 0; }
+.hshint { display: inline-flex; align-items: center; gap: 8px; margin-left: 10px;
+  font: 600 10.5px/1 var(--body); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--flame); vertical-align: middle; }
+.hshint i { font-style: normal; animation: nudge 1.5s ease-in-out infinite; }
+@keyframes nudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+.no-motion .hshint i { animation: none; }
+.stagecard { max-height: min(56vh, 470px); overflow: hidden; }
+.stagecard .what { font-size: 13.8px; line-height: 1.55; }
+.stagecard h3 { font-size: 22px; }
+.stagecard .mark { width: 54px; height: 54px; margin-bottom: 16px; }
+.stagecard .deliv ul { font-size: 13px; }
+@media (max-width: 900px) {
+  .hsec { min-height: 0; display: block; padding-block: clamp(50px,6vw,96px); }
+  .stagecard { max-height: none; }
+}
 </style>
 </head>
 <body>
 
 <header class="phead">
   <div class="wrap">
-    <span class="eyebrow gold" data-rv>Chapter Four · What we build</span>
-    <h1 class="mt-m" data-rv>From a thought in a staff<br>room to a line in a<br>record book.</h1>
-    <p class="lede mt-m" data-rv style="max-width:54ch;color:rgba(252,248,240,.76)">
+    <span class="eyebrow gold" data-anim>Chapter Four · What we build</span>
+    <h1 class="mt-m" data-anim>From a thought in a staff<br>room to a line in a<br>record book.</h1>
+    <p class="lede mt-m" data-anim style="max-width:54ch;color:rgba(252,248,240,.76)">
       Six stages. We are beside you for every one of them — and we tell you
       the truth at the first one.
     </p>
@@ -50,98 +88,79 @@
 </header>
 <div class="jband"></div>
 
-<section class="pad">
+<section class="hsec" data-hscroll data-chapter="The six stages" data-cursor="Scroll">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">The six stages</span><span class="rule"></span>
+    <div class="chead" data-anim><span class="chapter-no">The six stages</span><span class="rule"></span>
       <span class="chapter-no">Typically 3–9 months</span></div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>1</b></div>
-      <div><h3>The Spark</h3>
-        <p class="what mt-s">You arrive with an idea, or with nothing but a wish to do something
-          large. We research whether a category already exists, what the current mark is, and
-          whether a new category can be proposed. Then we tell you honestly whether it is
-          achievable with the people and the budget you actually have.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Category research and the current benchmark</li>
-            <li>An honest feasibility verdict</li>
-            <li>An indicative scale, timeline and budget</li></ul></div>
+    <div class="split gl mb-l" style="align-items:end">
+      <h2 data-anim="left" data-split="lines">How an attempt is<br>actually built.</h2>
+      <p class="lede" data-anim="right">Six stages, in the order they actually happen —
+        and we are beside you for all six.
+        <span class="hshint">Keep scrolling <i>→</i></span></p>
     </div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>2</b></div>
-      <div><h3>The Blueprint</h3>
-        <p class="what mt-s">The unglamorous stage that decides everything. Governing-body rules
-          read line by line, evidence standards mapped, counting methodology agreed, witnesses
-          and adjudication arranged, permissions identified, a date chosen around exams,
-          festivals and weather.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Rule pack and evidence checklist</li>
-            <li>Registered attempt and adjudication plan</li>
-            <li>Venue shortlist, permissions map, budget</li></ul></div>
-    </div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>3</b></div>
-      <div><h3>The Gathering</h3>
-        <p class="what mt-s">Turning a target number into named, briefed, committed people.
-          Institution outreach, volunteer recruitment and training, partner and sponsor
-          conversations, registration systems, and the communications that make a stranger
-          want to give up their Sunday.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Registration and participant tracking</li>
-            <li>A trained volunteer and steward corps</li>
-            <li>Partner, sponsor and media commitments</li></ul></div>
-    </div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>4</b></div>
-      <div><h3>The Rehearsal</h3>
-        <p class="what mt-s">Site plan, entry and exit flow, marshalling, medical and safety
-          cover, weather contingency, timing rehearsal, a full dry run of the counting method.
-          Anything discovered on the day itself is a failure of this stage.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Site and safety plan, medical cover</li>
-            <li>Minute-by-minute run sheet</li>
-            <li>A rehearsed count and contingency plan</li></ul></div>
-    </div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>5</b></div>
-      <div><h3>The Moment</h3>
-        <p class="what mt-s">Execution. Independent witnesses in position, stewards briefed,
-          professional photography and videography, timestamped and continuous evidence capture,
-          participant records collected exactly as the governing body requires.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Complete evidence file, built to spec</li>
-            <li>Professional photo and video coverage</li>
-            <li>Witness and participant documentation</li></ul></div>
-    </div>
-
-    <div class="stage" data-rv>
-      <div class="mark"><b>6</b></div>
-      <div><h3>The Legacy</h3>
-        <p class="what mt-s">Submission, adjudication, certification — and then the part most
-          organisers forget. The story, the archive, the thank-yous, and the standing group of
-          people who now know they can do this again.</p></div>
-      <div class="deliv"><span class="t">You leave with</span>
-        <ul><li>Certification and the framed record</li>
-            <li>An archive and a story worth telling</li>
-            <li>A community that survives the event</li></ul></div>
-    </div>
+  </div>
+  <div class="hs-track">
+      <article class="stagecard">
+        <span class="mark"><b>1</b></span>
+        <h3>The Spark</h3>
+        <p class="what">You arrive with an idea, or with nothing but a wish to do something large. We research whether a category already exists, what the current mark is, and whether a new one can be proposed — then tell you honestly whether it is achievable with the people and budget you actually have.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Category research and the current benchmark</li><li>An honest feasibility verdict</li><li>Indicative scale, timeline and budget</li>
+        </ul></div>
+      </article>
+      <article class="stagecard">
+        <span class="mark"><b>2</b></span>
+        <h3>The Blueprint</h3>
+        <p class="what">The unglamorous stage that decides everything. Governing-body rules read line by line, evidence standards mapped, counting methodology agreed, witnesses and adjudication arranged, permissions identified, a date chosen around exams, festivals and weather.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Rule pack and evidence checklist</li><li>Registered attempt and adjudication plan</li><li>Venue shortlist, permissions map, budget</li>
+        </ul></div>
+      </article>
+      <article class="stagecard">
+        <span class="mark"><b>3</b></span>
+        <h3>The Gathering</h3>
+        <p class="what">Turning a target number into named, briefed, committed people. Institution outreach, volunteer recruitment and training, partner conversations, registration systems, and the communications that make a stranger want to give up their Sunday.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Registration and participant tracking</li><li>A trained volunteer and steward corps</li><li>Partner, sponsor and media commitments</li>
+        </ul></div>
+      </article>
+      <article class="stagecard">
+        <span class="mark"><b>4</b></span>
+        <h3>The Rehearsal</h3>
+        <p class="what">Site plan, entry and exit flow, marshalling, medical and safety cover, weather contingency, timing rehearsal, a full dry run of the counting method. Anything discovered on the day itself is a failure of this stage.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Site and safety plan, medical cover</li><li>Minute-by-minute run sheet</li><li>A rehearsed count and contingency plan</li>
+        </ul></div>
+      </article>
+      <article class="stagecard">
+        <span class="mark"><b>5</b></span>
+        <h3>The Moment</h3>
+        <p class="what">Execution. Independent witnesses in position, stewards briefed, professional photography and videography, timestamped and continuous evidence capture, participant records collected exactly as the governing body requires.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Complete evidence file, built to spec</li><li>Professional photo and video coverage</li><li>Witness and participant documentation</li>
+        </ul></div>
+      </article>
+      <article class="stagecard">
+        <span class="mark"><b>6</b></span>
+        <h3>The Legacy</h3>
+        <p class="what">Submission, adjudication, certification — and then the part most organisers forget. The story, the archive, the thank-yous, and the standing group of people who now know they can do this again.</p>
+        <div class="deliv"><span class="t">You leave with</span><ul>
+          <li>Certification and the framed record</li><li>An archive and a story worth telling</li><li>A community that survives the event</li>
+        </ul></div>
+      </article>
   </div>
 </section>
 
 <section class="pad dark">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">What we handle</span><span class="rule"></span></div>
+    <div class="chead" data-anim><span class="chapter-no">What we handle</span><span class="rule"></span></div>
     <div class="split gl mb-l" style="align-items:start">
-      <h2 data-rv="l">Ten things you do not<br>have to figure out<br>alone.</h2>
-      <p class="lede" data-rv="r">Take all of it, or take the two pieces you are missing.
+      <h2 data-anim="left">Ten things you do not<br>have to figure out<br>alone.</h2>
+      <p class="lede" data-anim="right">Take all of it, or take the two pieces you are missing.
         Most partners start with consultation and documentation, then ask us back for the
         whole thing the second time.</p>
     </div>
-    <div class="svc" data-stagger="70">
+    <div class="svc" data-stag="0.07">
       <div><div class="itile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
         <h3>Record Consultation</h3><p>Category research, feasibility, rules and an honest verdict.</p></div>
       <div><div class="itile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
@@ -168,8 +187,8 @@
 
 <section class="pad sandbg">
   <div class="wrap">
-    <div class="chead" data-rv><span class="chapter-no">Who this is for</span><span class="rule"></span></div>
-    <div class="aud" data-stagger="110">
+    <div class="chead" data-anim><span class="chapter-no">Who this is for</span><span class="rule"></span></div>
+    <div class="aud" data-stag="0.11">
       <div class="card"><span class="tag">Schools &amp; colleges</span>
         <h3>“Our students need something bigger than a sports day.”</h3>
         <p class="mt-s">Built around the academic calendar, voluntary for every student, and
@@ -200,8 +219,8 @@
 
 <section class="pad">
   <div class="wrap narrow">
-    <h2 class="mb-l" data-rv>Questions we are asked<br>in the first meeting.</h2>
-    <div class="acc" data-rv>
+    <h2 class="mb-l" data-anim>Questions we are asked<br>in the first meeting.</h2>
+    <div class="acc" data-anim>
       <details open><summary>How many people do we actually need? <i>+</i></summary>
         <p class="ans">It depends entirely on the category — some records need eleven people and
           extraordinary precision, others need several thousand and good marshalling. The honest
@@ -227,7 +246,7 @@
           be pressured into taking part.</p></details>
     </div>
 
-    <div class="flex gs mt-l wrapf" data-rv>
+    <div class="flex gs mt-l wrapf" data-anim>
       <a class="btn" href="join.html">Start the first conversation
         <svg width="14" height="14" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.9"
           stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></a>
@@ -239,5 +258,14 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/art.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js"></script>
+<script src="assets/vendor/CustomEase.min.js"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js"></script>
+<script src="assets/js/motion.js"></script>
+
 </body>
 </html>

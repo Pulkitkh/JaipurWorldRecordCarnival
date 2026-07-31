@@ -694,3 +694,113 @@ html { overflow-x: clip; }
 .deep #upcoming .card h3 { color: var(--ivory); }
 .deep #upcoming .card p { color: rgba(252,248,240,.66); }
 .deep #upcoming .card .row { border-top-color: var(--line-lt) !important; color: rgba(252,248,240,.5) !important; }
+
+/* ═══════════════════════════════════════════════════════════
+   27. MOTION SYSTEM
+   Everything below activates only when motion.js boots
+   (html.has-motion). html.no-motion is the honest static site.
+   ═══════════════════════════════════════════════════════════ */
+
+/* GSAP owns the entrance choreography, so the CSS pre-hide is
+   scoped to the no-JS / no-motion case only. */
+.has-motion [data-anim],
+.has-motion [data-stag] > * { will-change: transform, opacity; }
+.no-motion [data-anim], .no-motion [data-stag] > * { opacity: 1 !important; transform: none !important; }
+.sp-line { overflow: hidden; }
+[data-split] { opacity: 0; }
+.no-motion [data-split] { opacity: 1; }
+
+/* ---------- custom cursor ---------- */
+.has-cursor, .has-cursor a, .has-cursor button, .has-cursor .rec,
+.has-cursor .moment, .has-cursor .chip { cursor: none; }
+.cursor { position: fixed; inset: 0 auto auto 0; z-index: 9999; pointer-events: none;
+  visibility: hidden; opacity: 0; mix-blend-mode: difference; }
+.cursor i { position: absolute; top: 0; left: 0; display: block; border-radius: 50%;
+  transform: translate(-50%, -50%); }
+.cursor .dot { width: 7px; height: 7px; background: #FCF8F0; }
+.cursor .ring { width: 40px; height: 40px; border: 1px solid rgba(252,248,240,.75);
+  transition: width .4s var(--ease-out), height .4s var(--ease-out),
+              border-color .4s, background .4s; }
+.cursor.is-active .ring { width: 74px; height: 74px; background: rgba(252,248,240,.14);
+  border-color: transparent; }
+.cursor.is-down .ring { width: 30px; height: 30px; }
+.cursor .lbl { position: absolute; top: 0; left: 0; transform: translate(-50%,-50%);
+  font: 600 9.5px/1 var(--body); letter-spacing: .14em; text-transform: uppercase;
+  color: #FCF8F0; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+.cursor.has-label .lbl { opacity: 1; }
+
+/* ---------- tilt + glare ---------- */
+.tilt { transform-style: preserve-3d; perspective: 900px; position: relative; }
+.tilt .glare { position: absolute; inset: 0; pointer-events: none; opacity: 0; border-radius: inherit;
+  background: radial-gradient(300px circle at var(--gx,50%) var(--gy,50%),
+    rgba(255,255,255,.22), transparent 62%); }
+.dark .tilt .glare, .deep .tilt .glare {
+  background: radial-gradient(300px circle at var(--gx,50%) var(--gy,50%),
+    rgba(232,70,28,.24), transparent 62%); }
+
+/* ---------- page-transition veil ---------- */
+.veil { position: fixed; inset: 0; z-index: 9990; display: grid;
+  grid-template-columns: repeat(5, 1fr); pointer-events: none; }
+.veil.idle { display: none; }
+.veil i { display: block; background: var(--navy-2); height: 100%; }
+.veil i:nth-child(2) { background: #16203a; }
+.veil i:nth-child(4) { background: #16203a; }
+
+/* ---------- chapter rail ---------- */
+.chaprail { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 700;
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.chaprail button { display: flex; align-items: center; gap: 10px; background: none; border: 0;
+  padding: 6px 0; color: var(--ink-faint); }
+.chaprail em { font: 600 9px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  font-style: normal; opacity: 0; transform: translateX(6px);
+  transition: opacity .4s var(--ease), transform .4s var(--ease); }
+.chaprail .tick { display: block; width: 22px; height: 2px; border-radius: 2px;
+  background: currentColor; opacity: .3; transition: all .45s var(--ease); }
+.chaprail button:hover em, .chaprail button.on em { opacity: 1; transform: none; }
+.chaprail button.on { color: var(--flame); }
+.chaprail button.on .tick { width: 40px; opacity: 1; }
+.chaprail button:hover .tick { opacity: .7; }
+
+/* ---------- hero particle field ---------- */
+#field { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%;
+  pointer-events: none; }
+
+/* ---------- horizontal pinned rail ---------- */
+[data-hscroll] { overflow: hidden; }
+.hs-track { display: flex; gap: 26px; width: max-content; padding-inline: var(--gut); }
+.hs-track > * { width: clamp(280px, 26vw, 380px); flex: none; }
+.no-motion [data-hscroll] { overflow-x: auto; }
+.no-motion .hs-track { padding-bottom: 20px; }
+
+/* ---------- aurora / mesh background ---------- */
+.aurora { position: absolute; inset: -20%; pointer-events: none; z-index: 0; filter: blur(70px);
+  opacity: .5; }
+.aurora span { position: absolute; display: block; border-radius: 50%; mix-blend-mode: screen;
+  animation: drift 22s ease-in-out infinite alternate; }
+.aurora span:nth-child(1) { width: 46%; height: 46%; left: 4%;  top: 6%;  background: #E8461C33; }
+.aurora span:nth-child(2) { width: 40%; height: 40%; right: 6%; top: 18%; background: #23406B4d; animation-delay: -7s; }
+.aurora span:nth-child(3) { width: 36%; height: 36%; left: 34%; bottom: 2%; background: #D9A4412e; animation-delay: -13s; }
+@keyframes drift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(6%, -5%, 0) scale(1.16); }
+  100% { transform: translate3d(-5%, 4%, 0) scale(.94); }
+}
+.no-motion .aurora span { animation: none; }
+
+/* ---------- gradient + outline typography ---------- */
+.grad-text { background: linear-gradient(96deg, var(--flame), var(--gold) 62%, var(--ember));
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.outline-text { color: transparent; -webkit-text-stroke: 1.4px var(--flame); }
+
+/* ---------- shimmer / skeleton ---------- */
+.shimmer { position: relative; overflow: hidden; background: rgba(252,248,240,.06); }
+.shimmer::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(252,248,240,.14), transparent 62%);
+  transform: translateX(-100%); animation: sweep 1.7s infinite; }
+@keyframes sweep { to { transform: translateX(100%); } }
+
+@media (max-width: 900px) {
+  .chaprail { display: none; }
+  .cursor { display: none; }
+  .has-cursor, .has-cursor a, .has-cursor button { cursor: auto; }
+}

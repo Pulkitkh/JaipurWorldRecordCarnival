@@ -86,6 +86,33 @@ and caption treatment all still apply.
 Portraits are deliberately face-free silhouettes — an illustrated face reads as a
 cartoon and undercuts the tone.
 
+## Motion system
+
+`assets/js/motion.js` owns every animation. One physics model, one easing
+language — two custom eases (`jw`, `jwOut`) that everything on the site shares,
+so nothing feels borrowed from a different website.
+
+Built on GSAP 3.13 + ScrollTrigger + SplitText + DrawSVG + CustomEase and Lenis,
+all vendored into `assets/vendor/` — no CDN, no external requests.
+
+| | |
+|---|---|
+| **Scroll** | Lenis inertial smooth scroll, driven by the GSAP ticker so ScrollTrigger stays in sync |
+| **Hero** | Split-line reveal with blur, scroll-linked exit (scale + fade + blur), mouse parallax, canvas particle field with cursor repulsion, drifting aurora mesh |
+| **Cursor** | Custom dot + spring-lagged ring in `difference` blend mode, grows and labels itself over interactive elements |
+| **Magnetism** | Buttons, chips and arrows pull toward the cursor on an elastic ease |
+| **Scrollytelling** | Pinned symbol rows that light one at a time; a pinned horizontal stage rail on What We Build |
+| **Scrubbed** | Breather parallax, marquee coupled to scroll velocity (reverses when you scroll up) |
+| **Micro** | 3D tilt with tracking glare, odometer counters, clip-path image reveals, SVG draw-on |
+| **Navigation** | Scroll-spy chapter rail, page-transition veil, preloader that draws the mandana dot by dot |
+
+Every module is optional — it looks for its own elements and stays silent
+otherwise. The whole system is disabled by `prefers-reduced-motion` and by
+appending `?nomotion=1` (which the screenshot harness uses).
+
+`app.js` keeps only the non-motion work: chrome, data rendering, filters, the
+modal, the slider and the form wizard.
+
 ## What actually works
 
 Preloader · scroll-progress bar · sticky nav that compacts · mobile drawer ·
