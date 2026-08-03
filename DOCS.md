@@ -169,6 +169,92 @@ CHROME_PATH=/path/to/chrome python3 shoot.py
 Tall pages exceed Chromium's ~16384px capture limit, so `shoot.py` captures in
 bands and stitches them.
 
+## The About page (portfolio) and its archive
+
+`about.html` is Manmohan Agrawal's portfolio. It is **self-contained**: it loads
+`assets/css/about.css`, `assets/js/media.js`, `assets/js/gallery.js` and
+`assets/js/about.js`, all of which exist only for this page. It adds nothing to
+the shared stylesheet or to `app.js`, so no other page can be affected by it.
+
+### Adding the real photographs
+
+Nothing on the page is written around a fixed number of images. Create
+`media/manifest.json` and it is used automatically — no code change:
+
+```bash
+# one-off: pip install pillow
+python3 - <<'EOF'
+import json, pathlib
+from PIL import Image
+items = []
+for f in sorted(pathlib.Path("media").rglob("*.jpg")):
+    w, h = Image.open(f).size
+    year = int(f.parts[1]) if f.parts[1].isdigit() else 2025
+    items.append({
+        "id": f.stem, "src": str(f), "w": w, "h": h,
+        "alt": f.stem.replace("-", " "),
+        "category": "records",          # records | events | media | certificates | people | personal
+        "year": year,
+        "event": f.parent.name.replace("-", " ").title(),
+        "tags": [], "featured": False,
+    })
+pathlib.Path("media/manifest.json").write_text(json.dumps({"items": items}, indent=1))
+print(len(items), "photographs indexed")
+EOF
+```
+
+`w` and `h` are the only required fields beyond `id` and `src`. Layout is computed
+from them, so the grid is correct **before** a single byte of image data arrives —
+there is no reflow and no cumulative layout shift, ever.
+
+Optional per record: `thumb`, `widths` (a responsive set, emitted as `srcset`),
+`tone` (dominant colour shown while the file downloads), `caption`, `featured`.
+
+Categories, years and the search index are **derived** from the data. Add a new
+year or category to the manifest and the filter bar grows by itself.
+
+### Why the grid is virtualised
+
+`loading="lazy"` solves bandwidth. It does not solve DOM weight — a thousand
+`<img>` elements is a thousand layout boxes and compositor layers whether or not
+the pixels have arrived. The engine therefore mounts only the tiles intersecting
+the viewport plus 1.5 screens of buffer, recycles nodes through a pool, and
+releases image sources on unmount so memory stays flat.
+
+Measured by scripted scroll of the full archive, headless on software rendering:
+
+| Library size | Tiles in the DOM | Total DOM nodes | fps |
+|---|---|---|---|
+| 284 photographs | 29 | 22,075 | 60 |
+| 1,000 photographs | 29 | 22,075 | 60 |
+| 5,000 photographs | 39 | 26,476 | 60 |
+
+Cost is bounded by viewport size, not library size. (The node totals above are
+inflated by the generated stand-in artwork — each scene is a few hundred SVG
+shapes. Real photographs are one `<img>` each, so those figures will *fall*
+substantially once the actual files are in place.)
+
+Stress-test any size from the console: set `__SCALE__ = 5000` and reload.
+
+### Two views over the same data
+
+**Mosaic** — the virtualised masonry, for browsing everything at once.
+**Timeline** — one collapsible band per year, each filled only when opened, for
+reading the archive as a career. Both are driven by the same filter state.
+
+The lightbox supports arrow keys, Escape, swipe, neighbour preloading and
+deep links (`about.html#photo=<id>` opens that photograph directly).
+
+### Not yet linked in the navigation
+
+`about.html` is deliberately **not** in the shared nav, because adding it would
+mean editing `app.js`, which renders the nav on every page. To link it, add one
+line to the `NAV` array in `assets/js/app.js`:
+
+```js
+["about.html", "The Founder"],
+```
+
 ## Site metadata
 
 Favicons (`favicon.svg` + `.ico` fallback), `apple-touch-icon.png`, PWA icons and
