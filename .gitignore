@@ -1,3 +1,7 @@
 shots/_*.png
 .DS_Store
 __pycache__/
+
+# Photograph originals live outside version control — they are large, and the
+# web-ready derivatives in media/ are generated from them by tools/build-media.py
+media-source/

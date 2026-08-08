@@ -170,7 +170,12 @@
   /* Facets are derived, never declared — add a year or a category to the
      data and the filter bar grows by itself. */
   function facets(items) {
-    const years = [...new Set(items.map((i) => i.year))].sort((a, b) => b - a);
+    /* A photograph with no reliable date carries year 0. It must not appear as
+       a "0" band in the timeline or a "0" option in the picker, but it must
+       still be reachable — so it is surfaced as "Undated" at the end. */
+    const years = [...new Set(items.map((i) => i.year))]
+      .filter((y) => y > 0).sort((a, b) => b - a);
+    if (items.some((i) => !i.year)) years.push(0);
     const cats = CATEGORIES.filter((c) => items.some((i) => i.category === c.id))
       .map((c) => ({ ...c, count: items.filter((i) => i.category === c.id).length }));
     const events = [...new Set(items.map((i) => i.event))].sort();

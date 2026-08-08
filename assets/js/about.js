@@ -61,7 +61,8 @@
     const photos = $("#stat-photos"), years = $("#stat-years");
     if (photos) { photos.textContent = items.length.toLocaleString("en-US"); }
     if (years) {
-      const span = facets.years.length ? (Math.max(...facets.years) - Math.min(...facets.years) + 1) : 0;
+      const dated = facets.years.filter((y) => y > 0);
+      const span = dated.length ? (Math.max(...dated) - Math.min(...dated) + 1) : 0;
       years.textContent = span;
     }
 
@@ -82,7 +83,7 @@
 
     const yearSel = $("#gal-year");
     yearSel.innerHTML = '<option value="all">All years</option>' +
-      facets.years.map((y) => `<option value="${y}">${y}</option>`).join("");
+      facets.years.map((y) => `<option value="${y}">${y || "Undated"}</option>`).join("");
 
     cats.addEventListener("click", (e) => {
       const b = e.target.closest("button");
@@ -115,7 +116,7 @@
     rail.innerHTML = pool.map((it, i) => `
       <button class="rail-item" data-id="${it.id}" data-cursor="View">
         ${tileMedia(it, 320)}
-        <span class="meta"><b>${esc(it.event)}</b><span>${it.year} · ${catLabel(it.category)}</span></span>
+        <span class="meta"><b>${esc(it.event)}</b><span>${it.year || "Undated"} · ${catLabel(it.category)}</span></span>
       </button>`).join("");
     if (window.JWRCArt) window.JWRCArt.build(rail);
     rail.addEventListener("click", (e) => {
@@ -134,12 +135,12 @@
         if (!byYear.has(it.year)) byYear.set(it.year, []);
         byYear.get(it.year).push(it);
       });
-      const ys = [...byYear.keys()].sort((a, b) => b - a);
+      const ys = [...byYear.keys()].sort((a, b) => (b || -1) - (a || -1));
       timeline.innerHTML = `<div class="years">` + ys.map((y, k) => {
         const list = byYear.get(y);
         return `<details class="year-band"${k === 0 ? " open" : ""} data-year="${y}">
           <summary>
-            <span class="y">${y}</span>
+            <span class="y">${y || "Undated"}</span>
             <span class="lbl">${uniqueEvents(list)}</span>
             <span class="rule"></span>
             <span class="n">${list.length} photographs</span>

@@ -61,7 +61,7 @@
       const term = (q.text || "").trim().toLowerCase();
       this.view = this.all.filter((it) => {
         if (q.category && q.category !== "all" && it.category !== q.category) return false;
-        if (q.year && q.year !== "all" && String(it.year) !== String(q.year)) return false;
+        if (q.year && q.year !== "all" && String(it.year || 0) !== String(q.year)) return false;
         if (!term) return true;
         return (it.event + " " + it.alt + " " + (it.tags || []).join(" "))
           .toLowerCase().includes(term);
@@ -284,7 +284,7 @@
         ? `<img src="${url}" alt="${(it.alt || "").replace(/"/g, "&quot;")}">`
         : `<div class="lb-art">${placeholderArt(it)}</div>`;
       this.capEl.textContent = it.caption || it.alt || "";
-      this.metaEl.textContent = [it.event, it.year].filter(Boolean).join(" · ");
+      this.metaEl.textContent = [...new Set([it.event, String(it.year || "Undated")])].filter(Boolean).join(" · ");
       this.countEl.textContent = `${this.i + 1} / ${this.items.length}`;
       history.replaceState(null, "", "#photo=" + encodeURIComponent(it.id));
 
