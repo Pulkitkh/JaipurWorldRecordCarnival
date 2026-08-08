@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archive sorter — JWRC</title>
+<style>
+/* Deliberately self-contained: this is a private tool, not a page of the site.
+   It must keep working even if the site's stylesheet changes. */
+:root{
+  --flame:#E8461C; --gold:#D9A441; --navy:#151B2A; --navy2:#0E1320; --panel:#1B2233;
+  --ivory:#F3EFE6; --dim:rgba(243,239,230,.55); --line:rgba(243,239,230,.14);
+  --ok:#3E8E6B;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--navy2);color:var(--ivory);
+  font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+
+/* ── top bar ── */
+header{display:flex;align-items:center;gap:18px;padding:12px 20px;background:var(--navy);
+  border-bottom:1px solid var(--line);min-width:0;flex-wrap:wrap}
+header h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.02em}
+header h1 span{color:var(--flame)}
+.prog{flex:1;height:6px;background:rgba(243,239,230,.1);border-radius:6px;overflow:hidden;max-width:420px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--flame),var(--gold));width:0;
+  transition:width .3s}
+.count{font-variant-numeric:tabular-nums;color:var(--dim);white-space:nowrap}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);
+  background:transparent;color:var(--ivory);padding:8px 14px;transition:.15s}
+button:hover{border-color:var(--flame)}
+button.primary{background:var(--flame);border-color:var(--flame);font-weight:600}
+button.ghost{color:var(--dim)}
+.badge{background:var(--panel);padding:4px 9px;border-radius:5px;font-size:12px;color:var(--dim)}
+
+/* ── main ── */
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:0;min-width:0}
+.stage{position:relative;display:grid;place-items:center;padding:20px;
+  min-height:0;min-width:0;overflow:hidden;background:#0A0E18}
+.stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;
+  box-shadow:0 30px 70px -30px #000}
+.stage .empty{color:var(--dim);text-align:center;max-width:44ch;line-height:1.7}
+.stage .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;
+  display:grid;place-items:center;background:rgba(0,0,0,.5);border-radius:50%}
+.stage .nav.prev{left:16px} .stage .nav.next{right:16px}
+.stage .selinfo{position:absolute;left:16px;top:16px;background:rgba(232,70,28,.9);
+  padding:6px 12px;border-radius:6px;font-weight:600;font-size:12px;display:none}
+.stage .selinfo.on{display:block}
+
+/* ── side panel ── */
+aside{background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
+  padding:18px;min-width:0}
+aside h2{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+  margin:0 0 10px;font-weight:600}
+aside section{margin-bottom:22px}
+.evlist{display:grid;gap:5px}
+.evlist button{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:8px 10px;
+  font-size:13px;line-height:1.35}
+.evlist button kbd{flex:none;background:rgba(243,239,230,.1);border-radius:4px;padding:2px 6px;
+  font:600 11px/1.4 ui-monospace,monospace;color:var(--gold)}
+.evlist button.on{background:rgba(232,70,28,.18);border-color:var(--flame)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{padding:6px 11px;font-size:12px}
+.chips button.on{background:var(--flame);border-color:var(--flame);font-weight:600}
+.field{display:grid;gap:6px;margin-bottom:10px}
+.field label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.field input{background:var(--navy2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 11px;color:var(--ivory);font:inherit}
+.field input:focus{outline:0;border-color:var(--flame)}
+.keys{font-size:12px;color:var(--dim);line-height:1.9}
+.keys b{color:var(--ivory);font-weight:600;background:rgba(243,239,230,.08);padding:1px 6px;
+  border-radius:4px;font-family:ui-monospace,monospace;font-size:11px}
+
+/* ── filmstrip ── */
+footer{background:var(--navy);border-top:1px solid var(--line);padding:10px 14px;min-width:0}
+.strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.strip::-webkit-scrollbar{height:8px}
+.strip::-webkit-scrollbar-thumb{background:rgba(243,239,230,.2);border-radius:8px}
+.th{flex:none;width:88px;height:66px;border-radius:4px;overflow:hidden;position:relative;
+  cursor:pointer;border:2px solid transparent;background:#0A0E18}
+.th img{width:100%;height:100%;object-fit:cover;display:block;opacity:.55;transition:.15s}
+.th.done img{opacity:1}
+.th.cur{border-color:var(--flame)}
+.th.sel{border-color:var(--gold)}
+.th .tick{position:absolute;right:3px;bottom:3px;width:14px;height:14px;border-radius:50%;
+  background:var(--ok);display:none;place-items:center;font-size:9px;color:#fff}
+.th.done .tick{display:grid}
+.filterbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.filterbar .sp{flex:1}
+@media (max-width:900px){ main{grid-template-columns:1fr} aside{display:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Archive <span>sorter</span></h1>
+  <span class="badge" id="loaded">no manifest loaded</span>
+  <div class="prog"><i id="bar"></i></div>
+  <span class="count" id="count">0 / 0 tagged</span>
+  <button class="ghost" id="btn-reset">Reset</button>
+  <button class="primary" id="btn-export">Export manifest.json</button>
+</header>
+
+<main>
+  <div class="stage">
+    <span class="selinfo" id="selinfo"></span>
+    <button class="nav prev" id="prev" aria-label="Previous">‹</button>
+    <img id="big" alt="" hidden>
+    <p class="empty" id="empty">
+      Run <code>python3 tools/build-media.py</code> first, then serve the folder
+      (<code>python3 -m http.server 8000</code>) and open this page from
+      <code>localhost</code>. It will load <code>media/manifest.json</code> automatically.
+    </p>
+    <button class="nav next" id="next" aria-label="Next">›</button>
+  </div>
+
+  <aside>
+    <section>
+      <h2>What is this a photo of?</h2>
+      <div class="evlist" id="events"></div>
+    </section>
+
+    <section>
+      <h2>Category</h2>
+      <div class="chips" id="cats"></div>
+    </section>
+
+    <section>
+      <h2>Details</h2>
+      <div class="field"><label for="f-year">Year</label>
+        <input id="f-year" type="number" placeholder="e.g. 2024" min="1950" max="2100"></div>
+      <div class="field"><label for="f-cap">Caption (optional)</label>
+        <input id="f-cap" placeholder="One line, in your voice"></div>
+      <div class="chips"><button id="f-feat">☆ Feature on the rail</button></div>
+    </section>
+
+    <section>
+      <h2>Keyboard</h2>
+      <p class="keys">
+        <b>1</b>–<b>9</b>, <b>0</b>, <b>-</b> &nbsp;assign the record<br>
+        <b>→</b> / <b>←</b> &nbsp;next / previous<br>
+        <b>Space</b> &nbsp;add to selection<br>
+        <b>Shift</b>+click &nbsp;select a range<br>
+        <b>A</b> &nbsp;select every untagged<br>
+        <b>Esc</b> &nbsp;clear selection<br>
+        <b>F</b> &nbsp;feature &nbsp;·&nbsp; <b>U</b> &nbsp;undo
+      </p>
+    </section>
+  </aside>
+</main>
+
+<footer>
+  <div class="filterbar">
+    <button id="f-all" class="chips-on">All</button>
+    <button id="f-todo">Untagged only</button>
+    <span class="sp"></span>
+    <span class="count" id="hint">Tip: select many, then press one key.</span>
+  </div>
+  <div class="strip" id="strip"></div>
+</footer>
+
+<script>
+/* ============================================================
+   Archive sorter — a local, offline tagging tool.
+   Reads media/manifest.json, lets you assign each photograph to a
+   record with one keystroke, and writes the manifest back out.
+   Progress is saved to localStorage, so you can stop and resume.
+   Nothing is uploaded anywhere; this runs entirely in your browser.
+   ============================================================ */
+const EVENTS = [
+  "508,603 trees planted in one hour",
+  "197,610 unique photographs of PM Narendra Modi",
+  "World's largest wall calendar — 4,800 sq ft",
+  "World's largest wooden spoon — 40 feet",
+  "Largest continuous dance performance — 3,050 children",
+  "'Ram' written 64,691 times on one postcard",
+  "11,111 miniatures of Lord Ganesha on one postcard",
+  "63 world languages written in reverse",
+  "366 birthdays — one for every date of the year",
+  "World's largest screw — 11 ft 3 in",
+  "Perpetual calendar — Govt. of India copyright",
+];
+const KEYS = ["1","2","3","4","5","6","7","8","9","0","-"];
+const CATS = ["records","events","media","certificates","people","personal"];
+const STORE = "jwrc-sorter-v1";
+
+let items = [], view = [], cur = 0, sel = new Set(), undo = [], filterTodo = false;
+
+/* Manifest paths are written relative to the repository root ("media/…"),
+   but this tool is served from /tools/, so they need rebasing. */
+const BASE = location.pathname.includes("/tools/") ? "../" : "";
+const url = (p) => (!p || /^(https?:|data:|\/)/.test(p)) ? p : BASE + p;
+
+const $ = (s) => document.querySelector(s);
+const tagged = (it) => !!it.event && it.event !== "Unsorted";
+
+/* ---------- load ---------- */
+(async function load() {
+  try {
+    const res = await fetch(BASE + "media/manifest.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    items = data.items || data;
+  } catch (e) {
+    console.warn("[sorter] could not load the manifest:", e);
+    return;
+  }
+  const saved = JSON.parse(localStorage.getItem(STORE) || "{}");
+  items.forEach((it) => {
+    if (saved[it.id]) Object.assign(it, saved[it.id]);
+  });
+  $("#empty").hidden = true;
+  $("#big").hidden = false;
+  $("#loaded").textContent = items.length + " photographs";
+  buildPanel(); refilter(); render();
+})();
+
+/* ---------- panel ---------- */
+function buildPanel() {
+  $("#events").innerHTML = EVENTS.map((e, i) =>
+    `<button data-ev="${i}"><kbd>${KEYS[i] || "·"}</kbd><span>${e}</span></button>`).join("");
+  $("#cats").innerHTML = CATS.map((c) =>
+    `<button data-cat="${c}">${c}</button>`).join("");
+  $("#events").onclick = (e) => { const b = e.target.closest("[data-ev]"); if (b) assign(+b.dataset.ev); };
+  $("#cats").onclick = (e) => { const b = e.target.closest("[data-cat]"); if (b) patch({ category: b.dataset.cat }); };
+  $("#f-year").onchange = (e) => patch({ year: +e.target.value || 0 });
+  $("#f-cap").onchange = (e) => patch({ caption: e.target.value });
+  $("#f-feat").onclick = () => patch({ featured: !current().featured });
+  $("#prev").onclick = () => move(-1);
+  $("#next").onclick = () => move(1);
+  $("#f-all").onclick = () => { filterTodo = false; refilter(); render(); };
+  $("#f-todo").onclick = () => { filterTodo = true; refilter(); render(); };
+  $("#btn-export").onclick = exportManifest;
+  $("#btn-reset").onclick = () => {
+    if (!confirm("Clear every tag you have made? This cannot be undone.")) return;
+    localStorage.removeItem(STORE); location.reload();
+  };
+}
+
+const current = () => view[cur] || {};
+
+function refilter() {
+  view = filterTodo ? items.filter((i) => !tagged(i)) : items;
+  if (cur >= view.length) cur = Math.max(0, view.length - 1);
+  sel.clear();
+}
+
+/* ---------- editing ---------- */
+function targets() {
+  if (sel.size) return [...sel].map((i) => view[i]).filter(Boolean);
+  return current().id ? [current()] : [];
+}
+
+function patch(fields) {
+  const t = targets();
+  if (!t.length) return;
+  undo.push(t.map((it) => ({ id: it.id, snap: { ...it } })));
+  if (undo.length > 40) undo.shift();
+  t.forEach((it) => Object.assign(it, fields));
+  save(); render();
+}
+
+function assign(idx) {
+  if (idx >= EVENTS.length) return;
+  patch({ event: EVENTS[idx], category: "records" });
+  if (!sel.size) move(1);            // solo tagging flows straight to the next photo
+  else { sel.clear(); render(); }
+}
+
+function doUndo() {
+  const last = undo.pop();
+  if (!last) return;
+  last.forEach(({ id, snap }) => {
+    const it = items.find((x) => x.id === id);
+    if (it) Object.assign(it, snap);
+  });
+  save(); render();
+}
+
+function save() {
+  const out = {};
+  items.forEach((it) => {
+    if (tagged(it) || it.featured || it.caption)
+      out[it.id] = { event: it.event, category: it.category, year: it.year,
+                     caption: it.caption, featured: it.featured };
+  });
+  localStorage.setItem(STORE, JSON.stringify(out));
+}
+
+function move(d) {
+  if (!view.length) return;
+  cur = Math.min(view.length - 1, Math.max(0, cur + d));
+  render();
+}
+
+/* ---------- render ---------- */
+function render() {
+  const it = current();
+  const big = $("#big");
+  if (it.id) {
+    const keys = it.widths ? Object.keys(it.widths) : null;
+    big.src = url(keys ? it.widths[keys[1] || keys[0]] : it.src);
+    big.alt = it.alt || "";
+    big.hidden = false;
+  } else big.hidden = true;
+
+  document.querySelectorAll("[data-ev]").forEach((b) =>
+    b.classList.toggle("on", EVENTS[+b.dataset.ev] === it.event));
+  document.querySelectorAll("[data-cat]").forEach((b) =>
+    b.classList.toggle("on", b.dataset.cat === it.category));
+  $("#f-year").value = it.year || "";
+  $("#f-cap").value = it.caption || "";
+  $("#f-feat").classList.toggle("on", !!it.featured);
+  $("#f-feat").textContent = it.featured ? "★ Featured" : "☆ Feature on the rail";
+
+  const done = items.filter(tagged).length;
+  $("#count").textContent = `${done} / ${items.length} tagged`;
+  $("#bar").style.width = items.length ? (done / items.length * 100) + "%" : 0;
+  $("#selinfo").classList.toggle("on", sel.size > 0);
+  $("#selinfo").textContent = sel.size + " selected — press a number to tag them all";
+
+  const strip = $("#strip");
+  strip.innerHTML = view.map((x, i) =>
+    `<div class="th ${i === cur ? "cur" : ""} ${sel.has(i) ? "sel" : ""} ${tagged(x) ? "done" : ""}"
+       data-i="${i}"><img src="${url(x.thumb || x.src)}" alt="" loading="lazy"><span class="tick">✓</span></div>`
+  ).join("");
+  const active = strip.children[cur];
+  if (active) active.scrollIntoView({ block: "nearest", inline: "center" });
+}
+
+$("#strip").onclick = (e) => {
+  const t = e.target.closest(".th");
+  if (!t) return;
+  const i = +t.dataset.i;
+  if (e.shiftKey) {
+    const [a, b] = [Math.min(cur, i), Math.max(cur, i)];
+    for (let k = a; k <= b; k++) sel.add(k);
+  } else { cur = i; }
+  render();
+};
+
+/* ---------- keyboard ---------- */
+addEventListener("keydown", (e) => {
+  if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  const k = e.key.toLowerCase();
+  const ki = KEYS.indexOf(e.key);
+  if (ki > -1) { e.preventDefault(); assign(ki); return; }
+  if (e.key === "ArrowRight") { e.preventDefault(); move(1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); move(-1); }
+  else if (e.key === " ") { e.preventDefault(); sel.has(cur) ? sel.delete(cur) : sel.add(cur); render(); }
+  else if (k === "a") { view.forEach((x, i) => { if (!tagged(x)) sel.add(i); }); render(); }
+  else if (e.key === "Escape") { sel.clear(); render(); }
+  else if (k === "f") patch({ featured: !current().featured });
+  else if (k === "u") doUndo();
+});
+
+/* ---------- export ---------- */
+function exportManifest() {
+  const clean = items.map((it) => ({ ...it, event: it.event || "Archive" }));
+  const blob = new Blob([JSON.stringify({ items: clean }, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "manifest.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const done = items.filter(tagged).length;
+  alert(`Exported ${items.length} photographs (${done} tagged).\n\n`
+      + `Replace media/manifest.json with the downloaded file, then reload about.html.`);
+}
+</script>
+</body>
+</html>

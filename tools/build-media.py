@@ -13,7 +13,13 @@ Run it again whenever you add photographs. Files already processed are skipped,
 so a second run only handles the new ones.
 
 ────────────────────────────────────────────────────────────────────────────
-HOW TO ORGANISE THE ORIGINALS
+IF YOUR PHOTOGRAPHS ARE NOT SORTED
+
+Just tip all of them into media-source/ and run this. Everything is processed
+and marked "Unsorted"; you then assign records visually with tools/sorter.html,
+which is far faster than making folders by hand.
+
+HOW TO ORGANISE THE ORIGINALS (optional — only if they are already in folders)
 
 Put them in folders. The script reads the folder names:
 
@@ -157,7 +163,8 @@ def main():
             "caption": "",
             "category": category or "records",
             "year": year,
-            "event": titlecase(event) if event else (str(year) if year else "Archive"),
+            # "Unsorted" is the marker tools/sorter.html looks for
+            "event": titlecase(event) if event else "Unsorted",
             "tags": [],
             "featured": False,
         })
@@ -173,8 +180,13 @@ def main():
     print(f"  {made} files written, {skipped} already present, {failed} unreadable")
     print(f"  {total_mb:.1f} MB total in media/")
     print(f"  manifest: {(OUT / 'manifest.json').relative_to(ROOT)}")
+    untagged = sum(1 for i in items if i["event"] == "Unsorted")
     print("\n  Reload about.html — the archive switches to the real photographs.")
-    print("  To feature one on the rail, set \"featured\": true in the manifest.")
+    if untagged:
+        print(f"\n  {untagged} photographs have no record assigned yet.")
+        print("  Serve the folder and open tools/sorter.html to tag them:")
+        print("    python3 -m http.server 8000")
+        print("    open http://localhost:8000/tools/sorter.html")
 
 
 if __name__ == "__main__":
