@@ -52,23 +52,27 @@
      Generated rather than hand-written so the page can be proven
      against a realistic volume. Replace with media/manifest.json.  */
 
+  /* Keyed to the real record highlights, so the filter chips and timeline read
+     truthfully even while the photographs themselves are stand-ins.
+     NOTE: years below are placeholders — supply the real dates with the manifest. */
   const EVENTS = [
-    { y: 2025, cat: "records", e: "Largest human formation of a state emblem", tag: "guinness" },
-    { y: 2025, cat: "events",  e: "Republic Day mass assembly",                tag: "civic" },
-    { y: 2024, cat: "records", e: "Most people planting saplings simultaneously", tag: "limca" },
-    { y: 2024, cat: "records", e: "Largest folk dance ensemble performing Ghoomar", tag: "asia-book" },
-    { y: 2024, cat: "records", e: "Most people taking a pledge on road safety", tag: "india-book" },
-    { y: 2024, cat: "media",   e: "National press coverage",                   tag: "press" },
-    { y: 2023, cat: "records", e: "Largest simultaneous health screening camp", tag: "golden-book" },
-    { y: 2023, cat: "records", e: "Most people block-printing a continuous cloth", tag: "unique-book" },
-    { y: 2023, cat: "records", e: "Largest gathering reading simultaneously",   tag: "india-book" },
-    { y: 2023, cat: "events",  e: "School leadership workshops",               tag: "schools" },
-    { y: 2022, cat: "records", e: "Human chain for water conservation",         tag: "asia-book" },
-    { y: 2022, cat: "media",   e: "Television features and interviews",         tag: "press" },
-    { y: 2021, cat: "events",  e: "Community relief drives",                    tag: "community" },
-    { y: 2020, cat: "personal", e: "Early attempts and first certifications",   tag: "milestone" },
-    { y: 2019, cat: "personal", e: "Where it began",                            tag: "milestone" },
+    { y: 2025, cat: "records", e: "508,603 trees planted in one hour", tag: "ek-ped-maa-ke-naam" },
+    { y: 2025, cat: "events",  e: "Ek Ped Maa Ke Naam — planting drive", tag: "environment" },
+    { y: 2024, cat: "records", e: "197,610 unique photographs of PM Narendra Modi", tag: "guinness" },
+    { y: 2024, cat: "records", e: "Largest continuous dance performance — 3,050 children", tag: "dance" },
+    { y: 2024, cat: "media",   e: "Press and television coverage",       tag: "press" },
+    { y: 2023, cat: "records", e: "World's largest wall calendar — 4,800 sq ft", tag: "guinness" },
+    { y: 2023, cat: "records", e: "World's largest wooden spoon — 40 feet", tag: "guinness" },
+    { y: 2023, cat: "certificates", e: "Certifications and adjudications", tag: "certificate" },
+    { y: 2022, cat: "records", e: "366 birthdays — one for every date of the year", tag: "gathering" },
+    { y: 2022, cat: "records", e: "World's largest screw — 11 ft 3 in",  tag: "monument" },
+    { y: 2021, cat: "records", e: "'Ram' written 64,691 times on one postcard", tag: "limca" },
+    { y: 2021, cat: "records", e: "11,111 miniatures of Lord Ganesha on one postcard", tag: "micro-art" },
+    { y: 2020, cat: "records", e: "63 world languages written in reverse", tag: "micro-art" },
+    { y: 2020, cat: "personal", e: "Perpetual calendar — Govt. of India copyright", tag: "milestone" },
+    { y: 2019, cat: "people",  e: "Affordable housing handovers",         tag: "housing" },
   ];
+
 
   const SHAPES = [                       // realistic mixed aspect ratios
     [1600, 1067], [1600, 1067], [1600, 1067],   // 3:2 landscape, most common

@@ -5,6 +5,18 @@
    Tokens, type and components come from style.css unchanged.
    ============================================================ */
 
+/* ---------- chapter marker ----------
+   The homepage defines this in its own page-scoped <style>, so this page
+   needs its own copy rather than reaching into another page's styles. */
+.chapter { display: flex; align-items: baseline; gap: 22px; margin-bottom: 44px; }
+.chapter .no { font-family: var(--display); font-size: clamp(36px,4.4vw,62px); font-weight: 600;
+  line-height: .82; color: var(--flame); letter-spacing: -.04em; }
+.chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
+  color: var(--ink-faint); }
+.dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.5); }
+.chapter .rule { flex: 1; height: 1px; background: var(--line); align-self: center; }
+.dark .chapter .rule, .deep .chapter .rule { background: var(--line-lt); }
+
 /* ---------- portrait hero ---------- */
 .ph {
   position: relative; overflow: hidden; color: var(--ivory);
@@ -228,4 +240,68 @@
   body .lb-body { grid-template-columns: 1fr; }
   body .lb-prev, body .lb-next { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; }
   body .lb-prev { left: 8px; } body .lb-next { right: 8px; }
+}
+
+/* ---------- record ledger ---------- */
+.ledger { list-style: none; margin: 0; padding: 0; }
+.rec-row {
+  display: grid; grid-template-columns: 210px 1fr 200px; gap: 32px; align-items: center;
+  padding: 30px 0; border-top: 1px solid var(--line-lt);
+  transition: background .4s var(--ease);
+}
+.rec-row:last-child { border-bottom: 1px solid var(--line-lt); }
+.rec-row:hover { background: rgba(232,70,28,.05); }
+.rec-n { display: block; }
+.rec-n b {
+  display: block; font-family: var(--display); font-weight: 600; line-height: .95;
+  font-size: clamp(30px,3.4vw,50px); letter-spacing: -.035em; color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.rec-row:hover .rec-n b { color: var(--flame-2); }
+.rec-n em {
+  display: block; font-style: normal; margin-top: 9px;
+  font: 600 10px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(252,248,240,.45);
+}
+.rec-b h3 { font-size: clamp(19px,1.9vw,24px); line-height: 1.28; margin-bottom: 8px; }
+.rec-b p { font-size: 14.5px; color: rgba(252,248,240,.64); margin: 0; }
+.rec-b p em { color: var(--gold-lt); font-style: italic; }
+.rec-c {
+  justify-self: end; text-align: right;
+  font: 600 10px/1.5 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(252,248,240,.5); padding: 9px 14px; border: 1px solid rgba(252,248,240,.18);
+  border-radius: 999px; transition: border-color .35s, color .35s;
+}
+.rec-row:hover .rec-c { border-color: var(--gold); color: var(--gold); }
+
+/* ---------- housing ---------- */
+.housing { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); }
+.housing .h-stat { background: var(--sand); padding: 34px 28px 38px; }
+.housing b {
+  display: block; font-family: var(--display); font-weight: 600; line-height: 1;
+  font-size: clamp(34px,3.8vw,54px); letter-spacing: -.035em; color: var(--flame);
+  font-variant-numeric: tabular-nums;
+}
+.housing span { display: block; margin-top: 14px; font-size: 14.5px; color: var(--ink-soft); }
+
+.schemes .lbl {
+  display: block; font: 600 10.5px/1 var(--body); letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 16px;
+}
+.withwho-x { display: flex; flex-wrap: wrap; gap: 10px; }
+.withwho-x span {
+  padding: 12px 20px; border: 1px solid var(--line); border-radius: 999px;
+  font: 500 13.5px/1 var(--body); color: var(--ink-soft);
+  transition: border-color .35s, color .35s, transform .35s var(--ease-out);
+}
+.withwho-x span:hover { border-color: var(--flame); color: var(--flame); transform: translateY(-2px); }
+
+@media (max-width: 1080px) {
+  body .rec-row { grid-template-columns: 170px 1fr; row-gap: 16px; }
+  body .rec-c { justify-self: start; grid-column: 2; text-align: left; }
+  body .housing { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  body .rec-row { grid-template-columns: 1fr; gap: 14px; }
+  body .rec-c { grid-column: 1; }
 }

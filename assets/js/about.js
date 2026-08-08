@@ -11,7 +11,41 @@
   const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DPR = Math.min(devicePixelRatio || 1, 2);
 
-  document.addEventListener("DOMContentLoaded", boot);
+  document.addEventListener("DOMContentLoaded", () => { counters(); boot(); });
+
+  /* ── Counters ───────────────────────────────────────────────
+     Page-scoped on purpose. The shared motion system formats with
+     en-IN grouping (5,08,603); this page quotes the figures the way
+     they are written everywhere else in the record books (508,603),
+     so it owns its own formatter. Each element is observed
+     individually, so a figure far down the ledger still animates
+     when it is finally reached. */
+  function counters() {
+    const els = $$("[data-num]");
+    if (!els.length) return;
+    const fmt = (n) => n.toLocaleString("en-US");
+    const run = (el) => {
+      const target = parseFloat(el.dataset.num);
+      const suffix = el.dataset.suffix || "";
+      if (!isFinite(target)) return;
+      if (REDUCED) { el.textContent = fmt(target) + suffix; return; }
+      const dur = 1900, t0 = performance.now();
+      (function frame(t) {
+        const p = Math.min(1, (t - t0) / dur);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(Math.round(target * e)) + suffix;
+        if (p < 1) requestAnimationFrame(frame);
+      })(t0);
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        run(en.target);
+        io.unobserve(en.target);
+      });
+    }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
+    els.forEach((el) => io.observe(el));
+  }
 
   async function boot() {
     const { items, isSample } = await window.JWRCMedia.load();
@@ -25,10 +59,10 @@
 
     /* headline numbers come from the data, never hardcoded */
     const photos = $("#stat-photos"), years = $("#stat-years");
-    if (photos) { photos.dataset.count = items.length; photos.textContent = items.length.toLocaleString("en-IN"); }
+    if (photos) { photos.textContent = items.length.toLocaleString("en-US"); }
     if (years) {
       const span = facets.years.length ? (Math.max(...facets.years) - Math.min(...facets.years) + 1) : 0;
-      years.dataset.count = span; years.textContent = span;
+      years.textContent = span;
     }
 
     const lightbox = new window.JWRCGallery.Lightbox($("#lightbox"));
