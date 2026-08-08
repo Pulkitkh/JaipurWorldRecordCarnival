@@ -178,7 +178,42 @@ the shared stylesheet or to `app.js`, so no other page can be affected by it.
 
 ### Adding the real photographs
 
-Put the originals in `media-source/`, organised in folders, and run one command:
+**If your photographs are unsorted** — one big pile, camera filenames, nothing
+labelled — that is the expected case. Do not make folders by hand.
+
+```bash
+# 1. tip everything into media-source/ and process it
+pip install pillow
+python3 tools/build-media.py
+
+# 2. serve the folder
+python3 -m http.server 8000
+
+# 3. tag them visually
+open http://localhost:8000/tools/sorter.html
+```
+
+`tools/sorter.html` is a private, offline tool — nothing is uploaded anywhere.
+It shows one photograph at a time with the eleven records listed down the side,
+each bound to a number key.
+
+* **1–9, 0, -** assign a record and jump to the next photograph
+* **Shift-click** the filmstrip to select a range, then one key tags all of them
+* **A** selects every untagged photograph, so a final key sweeps up the rest
+* **Space** adds to the selection · **Esc** clears · **U** undoes · **F** features
+* Progress is saved to `localStorage`, so you can stop and come back
+
+Bulk selection is the point: a run of forty photographs from the same event is
+one shift-click and one keypress, not forty decisions. Verified end to end on a
+flat dump of forty unlabelled files — fully tagged in three keystrokes.
+
+When finished, press **Export manifest.json**, replace `media/manifest.json`
+with the downloaded file, and reload `about.html`.
+
+---
+
+**If your photographs are already in folders**, skip the sorter — the folder
+names carry the metadata. Run one command:
 
 ```bash
 pip install pillow
@@ -201,7 +236,8 @@ media-source/records/2025/508603-trees-planted-in-one-hour/DSC_0148.jpg
 ```
 
 Any level may be omitted — a missing year falls back to EXIF, then to
-"Undated" (which sorts last and never renders as a bare `0`).
+"Undated" (which sorts last and never renders as a bare `0`). Photographs with
+no event folder are marked `Unsorted`, which is what the sorter looks for.
 Categories: `records` `events` `media` `certificates` `people` `personal`.
 
 `media-source/` is gitignored: originals stay on your machine, only the
