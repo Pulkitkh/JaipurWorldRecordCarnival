@@ -178,8 +178,41 @@ the shared stylesheet or to `app.js`, so no other page can be affected by it.
 
 ### Adding the real photographs
 
-Nothing on the page is written around a fixed number of images. Create
-`media/manifest.json` and it is used automatically — no code change:
+Put the originals in `media-source/`, organised in folders, and run one command:
+
+```bash
+pip install pillow
+python3 tools/build-media.py
+```
+
+It resizes every photograph to 640/1280/1920 px WebP (never upscaling), reads
+the intrinsic dimensions, samples a dominant colour for the loading placeholder,
+honours EXIF rotation, pulls the capture year from EXIF when the folder doesn't
+give one, and writes `media/manifest.json`. Re-running only processes new files.
+
+Folder names carry the metadata:
+
+```
+media-source/records/2025/508603-trees-planted-in-one-hour/DSC_0148.jpg
+              │        │     │
+              │        │     └─ event      → "508603 Trees Planted In One Hour"
+              │        └─────── year       → 2025
+              └──────────────── category   → records
+```
+
+Any level may be omitted — a missing year falls back to EXIF, then to
+"Undated" (which sorts last and never renders as a bare `0`).
+Categories: `records` `events` `media` `certificates` `people` `personal`.
+
+`media-source/` is gitignored: originals stay on your machine, only the
+web-ready derivatives are committed.
+
+Verified end-to-end on a 38-photograph tree: the page picked up the manifest
+automatically, served WebP, chose the 640 variant for ~300 px tiles and the
+1920 for the lightbox, and rendered zero generated placeholders.
+
+You can also hand-write `media/manifest.json` if you prefer — the loader only
+cares about the shape:
 
 ```bash
 # one-off: pip install pillow
