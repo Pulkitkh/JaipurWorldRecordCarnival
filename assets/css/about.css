@@ -13,36 +13,60 @@
   line-height: .82; color: var(--flame); letter-spacing: -.04em; }
 .chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
   color: var(--ink-faint); }
-.dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.5); }
+.dark .chapter .lbl, .deep .chapter .lbl { color: rgba(247,244,236,.5); }
 .chapter .rule { flex: 1; height: 1px; background: var(--line); align-self: center; }
 .dark .chapter .rule, .deep .chapter .rule { background: var(--line-lt); }
 
 /* ---------- portrait hero ---------- */
+/* The hero is the inside cover of the record: near-black ink stock,
+   a faint engine-turned lattice of the kind printed on certificates
+   and banknotes to prove they are the real thing, and one warm pool
+   of light where the seal would be pressed. */
 .ph {
-  position: relative; overflow: hidden; color: var(--ivory);
+  position: relative; overflow: hidden; color: var(--paper);
   background:
-    radial-gradient(120% 100% at 14% 0%, rgba(35,64,107,.68), transparent 58%),
-    radial-gradient(100% 90% at 92% 10%, rgba(232,70,28,.32), transparent 60%),
-    var(--navy-2);
-  padding-block: clamp(56px,6.5vw,96px) clamp(48px,5.5vw,84px);
+    radial-gradient(112% 92% at 78% 6%, rgba(179,31,42,.20), transparent 62%),
+    radial-gradient(96% 80% at 8% 96%, rgba(161,122,46,.16), transparent 58%),
+    var(--slate);
+  padding-block: clamp(56px,6.5vw,100px) clamp(48px,5.5vw,88px);
 }
 .ph::before {
-  content: ""; position: absolute; inset: 0; opacity: .055; background-size: 48px 48px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23FCF8F0' stroke-width='1'%3E%3Cpath d='M24 1l23 23-23 23L1 24z'/%3E%3Ccircle cx='24' cy='24' r='7.6'/%3E%3C/g%3E%3C/svg%3E");
+  content: ""; position: absolute; inset: 0; opacity: .5;
+  background-size: 26px 26px, 26px 26px, 100% 100%;
+  background-image:
+    linear-gradient(to right, rgba(247,244,236,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247,244,236,.05) 1px, transparent 1px),
+    none;
+}
+/* the calibrated edge running along the foot of the hero */
+.ph::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 15px;
+  background-repeat: repeat-x;
+  background-image:
+    linear-gradient(to right, rgba(217,184,113,.5) 1px, transparent 1px),
+    linear-gradient(to right, rgba(247,244,236,.2) 1px, transparent 1px);
+  background-size: 80px 15px, 16px 8px;
+  background-position: 0 bottom, 0 bottom;
 }
 .ph .wrap { position: relative; z-index: 2; }
 .ph-grid { display: grid; grid-template-columns: 1fr 340px; gap: clamp(32px,4.5vw,72px); align-items: center; }
 .ph h1 { color: var(--ivory); max-width: 12ch; }
 .ph .role {
   font: 600 11.5px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(252,248,240,.6);
+  color: rgba(247,244,236,.6);
 }
 .ph .portrait-frame { position: relative; }
 .ph .portrait-frame .portrait { display: block; }
+/* Not a pill — a stamp. Square corners, a double rule, brass on ink,
+   the way an adjudication is impressed onto the page. */
 .ph .badge {
-  display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: #2B1F05;
-  font: 700 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-radius: 1px;
+  background: rgba(161,122,46,.10);
+  border: 1px solid rgba(217,184,113,.55);
+  box-shadow: inset 0 0 0 3px rgba(23,22,19,.9), inset 0 0 0 4px rgba(217,184,113,.28);
+  color: var(--brass-lt);
+  font: 700 var(--t-micro)/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
 }
 
 /* ---------- pinned aside quote ---------- */
@@ -68,7 +92,7 @@
 }
 .creds-row .k {
   font: 500 10.5px/1.5 var(--body); letter-spacing: .17em; text-transform: uppercase;
-  color: rgba(252,248,240,.55); margin-top: 10px;
+  color: rgba(247,244,236,.55); margin-top: 10px;
 }
 
 /* ---------- roles / recognition ---------- */
@@ -82,8 +106,8 @@
 
 .bodies-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--line-lt); }
 .bodies-grid > div { background: var(--navy); padding: 30px 14px; text-align: center;
-  font: 600 12.5px/1.4 var(--body); color: rgba(252,248,240,.84); transition: background .4s var(--ease); }
-.bodies-grid > div:hover { background: #212B3F; }
+  font: 600 12.5px/1.4 var(--body); color: rgba(247,244,236,.84); transition: background .4s var(--ease); }
+.bodies-grid > div:hover { background: #2A2721; }
 .bodies-grid span { display: block; font-weight: 500; font-size: 10px; letter-spacing: .15em;
   text-transform: uppercase; color: var(--gold); margin-top: 8px; font-size: 10.5px; }
 
@@ -108,10 +132,10 @@
   padding: 0; text-align: left;
   transform: translateY(calc(var(--lift, 0px) * -1)) scale(var(--scale, 1));
   box-shadow: 0 calc(6px + var(--glow, 0) * 22px) calc(18px + var(--glow, 0) * 40px)
-              -14px rgba(70,46,26, calc(.18 + var(--glow, 0) * .30));
+              -14px rgba(20,17,14, calc(.18 + var(--glow, 0) * .30));
   transition: border-color .4s var(--ease);
 }
-.rail-item:hover, .rail-item:focus-visible { border-color: rgba(232,70,28,.55); }
+.rail-item:hover, .rail-item:focus-visible { border-color: rgba(179,31,42,.55); }
 .rail-item:focus-visible { outline: 2px solid var(--flame); outline-offset: 3px; }
 
 .rail-item .scene, .rail-item img {
@@ -147,7 +171,7 @@
   border: 1px solid var(--line); background: var(--sand); color: var(--ink);
   transition: border-color .3s, box-shadow .3s;
 }
-.gal-search input:focus { border-color: var(--flame-deep); box-shadow: 0 0 0 3px rgba(232,70,28,.15); }
+.gal-search input:focus { border-color: var(--flame-deep); box-shadow: 0 0 0 3px rgba(179,31,42,.15); }
 .gal-search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
   width: 15px; height: 15px; stroke: var(--ink-faint); fill: none; stroke-width: 1.8; }
 .gal-select {
@@ -188,8 +212,8 @@
 .gal-tile .gal-cap {
   position: absolute; inset: auto 0 0 0; z-index: 3; padding: 34px 14px 12px;
   font: 500 10px/1.4 var(--body); letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(252,248,240,.9); text-align: left;
-  background: linear-gradient(transparent, rgba(8,12,20,.85));
+  color: rgba(247,244,236,.9); text-align: left;
+  background: linear-gradient(transparent, rgba(14,13,11,.85));
   opacity: 0; transform: translateY(6px);
   transition: opacity .4s var(--ease), transform .4s var(--ease);
 }
@@ -244,15 +268,15 @@
 /* ---------- lightbox ---------- */
 .lb {
   position: fixed; inset: 0; z-index: 9995; display: grid;
-  grid-template-rows: auto 1fr auto; background: rgba(8,11,18,.96);
+  grid-template-rows: auto 1fr auto; background: rgba(14,13,11,.96);
   opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s;
 }
 .lb.open { opacity: 1; visibility: visible; }
 .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 20px;
-  padding: 18px clamp(16px,3vw,34px); color: rgba(252,248,240,.7); }
+  padding: 18px clamp(16px,3vw,34px); color: rgba(247,244,236,.7); }
 .lb-count { font: 600 11.5px/1 var(--body); letter-spacing: .16em; }
 .lb-close, .lb-prev, .lb-next {
-  width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(252,248,240,.24);
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(247,244,236,.24);
   background: transparent; color: var(--ivory); display: grid; place-items: center;
   transition: background .3s, border-color .3s, transform .3s var(--ease-out);
 }
@@ -290,37 +314,130 @@
   body .lb-prev { left: 8px; } body .lb-next { right: 8px; }
 }
 
-/* ---------- record ledger ---------- */
+/* ---------- record ledger + exhibit ----------
+   The ledger alone read as a spreadsheet: eleven rows of identical weight,
+   which flattens the difference between a postcard and half a million trees.
+   The panel beside it gives the row you are reading a face. */
+.exhibit {
+  display: grid; grid-template-columns: minmax(0,1fr) clamp(300px, 31vw, 430px);
+  gap: clamp(32px, 4vw, 68px); align-items: start;
+}
 .ledger { list-style: none; margin: 0; padding: 0; }
 .rec-row {
-  display: grid; grid-template-columns: 210px 1fr 200px; gap: 32px; align-items: center;
-  padding: 30px 0; border-top: 1px solid var(--line-lt);
-  transition: background .4s var(--ease);
+  display: grid; grid-template-columns: 170px 1fr; column-gap: 28px; row-gap: 10px;
+  padding: 26px 20px 26px 0; border-top: 1px solid var(--line-lt);
+  position: relative; cursor: default;
+  transition: background .45s var(--ease);
 }
 .rec-row:last-child { border-bottom: 1px solid var(--line-lt); }
-.rec-row:hover { background: rgba(232,70,28,.05); }
+
+/* the marker for the row currently on show, drawn rather than filled so it
+   does not repaint a large area on every scroll frame */
+.rec-row::before {
+  content: ""; position: absolute; left: -22px; top: 26px; bottom: 26px; width: 2px;
+  background: linear-gradient(var(--flame), var(--gold));
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .5s var(--ease-out);
+}
+.rec-row.is-on::before { transform: scaleY(1); }
+.rec-row.is-on { background: rgba(179,31,42,.055); }
 .rec-n { display: block; }
 .rec-n b {
   display: block; font-family: var(--display); font-weight: 600; line-height: .95;
   font-size: clamp(30px,3.4vw,50px); letter-spacing: -.035em; color: var(--gold);
   font-variant-numeric: tabular-nums;
 }
-.rec-row:hover .rec-n b { color: var(--flame-2); }
+.rec-row.is-on .rec-n b { color: var(--flame-2); }
 .rec-n em {
   display: block; font-style: normal; margin-top: 9px;
   font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(252,248,240,.62);
+  color: rgba(247,244,236,.62);
 }
 .rec-b h3 { font-size: clamp(19px,1.9vw,24px); line-height: 1.28; margin-bottom: 8px; }
-.rec-b p { font-size: 14.5px; color: rgba(252,248,240,.64); margin: 0; }
+.rec-b p { font-size: 14.5px; color: rgba(247,244,236,.64); margin: 0; }
 .rec-b p em { color: var(--gold-lt); font-style: italic; }
-.rec-c {
-  justify-self: end; text-align: right;
-  font: 600 11px/1.5 var(--body); letter-spacing: .16em; text-transform: uppercase;
-  color: rgba(252,248,240,.68); padding: 9px 14px; border: 1px solid rgba(252,248,240,.24);
-  border-radius: 999px; transition: border-color .35s, color .35s;
+
+/* ---------- the exhibit panel ---------- */
+/* The pair that makes this work: `align-self: start` keeps the panel at its
+   own content height (a sticky box that fills its container has nowhere to
+   travel), while the grid container stays as tall as the ledger and gives it
+   the distance. The other half of the fix is in style.css — <body> must not
+   be a scroll container. */
+.exhibit-panel { position: sticky; top: calc(var(--nav-h) + 44px); align-self: start; }
+.ex-stage {
+  position: relative; aspect-ratio: 4/5; border-radius: 3px; overflow: hidden;
+  background: linear-gradient(150deg, #242119, var(--navy-3));
+  box-shadow: 0 30px 70px -34px rgba(0,0,0,.85), inset 0 0 0 1px rgba(247,244,236,.09);
 }
-.rec-row:hover .rec-c { border-color: var(--gold); color: var(--gold); }
+/* a fine gold rule inset from the frame, the way a museum mounts a print */
+.ex-stage::after {
+  content: ""; position: absolute; inset: 13px; pointer-events: none;
+  border: 1px solid rgba(161,122,46,.24);
+}
+.ex-shot { margin: 0; position: absolute; inset: 0; }
+.ex-shot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* the plate shown for records that have no photograph yet — a deliberate
+   second mode, not an empty box */
+.ex-plate {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; padding: 30px;
+  text-align: center;
+}
+.ex-plate::before {
+  content: ""; position: absolute; inset: 0; opacity: .55;
+  background-size: 22px 22px, 22px 22px;
+  background-image:
+    linear-gradient(to right, rgba(217,184,113,.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217,184,113,.09) 1px, transparent 1px);
+}
+.ex-num {
+  font-family: var(--display); font-weight: 600; line-height: .9;
+  font-size: clamp(46px, 5.6vw, 86px); letter-spacing: -.045em;
+  color: var(--gold); font-variant-numeric: tabular-nums; position: relative;
+}
+.ex-unit {
+  font: 600 11.5px/1 var(--body); letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(247,244,236,.62); position: relative;
+}
+
+/* both modes crossfade on the same axis, so switching record reads as one
+   object turning over rather than two things swapping */
+.ex-shot, .ex-plate {
+  opacity: 0; transform: scale(1.035);
+  transition: opacity .55s var(--ease), transform .8s var(--ease-out);
+}
+.ex-shot[hidden] { display: block; }        /* hidden drives opacity, not display */
+.ex-stage.mode-shot .ex-shot,
+.ex-stage.mode-plate .ex-plate { opacity: 1; transform: none; }
+
+.ex-cap {
+  display: flex; gap: 14px; align-items: baseline; margin: 20px 2px 0;
+  font-size: 13.5px; line-height: 1.55; color: rgba(247,244,236,.72);
+  min-height: 3.1em;
+}
+.ex-idx {
+  font-family: var(--display); font-size: 15px; color: var(--gold);
+  font-variant-numeric: tabular-nums; flex: none;
+}
+.ex-txt { transition: opacity .4s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ex-shot, .ex-plate, .ex-txt, .rec-row::before { transition: none; }
+}
+.rec-c {
+  grid-column: 2; justify-self: start; margin-top: 2px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 600 var(--t-micro)/1.4 var(--body); letter-spacing: .17em; text-transform: uppercase;
+  color: rgba(247,244,236,.62); padding: 0; border: 0; border-radius: 0;
+  transition: color .35s;
+}
+/* a small impressed dot, the mark of an adjudication */
+.rec-c::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; flex: none;
+  border: 1.5px solid var(--brass); opacity: .85;
+}
+.rec-row.is-on .rec-c { color: var(--brass-lt); }
 
 /* ---------- housing ---------- */
 .housing { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); }

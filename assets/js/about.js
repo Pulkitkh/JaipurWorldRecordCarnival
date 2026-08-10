@@ -119,6 +119,8 @@
 
     gallery.setItems(items);
 
+    exhibit(items);
+
     /* ── Featured carousel ─────────────────────────────────
        A slow, seamless drift rather than a slideshow: the track is
        duplicated once and translated continuously, so it loops with no
@@ -208,6 +210,87 @@
     if (hash) {
       const idx = items.findIndex((x) => x.id === hash);
       if (idx > -1) setTimeout(() => lightbox.open(idx, items), 600);
+    }
+
+    /* ── The record exhibit ────────────────────────────────
+       The ledger is the index; the panel beside it is the proof. As a
+       row reaches the reading line the panel turns over to that record —
+       its photograph if the archive holds one, otherwise a plate of the
+       number itself. Hovering or focusing a row jumps straight to it.
+
+       Five of the eleven records have photographs. The other six are not
+       a failure state: a record with no picture yet still has a figure,
+       and the figure is the thing that was certified. */
+    function exhibit(all) {
+      const panel = $(".exhibit-panel");
+      const rows = $$(".rec-row");
+      if (!panel || !rows.length) return;
+
+      const stage = $(".ex-stage", panel);
+      const shot = $(".ex-shot", panel);
+      const img = $("img", shot);
+      const plate = $(".ex-plate", panel);
+      const numEl = $(".ex-num", plate);
+      const unitEl = $(".ex-unit", plate);
+      const idxEl = $(".ex-idx", panel);
+      const txtEl = $(".ex-txt", panel);
+
+      /* one photograph per record, chosen once: the featured frame for
+         that event if there is one, else its first picture */
+      const shotFor = {};
+      for (const it of all) {
+        const key = it.id.split("-")[0];
+        if (!shotFor[key] || (it.featured && !shotFor[key].featured)) shotFor[key] = it;
+      }
+
+      let active = -1;
+      function show(i) {
+        if (i === active || !rows[i]) return;
+        active = i;
+        const row = rows[i];
+        rows.forEach((r, n) => r.classList.toggle("is-on", n === i));
+
+        const rec = row.dataset.rec;
+        const pic = rec && shotFor[rec];
+        idxEl.textContent = row.dataset.i;
+        txtEl.textContent = $("h3", row) ? $("h3", row).textContent.trim() : "";
+
+        if (pic) {
+          const url = window.JWRCMedia.srcFor(pic, 430, DPR);
+          if (url && img.getAttribute("src") !== url) {
+            img.src = url;
+            img.alt = pic.alt || "";
+          }
+          stage.classList.add("mode-shot");
+          stage.classList.remove("mode-plate");
+        } else {
+          const b = $(".rec-n b", row), em = $(".rec-n em", row);
+          numEl.textContent = b ? b.textContent.trim() : "";
+          unitEl.textContent = em ? em.textContent.trim() : "";
+          stage.classList.add("mode-plate");
+          stage.classList.remove("mode-shot");
+        }
+      }
+
+      /* the reading line is a third of the way down the viewport: the row
+         crossing it is the one the eye is on */
+      const io = new IntersectionObserver((entries) => {
+        let best = null;
+        for (const en of entries) if (en.isIntersecting) {
+          if (!best || en.intersectionRatio > best.intersectionRatio) best = en;
+        }
+        if (best) show(rows.indexOf(best.target));
+      }, { rootMargin: "-30% 0px -45% 0px", threshold: [0, 0.5, 1] });
+      rows.forEach((r) => io.observe(r));
+
+      /* pointing at a row is a stronger signal than scrolling past it */
+      rows.forEach((r, i) => {
+        r.addEventListener("pointerenter", () => show(i));
+        r.addEventListener("focusin", () => show(i));
+        r.tabIndex = 0;
+      });
+
+      show(0);
     }
 
     /* helpers -------------------------------------------------- */

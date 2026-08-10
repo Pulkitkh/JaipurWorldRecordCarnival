@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://jaipurworldrecordcarnival.in/">
-<meta name="theme-color" content="#121828">
+<meta name="theme-color" content="#201E1A">
 <meta name="color-scheme" content="dark light">
 <meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,8 +26,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Manmohan Agarwal — Founder, Jaipur World Record Carnival">
 <meta name="twitter:image" content="https://jaipurworldrecordcarnival.in/og-image.png">
-<link rel="stylesheet" href="assets/css/style.css?v=f5b83bdf">
-<link rel="stylesheet" href="assets/css/about.css?v=f5b83bdf">
+<link rel="stylesheet" href="assets/css/style.css?v=5fb761eb">
+<link rel="stylesheet" href="assets/css/about.css?v=5fb761eb">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -75,7 +75,7 @@
         <span class="eyebrow gold" data-anim>Founder · Jaipur World Record Carnival</span>
         <h1 class="mt-m" data-split="lines">Manmohan Agarwal</h1>
         <p class="role mt-s" data-anim>Multiple World Record Holder · Entrepreneur · Social Visionary</p>
-        <p class="lede mt-m" data-anim style="max-width:52ch;color:rgba(252,248,240,.78)">
+        <p class="lede mt-m" data-anim style="max-width:52ch;color:rgba(247,244,236,.78)">
           From 64,691 inscriptions on a single postcard to 508,603 trees planted in one
           hour — a career built on the belief that extraordinary things are achieved not
           by dreaming, but by relentlessly pursuing the dream.
@@ -172,8 +172,15 @@
         recognised.</p>
     </div>
 
-    <ol class="ledger" data-stag="0.06">
-      <li class="rec-row">
+    <!-- Two columns: the ledger reads as a list, and a panel beside it holds
+         the proof for whichever record you are looking at. Five of the eleven
+         have photographs in the archive (data-rec binds them); the rest show a
+         typographic plate instead, so a missing photograph reads as a
+         deliberate mode rather than a hole. Without JS the panel stays on its
+         first state and the <ol> below is complete and readable. -->
+    <div class="exhibit">
+      <ol class="ledger" data-stag="0.06">
+      <li class="rec-row" data-i="01">
         <span class="rec-n"><b data-num="64691">0</b><em>inscriptions</em></span>
         <div class="rec-b">
           <h3>“Ram”, written 64,691 times on a single postcard</h3>
@@ -181,7 +188,7 @@
         </div>
         <span class="rec-c">Limca Book of Records</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="02">
         <span class="rec-n"><b data-num="508603">0</b><em>trees</em></span>
         <div class="rec-b">
           <h3>508,603 trees planted in a single hour</h3>
@@ -190,7 +197,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="03" data-rec="modi">
         <span class="rec-n"><b data-num="197610">0</b><em>photographs</em></span>
         <div class="rec-b">
           <h3>197,610 unique photographs of Prime Minister Narendra Modi</h3>
@@ -200,7 +207,7 @@
         </div>
         <span class="rec-c">Limca Book of Records</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="04" data-rec="cal">
         <span class="rec-n"><b data-num="4800">0</b><em>square feet</em></span>
         <div class="rec-b">
           <h3>The world's largest wall calendar</h3>
@@ -208,7 +215,7 @@
         </div>
         <span class="rec-c">Guinness World Records</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="05" data-rec="dance">
         <span class="rec-n"><b data-num="3050">0</b><em>children</em></span>
         <div class="rec-b">
           <h3>The largest continuous dance performance</h3>
@@ -217,7 +224,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="06">
         <span class="rec-n"><b data-num="11111">0</b><em>illustrations</em></span>
         <div class="rec-b">
           <h3>11,111 miniatures of Lord Ganesha on one postcard</h3>
@@ -225,7 +232,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="07">
         <span class="rec-n"><b data-num="366">0</b><em>birthdays</em></span>
         <div class="rec-b">
           <h3>One person for every date of the year</h3>
@@ -234,7 +241,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="08">
         <span class="rec-n"><b data-num="63">0</b><em>languages</em></span>
         <div class="rec-b">
           <h3>Sixty-three world languages, written in reverse</h3>
@@ -243,7 +250,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="09" data-rec="spoon">
         <span class="rec-n"><b data-num="40">0</b><em>feet</em></span>
         <div class="rec-b">
           <h3>The world's largest wooden spoon</h3>
@@ -252,7 +259,7 @@
         </div>
         <span class="rec-c">Guinness World Records</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="10">
         <span class="rec-n"><b>11′3″</b><em>tall</em></span>
         <div class="rec-b">
           <h3>The world's largest screw</h3>
@@ -261,7 +268,7 @@
         </div>
         <span class="rec-c">World record</span>
       </li>
-      <li class="rec-row">
+      <li class="rec-row" data-i="11" data-rec="perp">
         <span class="rec-n"><b>∞</b><em>perpetual</em></span>
         <div class="rec-b">
           <h3>A perpetual calendar that calculates dates far into the future</h3>
@@ -270,7 +277,21 @@
         </div>
         <span class="rec-c">Govt. of India copyright</span>
       </li>
-    </ol>
+      </ol>
+
+      <aside class="exhibit-panel" aria-live="polite" aria-label="Proof for the selected record">
+        <div class="ex-stage">
+          <figure class="ex-shot" hidden>
+            <img alt="" decoding="async" loading="lazy">
+          </figure>
+          <div class="ex-plate">
+            <span class="ex-num"></span>
+            <span class="ex-unit"></span>
+          </div>
+        </div>
+        <p class="ex-cap"><span class="ex-idx"></span><span class="ex-txt"></span></p>
+      </aside>
+    </div>
   </div>
 </section>
 
@@ -442,20 +463,20 @@
   </div>
 </div>
 
-<script src="assets/js/data.js?v=f5b83bdf"></script>
-<script src="assets/js/art.js?v=f5b83bdf"></script>
-<script src="assets/js/media.js?v=f5b83bdf"></script>
-<script src="assets/js/gallery.js?v=f5b83bdf"></script>
-<script src="assets/js/app.js?v=f5b83bdf"></script>
-<script src="assets/vendor/lenis.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/gsap.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/Flip.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/SplitText.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/CustomEase.min.js?v=f5b83bdf"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=f5b83bdf"></script>
-<script src="assets/js/motion.js?v=f5b83bdf"></script>
-<script src="assets/js/about.js?v=f5b83bdf"></script>
+<script src="assets/js/data.js?v=5fb761eb"></script>
+<script src="assets/js/art.js?v=5fb761eb"></script>
+<script src="assets/js/media.js?v=5fb761eb"></script>
+<script src="assets/js/gallery.js?v=5fb761eb"></script>
+<script src="assets/js/app.js?v=5fb761eb"></script>
+<script src="assets/vendor/lenis.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/gsap.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/Flip.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/SplitText.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/CustomEase.min.js?v=5fb761eb"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=5fb761eb"></script>
+<script src="assets/js/motion.js?v=5fb761eb"></script>
+<script src="assets/js/about.js?v=5fb761eb"></script>
 </body>
 </html>
