@@ -11,7 +11,14 @@
   const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DPR = Math.min(devicePixelRatio || 1, 2);
 
-  document.addEventListener("DOMContentLoaded", () => { counters(); boot(); });
+  document.addEventListener("DOMContentLoaded", () => {
+    try { counters(); } catch (e) { console.error("[counters]", e); }
+    boot().catch((e) => {
+      console.error("[archive] failed to build:", e);
+      const s = $("#gal-count");
+      if (s) s.textContent = "Archive unavailable";
+    });
+  });
 
   /* ── Counters ───────────────────────────────────────────────
      Page-scoped on purpose. The shared motion system formats with
@@ -73,7 +80,8 @@
       perPage: 24,
       onOpen: (i, view) => lightbox.open(i, view),
     });
-    $("#gal-pager").addEventListener("click", (e) => {
+    const pager = $("#gal-pager");
+    if (pager) pager.addEventListener("click", (e) => {
       const b = e.target.closest("[data-go]");
       if (b && !b.disabled) gallery.goTo(+b.dataset.go);
     });
@@ -98,7 +106,8 @@
     });
 
     let t;
-    $("#gal-q").addEventListener("input", (e) => {
+    const search = $("#gal-q");
+    if (search) search.addEventListener("input", (e) => {
       clearTimeout(t);
       t = setTimeout(() => { q.text = e.target.value; apply(); }, 180);
     });
@@ -112,6 +121,7 @@
 
     /* ── featured rail ── */
     const rail = $("#featured-rail");
+    if (!rail) return;
     const featured = items.filter((i) => i.featured).slice(0, 12);
     const pool = featured.length ? featured : items.slice(0, 12);
     rail.innerHTML = pool.map((it, i) => `
