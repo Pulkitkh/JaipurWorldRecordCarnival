@@ -11,13 +11,13 @@
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
+  /* Single-page site: the nav scrolls, it does not navigate. */
   const NAV = [
-    ["index.html", "Welcome"],
-    ["gather.html", "Why We Gather"],
-    ["why-records.html", "Why Records"],
-    ["what-we-build.html", "What We Build"],
-    ["moments.html", "Moments"],
-    ["join.html", "Join the Journey"],
+    ["#story", "The Story"],
+    ["#records", "Records"],
+    ["#housing", "Housing"],
+    ["#archive", "Archive"],
+    ["#contact", "Contact"],
   ];
 
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
@@ -55,50 +55,40 @@
   }
 
   function mountChrome() {
-    const here = location.pathname.split("/").pop() || "index.html";
-    const links = NAV.map(([h, t]) =>
-      `<a href="${h}"${h === here ? ' class="on" aria-current="page"' : ""}>${t}</a>`).join("");
+    const links = NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("");
 
     document.body.insertAdjacentHTML("afterbegin", `
       ${DEFS}
       <div id="progress"></div>
-      <div class="demobar" id="demobar">
-        <b>Demo</b>
-        <span>Sample records, figures and quotes are illustrative placeholders — not verified facts.</span>
-        <button aria-label="Dismiss notice" onclick="document.getElementById('demobar').classList.add('hide')">&times;</button>
-      </div>
       <nav class="nav" id="nav">
         ${logo()}
         <div class="nav-links">${links}</div>
-        <a class="btn sm" href="join.html">Join the journey ${ARROW}</a>
+        <a class="btn sm" href="#contact">Get in touch ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
       <div class="drawer" id="drawer">
         ${NAV.map(([h, t], i) =>
           `<a href="${h}"><span class="n">0${i + 1}</span>${t}</a>`).join("")}
-        <a href="join.html" class="btn mt-m" style="justify-content:center">Join the journey ${ARROW}</a>
+        <a href="tel:+918003003000" class="btn mt-m" style="justify-content:center">
+          Call +91 80030 03000 ${ARROW}</a>
       </div>`);
 
     document.body.insertAdjacentHTML("beforeend", `
       <div class="blockprint"></div>
       <footer class="foot pad-sm">
         <div class="wrap">
-          <div class="grid" style="grid-template-columns:1.6fr 1fr 1fr 1.25fr;gap:44px">
+          <div class="grid" style="grid-template-columns:1.7fr 1fr 1.3fr;gap:44px">
             <div>
               ${logo("on-dark")}
-              <p class="mt-m" style="max-width:34ch;font-size:15px;color:rgba(252,248,240,.6)">
-                A movement built on one belief: that extraordinary things happen
-                when ordinary people decide to do them together.</p>
+              <p class="mt-m" style="max-width:36ch;font-size:15px;color:rgba(252,248,240,.6)">
+                Multiple world record holder, entrepreneur and social visionary.
+                Founder of the Jaipur World Record Carnival.</p>
               <p style="font-family:var(--display);font-style:italic;font-size:17px;color:var(--gold);margin-top:20px">
                 “Find your passion, and it’s no longer work.”</p>
             </div>
-            <div><h4>The Story</h4>
-              <a href="gather.html">Why We Gather</a><a href="why-records.html">Why Records</a>
-              <a href="what-we-build.html">What We Build</a><a href="moments.html">Moments</a></div>
-            <div><h4>Join the Journey</h4>
-              <a href="join.html">Take part</a><a href="join.html">Volunteer</a>
-              <a href="join.html">Bring your institution</a><a href="join.html">Begin something</a></div>
-            <div><h4>Reach Us</h4>
+            <div><h4>On this page</h4>
+              ${NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</div>
+            <div><h4>Reach us</h4>
               <a href="tel:+918003003000">+91 80030 03000</a>
               <a href="mailto:manmohan.agarwal015@gmail.com">manmohan.agarwal015@gmail.com</a>
               <a href="#">Jaipur, Rajasthan, India</a>
@@ -107,7 +97,7 @@
             </div>
           </div>
           <div class="bottom">
-            <span>© 2026 Jaipur World Record Carnival®. Demo build — illustrative content.</span>
+            <span>© 2026 Manmohan Agarwal · Jaipur World Record Carnival®</span>
             <span class="deva">पधारो म्हारे देस — you are always welcome here.</span>
           </div>
         </div>
@@ -124,6 +114,13 @@
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", String(open));
       document.body.classList.toggle("is-locked", open);
+    });
+
+    drawer.addEventListener("click", (e) => {
+      if (!e.target.closest("a")) return;
+      drawer.classList.remove("open");
+      burger.classList.remove("open");
+      document.body.classList.remove("is-locked");
     });
 
     $("#totop").addEventListener("click", () =>

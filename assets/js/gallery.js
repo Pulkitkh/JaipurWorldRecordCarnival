@@ -31,6 +31,7 @@
   const GAP = 14;
   const TARGET_COL = 300;     // ideal column width; count is derived from it
   const BUFFER = 1.5;         // screens of over-render above and below
+  const PER_PAGE = 24;        // a page of the archive; keeps the page short
 
   function Gallery(root, opts) {
     this.root = root;
@@ -44,7 +45,12 @@
     this.pool = [];
     this.onOpen = opts.onOpen || function () {};
     this.colW = TARGET_COL;
+    this.page = 0;
+    this.perPage = opts.perPage || PER_PAGE;
+    this.pager = opts.pager || null;
+    this.intro = false;        // animate tiles in the first time the grid is seen
     this._raf = null;
+    this._seen = new Set();
     this._bind();
   }
 
@@ -52,23 +58,59 @@
 
     setItems(items) {
       this.all = items;
-      this.view = items;
+      this.matched = items;
+      this.page = 0;
+      this.applyPage();
+    },
+
+    /* `matched` is everything the filter allows; `view` is the slice on screen. */
+    applyPage() {
+      const start = this.page * this.perPage;
+      this.view = this.matched.slice(start, start + this.perPage);
+      this._seen.clear();
+      this.unmountAll();
       this.layout();
+      this.renderPager();
+    },
+
+    goTo(page) {
+      const max = Math.max(0, Math.ceil(this.matched.length / this.perPage) - 1);
+      this.page = Math.min(max, Math.max(0, page));
+      this.applyPage();
+      this.root.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+    },
+
+    renderPager() {
+      if (!this.pager) return;
+      const pages = Math.ceil(this.matched.length / this.perPage) || 1;
+      if (pages < 2) { this.pager.innerHTML = ""; return; }
+      const p = this.page;
+      const nums = [];
+      for (let i = 0; i < pages; i++) {
+        if (i === 0 || i === pages - 1 || Math.abs(i - p) <= 1) nums.push(i);
+        else if (nums[nums.length - 1] !== "…") nums.push("…");
+      }
+      this.pager.innerHTML =
+        `<button class="pg-arrow" data-go="${p - 1}"${p === 0 ? " disabled" : ""} aria-label="Previous page">‹</button>`
+        + nums.map((n) => n === "…"
+            ? `<span class="pg-gap">…</span>`
+            : `<button class="pg-n${n === p ? " on" : ""}" data-go="${n}"
+                 aria-label="Page ${n + 1}"${n === p ? ' aria-current="page"' : ""}>${n + 1}</button>`).join("")
+        + `<button class="pg-arrow" data-go="${p + 1}"${p >= pages - 1 ? " disabled" : ""} aria-label="Next page">›</button>`;
     },
 
     /* filtering is a pure function of the data — no DOM queries */
     filter(q) {
       const term = (q.text || "").trim().toLowerCase();
-      this.view = this.all.filter((it) => {
+      this.matched = this.all.filter((it) => {
         if (q.category && q.category !== "all" && it.category !== q.category) return false;
-        if (q.year && q.year !== "all" && String(it.year || 0) !== String(q.year)) return false;
         if (!term) return true;
-        return (it.event + " " + it.alt + " " + (it.tags || []).join(" "))
+        return (it.event + " " + it.alt + " " + (it.caption || "") + " " + (it.tags || []).join(" "))
           .toLowerCase().includes(term);
       });
-      this.unmountAll();
-      this.layout();
-      this.root.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+      this.page = 0;
+      this.intro = true;                 // a new set deserves a fresh entrance
+      this.applyPage();
     },
 
     /* ── layout: pure arithmetic over the data ── */
@@ -95,10 +137,13 @@
 
     report() {
       if (!this.status) return;
-      const n = this.view.length, total = this.all.length;
-      this.status.textContent = n === total
-        ? `${total.toLocaleString("en-IN")} photographs`
-        : `${n.toLocaleString("en-IN")} of ${total.toLocaleString("en-IN")} photographs`;
+      const n = this.matched.length, total = this.all.length;
+      const pages = Math.ceil(n / this.perPage) || 1;
+      const base = n === total
+        ? `${total.toLocaleString("en-US")} photographs`
+        : `${n.toLocaleString("en-US")} of ${total.toLocaleString("en-US")} photographs`;
+      this.status.textContent = pages > 1
+        ? `${base} · page ${this.page + 1} of ${pages}` : base;
     },
 
     /* ── windowing ── */
@@ -163,6 +208,17 @@
 
       this.viewport.appendChild(node);
       this.mounted.set(i, node);
+
+      /* Entrance: the first time a tile is seen, it settles into place. Only
+         once per tile per page, so scrolling back up is not a slideshow. */
+      if (!REDUCED && !this._seen.has(i)) {
+        this._seen.add(i);
+        const order = this._seen.size - 1;
+        node.classList.add("is-entering");
+        node.style.setProperty("--enter-delay", Math.min(order, 14) * 45 + "ms");
+        requestAnimationFrame(() => requestAnimationFrame(() =>
+          node.classList.remove("is-entering")));
+      }
     },
 
     recycle(i, node) {
