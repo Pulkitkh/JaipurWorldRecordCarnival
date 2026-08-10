@@ -45,6 +45,20 @@
   font: 700 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase;
 }
 
+/* ---------- pinned aside quote ---------- */
+.aside-quote {
+  margin: clamp(32px, 4vw, 54px) 0 0; padding: 0 0 0 clamp(18px, 2vw, 28px);
+  border-left: 2px solid var(--flame);
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: clamp(19px, 1.7vw, 25px); line-height: 1.42;
+  color: var(--ink); max-width: 22ch; text-wrap: balance;
+}
+.aside-quote cite {
+  display: block; margin-top: 16px;
+  font: 600 11px/1 var(--body); font-style: normal;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint);
+}
+
 /* ---------- credential strip ---------- */
 .creds-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line-lt); }
 .creds-row > div { background: var(--navy); padding: 26px 22px; }
@@ -61,8 +75,8 @@
 .roles { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
 .role-card { padding: 28px 26px 30px; border: 1px solid var(--line); border-radius: 4px;
   background: var(--ivory); box-shadow: var(--sh-1); }
-.role-card .t { font: 600 10px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--flame); margin-bottom: 14px; display: block; }
+.role-card .t { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--flame-deep); margin-bottom: 14px; display: block; }
 .role-card h3 { font-size: 20px; line-height: 1.28; margin-bottom: 8px; }
 .role-card p { font-size: 14.5px; color: var(--ink-soft); }
 
@@ -71,7 +85,7 @@
   font: 600 12.5px/1.4 var(--body); color: rgba(252,248,240,.84); transition: background .4s var(--ease); }
 .bodies-grid > div:hover { background: #212B3F; }
 .bodies-grid span { display: block; font-weight: 500; font-size: 10px; letter-spacing: .15em;
-  text-transform: uppercase; color: var(--gold); margin-top: 8px; }
+  text-transform: uppercase; color: var(--gold); margin-top: 8px; font-size: 10.5px; }
 
 /* ---------- featured carousel ----------
    The track is twice the content and drifts continuously; the mask fades
@@ -133,7 +147,7 @@
   border: 1px solid var(--line); background: var(--sand); color: var(--ink);
   transition: border-color .3s, box-shadow .3s;
 }
-.gal-search input:focus { outline: 0; border-color: var(--flame); box-shadow: 0 0 0 3px rgba(232,70,28,.15); }
+.gal-search input:focus { border-color: var(--flame-deep); box-shadow: 0 0 0 3px rgba(232,70,28,.15); }
 .gal-search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
   width: 15px; height: 15px; stroke: var(--ink-faint); fill: none; stroke-width: 1.8; }
 .gal-select {
@@ -142,12 +156,15 @@
 }
 .gal-count { font: 500 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink-faint); margin-left: auto; }
-.gal-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.gal-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 .gal-chips button {
-  padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent;
-  font: 600 11.5px/1 var(--body); color: var(--ink-soft); transition: all .3s var(--ease);
+  display: inline-flex; align-items: center;
+  min-height: max(38px, var(--tap-min));
+  padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: transparent;
+  font: 600 11.5px/1 var(--body); color: var(--ink-soft);
+  transition: color .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
 }
-.gal-chips button:hover { border-color: var(--flame); color: var(--flame); }
+.gal-chips button:hover { border-color: var(--flame-deep); color: var(--flame-deep); }
 .gal-chips button.on { background: var(--navy); border-color: var(--navy); color: var(--ivory); }
 .gal-chips button em { font-style: normal; opacity: .55; margin-left: 6px; font-size: 10.5px; }
 
@@ -291,16 +308,16 @@
 .rec-row:hover .rec-n b { color: var(--flame-2); }
 .rec-n em {
   display: block; font-style: normal; margin-top: 9px;
-  font: 600 10px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(252,248,240,.45);
+  font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(252,248,240,.62);
 }
 .rec-b h3 { font-size: clamp(19px,1.9vw,24px); line-height: 1.28; margin-bottom: 8px; }
 .rec-b p { font-size: 14.5px; color: rgba(252,248,240,.64); margin: 0; }
 .rec-b p em { color: var(--gold-lt); font-style: italic; }
 .rec-c {
   justify-self: end; text-align: right;
-  font: 600 10px/1.5 var(--body); letter-spacing: .16em; text-transform: uppercase;
-  color: rgba(252,248,240,.5); padding: 9px 14px; border: 1px solid rgba(252,248,240,.18);
+  font: 600 11px/1.5 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(252,248,240,.68); padding: 9px 14px; border: 1px solid rgba(252,248,240,.24);
   border-radius: 999px; transition: border-color .35s, color .35s;
 }
 .rec-row:hover .rec-c { border-color: var(--gold); color: var(--gold); }
@@ -338,7 +355,14 @@
 }
 
 /* ---------- hero portrait (real photograph) ---------- */
-.portrait-photo { width: 100%; height: auto; display: block; aspect-ratio: 3/4; object-fit: cover; }
+/* The frame is 3:4 but the photograph is a wide stage shot, so a centred
+   crop puts the banner in the middle and his head near the bottom edge.
+   Biasing the crop upward and slightly left keeps the face in the upper
+   third, where a portrait wants it. */
+.portrait-photo {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 3/4; object-fit: cover; object-position: 42% 26%;
+}
 
 /* ---------- archive entrance ----------
    Tiles settle into place the first time they are seen. The delay is set
@@ -358,15 +382,15 @@
 }
 .gal-pager:empty { display: none; }
 .gal-pager button {
-  min-width: 42px; height: 42px; padding: 0 12px; border-radius: 999px;
+  min-width: var(--tap); min-height: var(--tap); padding: 0 12px; border-radius: 999px;
   border: 1px solid var(--line); background: transparent; color: var(--ink-soft);
   font: 600 13.5px/1 var(--body); font-variant-numeric: tabular-nums;
-  transition: all .3s var(--ease);
+  transition: color .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
 }
-.gal-pager button:hover:not(:disabled) { border-color: var(--flame); color: var(--flame); }
+.gal-pager button:hover:not(:disabled) { border-color: var(--flame-deep); color: var(--flame-deep); }
 .gal-pager button.on {
-  background: var(--flame); border-color: var(--flame); color: #fff;
-  box-shadow: 0 8px 20px -10px rgba(232,70,28,.9);
+  background: var(--flame-btn); border-color: var(--flame-btn); color: #fff;
+  box-shadow: 0 8px 20px -10px rgba(201,58,21,.9);
 }
 .gal-pager button:disabled { opacity: .3; cursor: not-allowed; }
 .gal-pager .pg-arrow { font-size: 20px; line-height: 1; }
