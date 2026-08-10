@@ -119,23 +119,89 @@
 
     gallery.setItems(items);
 
-    /* ── featured rail ── */
+    /* ── Featured carousel ─────────────────────────────────
+       A slow, seamless drift rather than a slideshow: the track is
+       duplicated once and translated continuously, so it loops with no
+       jump and no empty edge. Cards lift as they cross the centre.
+       It pauses on hover, on focus, and whenever it is off-screen. */
     const rail = $("#featured-rail");
     if (!rail) return;
-    const featured = items.filter((i) => i.featured).slice(0, 12);
-    const pool = featured.length ? featured : items.slice(0, 12);
-    rail.innerHTML = pool.map((it, i) => `
-      <button class="rail-item" data-id="${it.id}" data-cursor="View">
-        ${tileMedia(it, 320)}
-        <span class="meta"><b>${esc(it.event)}</b><span>${it.year || "Undated"} · ${catLabel(it.category)}</span></span>
-      </button>`).join("");
-    if (window.JWRCArt) window.JWRCArt.build(rail);
+
+    const featured = items.filter((i) => i.featured);
+    const pool = featured.length >= 4 ? featured : items.slice(0, 10);
+
+    const card = (it) => `
+      <button class="rail-item" data-id="${it.id}" data-cursor="View"
+              aria-label="${esc(it.event)}">
+        ${tileMedia(it, 420)}
+        <span class="meta">
+          <b>${esc(it.event)}</b>
+          <span>${esc(it.caption || catLabel(it.category))}</span>
+        </span>
+      </button>`;
+
+    // two passes of the same set: the second is what the first scrolls into
+    rail.innerHTML = pool.map(card).join("") + pool.map(card).join("");
+    rail.setAttribute("aria-label", "Selected work");
+
     rail.addEventListener("click", (e) => {
       const b = e.target.closest(".rail-item");
       if (!b) return;
       const idx = pool.findIndex((x) => x.id === b.dataset.id);
-      lightbox.open(idx, pool);
+      if (idx > -1) lightbox.open(idx, pool);
     });
+
+    marquee(rail);
+
+    function marquee(track) {
+      if (REDUCED) { track.classList.add("is-static"); return; }
+      let x = 0, last = performance.now(), raf = 0;
+      let paused = false, visible = true;
+      const SPEED = 26;                                   // px per second
+      const half = () => track.scrollWidth / 2;
+
+      function frame(now) {
+        const dt = Math.min(64, now - last) / 1000;
+        last = now;
+        if (!paused && visible) {
+          x -= SPEED * dt;
+          if (-x >= half()) x += half();                  // seamless wrap
+          track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
+          depth(track);
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+
+      const hold = () => { paused = true; };
+      const release = () => { paused = false; last = performance.now(); };
+      track.addEventListener("pointerenter", hold);
+      track.addEventListener("pointerleave", release);
+      track.addEventListener("focusin", hold);
+      track.addEventListener("focusout", release);
+
+      new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting;
+        last = performance.now();
+      }, { threshold: 0 }).observe(track.parentElement || track);
+    }
+
+    /* Cards nearest the centre of the viewport sit forward. Cheap: one
+       read of the track rect, then pure arithmetic per card. */
+    function depth(track) {
+      const mid = innerWidth / 2;
+      const kids = track.children;
+      for (let i = 0; i < kids.length; i++) {
+        const el = kids[i];
+        const r = el.getBoundingClientRect();
+        if (r.right < -200 || r.left > innerWidth + 200) continue;
+        const d = Math.abs((r.left + r.width / 2) - mid) / (innerWidth / 2);
+        const k = Math.max(0, 1 - d);
+        el.style.setProperty("--lift", (k * k * 14).toFixed(2) + "px");
+        el.style.setProperty("--scale", (1 + k * k * 0.045).toFixed(4));
+        el.style.setProperty("--glow", (k * k).toFixed(3));
+      }
+    }
 
     /* ── deep link: /about.html#photo=<id> opens that photograph ── */
     const hash = decodeURIComponent(location.hash.replace("#photo=", ""));

@@ -19,6 +19,194 @@
    "tags": [
     "modi"
    ],
+   "featured": false
+  },
+  {
+   "id": "cal-002",
+   "src": "media/cal/cal-002-513.webp",
+   "thumb": "media/cal/cal-002-513.webp",
+   "widths": {
+    "513": "media/cal/cal-002-513.webp"
+   },
+   "w": 513,
+   "h": 329,
+   "tone": "#847771",
+   "alt": "World's largest wall calendar",
+   "caption": "120 ft x 40 ft, hand-painted",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wall calendar",
+   "tags": [
+    "cal"
+   ],
+   "featured": true
+  },
+  {
+   "id": "spoon-012",
+   "src": "media/spoon/spoon-012-620.webp",
+   "thumb": "media/spoon/spoon-012-620.webp",
+   "widths": {
+    "620": "media/spoon/spoon-012-620.webp"
+   },
+   "w": 620,
+   "h": 932,
+   "tone": "#635651",
+   "alt": "World's largest wooden spoon",
+   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wooden spoon",
+   "tags": [
+    "spoon"
+   ],
+   "featured": false
+  },
+  {
+   "id": "dance-014",
+   "src": "media/dance/dance-014-720.webp",
+   "thumb": "media/dance/dance-014-640.webp",
+   "widths": {
+    "640": "media/dance/dance-014-640.webp",
+    "720": "media/dance/dance-014-720.webp"
+   },
+   "w": 720,
+   "h": 478,
+   "tone": "#72544b",
+   "alt": "Largest continuous dance performance",
+   "caption": "3,050 children, 9 minutes 58 seconds",
+   "category": "records",
+   "year": 0,
+   "event": "Largest continuous dance performance",
+   "tags": [
+    "dance"
+   ],
+   "featured": false
+  },
+  {
+   "id": "cpr-000",
+   "src": "media/cpr/cpr-000-812.webp",
+   "thumb": "media/cpr/cpr-000-640.webp",
+   "widths": {
+    "640": "media/cpr/cpr-000-640.webp",
+    "812": "media/cpr/cpr-000-812.webp"
+   },
+   "w": 812,
+   "h": 1280,
+   "tone": "#9f9ea0",
+   "alt": "2 Guinness World Records on CPR",
+   "caption": "St. Xavier's College, Jaipur",
+   "category": "records",
+   "year": 0,
+   "event": "2 Guinness World Records on CPR",
+   "tags": [
+    "cpr"
+   ],
+   "featured": true
+  },
+  {
+   "id": "perp-005",
+   "src": "media/perp/perp-005-1280.webp",
+   "thumb": "media/perp/perp-005-640.webp",
+   "widths": {
+    "640": "media/perp/perp-005-640.webp",
+    "1280": "media/perp/perp-005-1280.webp"
+   },
+   "w": 1280,
+   "h": 778,
+   "tone": "#5d5f5f",
+   "alt": "Perpetual calendar",
+   "caption": "Copyright registered with the Government of India",
+   "category": "records",
+   "year": 0,
+   "event": "Perpetual calendar",
+   "tags": [
+    "perp"
+   ],
+   "featured": true
+  },
+  {
+   "id": "launch-007",
+   "src": "media/launch/launch-007-1920.webp",
+   "thumb": "media/launch/launch-007-640.webp",
+   "widths": {
+    "640": "media/launch/launch-007-640.webp",
+    "1280": "media/launch/launch-007-1280.webp",
+    "1920": "media/launch/launch-007-1920.webp"
+   },
+   "w": 2056,
+   "h": 1212,
+   "tone": "#5a5151",
+   "alt": "Perpetual calendar launch",
+   "caption": "Jaipur",
+   "category": "events",
+   "year": 0,
+   "event": "Perpetual calendar launch",
+   "tags": [
+    "launch"
+   ],
+   "featured": true
+  },
+  {
+   "id": "cert-009",
+   "src": "media/cert/cert-009-1032.webp",
+   "thumb": "media/cert/cert-009-640.webp",
+   "widths": {
+    "640": "media/cert/cert-009-640.webp",
+    "1032": "media/cert/cert-009-1032.webp"
+   },
+   "w": 1032,
+   "h": 774,
+   "tone": "#4f4c47",
+   "alt": "Certificates and adjudications",
+   "caption": "",
+   "category": "certificates",
+   "year": 0,
+   "event": "Certificates and adjudications",
+   "tags": [
+    "cert"
+   ],
+   "featured": true
+  },
+  {
+   "id": "people-008",
+   "src": "media/people/people-008-1234.webp",
+   "thumb": "media/people/people-008-640.webp",
+   "widths": {
+    "640": "media/people/people-008-640.webp",
+    "1234": "media/people/people-008-1234.webp"
+   },
+   "w": 1234,
+   "h": 1008,
+   "tone": "#8c817d",
+   "alt": "Recognition and felicitations",
+   "caption": "",
+   "category": "people",
+   "year": 0,
+   "event": "Recognition and felicitations",
+   "tags": [
+    "people"
+   ],
+   "featured": false
+  },
+  {
+   "id": "press-006",
+   "src": "media/press/press-006-720.webp",
+   "thumb": "media/press/press-006-640.webp",
+   "widths": {
+    "640": "media/press/press-006-640.webp",
+    "720": "media/press/press-006-720.webp"
+   },
+   "w": 720,
+   "h": 1600,
+   "tone": "#7a7670",
+   "alt": "Press coverage",
+   "caption": "",
+   "category": "media",
+   "year": 0,
+   "event": "Press coverage",
+   "tags": [
+    "press"
+   ],
    "featured": true
   },
   {
@@ -40,6 +228,175 @@
    "event": "197,610 photographs of Prime Minister Narendra Modi",
    "tags": [
     "modi"
+   ],
+   "featured": false
+  },
+  {
+   "id": "cal-076",
+   "src": "media/cal/cal-076-1280.webp",
+   "thumb": "media/cal/cal-076-640.webp",
+   "widths": {
+    "640": "media/cal/cal-076-640.webp",
+    "1280": "media/cal/cal-076-1280.webp"
+   },
+   "w": 1280,
+   "h": 851,
+   "tone": "#6c6158",
+   "alt": "World's largest wall calendar",
+   "caption": "120 ft x 40 ft, hand-painted",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wall calendar",
+   "tags": [
+    "cal"
+   ],
+   "featured": false
+  },
+  {
+   "id": "spoon-069",
+   "src": "media/spoon/spoon-069-665.webp",
+   "thumb": "media/spoon/spoon-069-640.webp",
+   "widths": {
+    "640": "media/spoon/spoon-069-640.webp",
+    "665": "media/spoon/spoon-069-665.webp"
+   },
+   "w": 665,
+   "h": 665,
+   "tone": "#5d4d42",
+   "alt": "World's largest wooden spoon",
+   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wooden spoon",
+   "tags": [
+    "spoon"
+   ],
+   "featured": false
+  },
+  {
+   "id": "dance-016",
+   "src": "media/dance/dance-016-720.webp",
+   "thumb": "media/dance/dance-016-640.webp",
+   "widths": {
+    "640": "media/dance/dance-016-640.webp",
+    "720": "media/dance/dance-016-720.webp"
+   },
+   "w": 720,
+   "h": 478,
+   "tone": "#76625c",
+   "alt": "Largest continuous dance performance",
+   "caption": "3,050 children, 9 minutes 58 seconds",
+   "category": "records",
+   "year": 0,
+   "event": "Largest continuous dance performance",
+   "tags": [
+    "dance"
+   ],
+   "featured": true
+  },
+  {
+   "id": "cpr-003",
+   "src": "media/cpr/cpr-003-954.webp",
+   "thumb": "media/cpr/cpr-003-640.webp",
+   "widths": {
+    "640": "media/cpr/cpr-003-640.webp",
+    "954": "media/cpr/cpr-003-954.webp"
+   },
+   "w": 954,
+   "h": 549,
+   "tone": "#888875",
+   "alt": "2 Guinness World Records on CPR",
+   "caption": "St. Xavier's College, Jaipur",
+   "category": "media",
+   "year": 0,
+   "event": "2 Guinness World Records on CPR",
+   "tags": [
+    "cpr"
+   ],
+   "featured": false
+  },
+  {
+   "id": "perp-010",
+   "src": "media/perp/perp-010-1164.webp",
+   "thumb": "media/perp/perp-010-640.webp",
+   "widths": {
+    "640": "media/perp/perp-010-640.webp",
+    "1164": "media/perp/perp-010-1164.webp"
+   },
+   "w": 1164,
+   "h": 980,
+   "tone": "#857475",
+   "alt": "Perpetual calendar",
+   "caption": "Copyright registered with the Government of India",
+   "category": "records",
+   "year": 0,
+   "event": "Perpetual calendar",
+   "tags": [
+    "perp"
+   ],
+   "featured": false
+  },
+  {
+   "id": "launch-075",
+   "src": "media/launch/launch-075-1000.webp",
+   "thumb": "media/launch/launch-075-640.webp",
+   "widths": {
+    "640": "media/launch/launch-075-640.webp",
+    "1000": "media/launch/launch-075-1000.webp"
+   },
+   "w": 1000,
+   "h": 1504,
+   "tone": "#44403b",
+   "alt": "Perpetual calendar launch",
+   "caption": "Jaipur",
+   "category": "events",
+   "year": 0,
+   "event": "Perpetual calendar launch",
+   "tags": [
+    "launch"
+   ],
+   "featured": false
+  },
+  {
+   "id": "cert-017",
+   "src": "media/cert/cert-017-1032.webp",
+   "thumb": "media/cert/cert-017-640.webp",
+   "widths": {
+    "640": "media/cert/cert-017-640.webp",
+    "1032": "media/cert/cert-017-1032.webp"
+   },
+   "w": 1032,
+   "h": 774,
+   "tone": "#4f4a46",
+   "alt": "Certificates and adjudications",
+   "caption": "",
+   "category": "certificates",
+   "year": 0,
+   "event": "Certificates and adjudications",
+   "tags": [
+    "cert"
+   ],
+   "featured": false
+  },
+  {
+   "id": "people-021",
+   "src": "media/people/people-021-1500.webp",
+   "thumb": "media/people/people-021-640.webp",
+   "widths": {
+    "640": "media/people/people-021-640.webp",
+    "1280": "media/people/people-021-1280.webp",
+    "1500": "media/people/people-021-1500.webp"
+   },
+   "w": 1500,
+   "h": 1000,
+   "tone": "#513c39",
+   "alt": "Recognition and felicitations",
+   "caption": "",
+   "category": "people",
+   "year": 0,
+   "event": "Recognition and felicitations",
+   "tags": [
+    "people"
    ],
    "featured": true
   },
@@ -66,6 +423,112 @@
    "featured": false
   },
   {
+   "id": "spoon-072",
+   "src": "media/spoon/spoon-072-1062.webp",
+   "thumb": "media/spoon/spoon-072-640.webp",
+   "widths": {
+    "640": "media/spoon/spoon-072-640.webp",
+    "1062": "media/spoon/spoon-072-1062.webp"
+   },
+   "w": 1062,
+   "h": 1600,
+   "tone": "#755b43",
+   "alt": "World's largest wooden spoon",
+   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wooden spoon",
+   "tags": [
+    "spoon"
+   ],
+   "featured": true
+  },
+  {
+   "id": "dance-018",
+   "src": "media/dance/dance-018-720.webp",
+   "thumb": "media/dance/dance-018-640.webp",
+   "widths": {
+    "640": "media/dance/dance-018-640.webp",
+    "720": "media/dance/dance-018-720.webp"
+   },
+   "w": 720,
+   "h": 478,
+   "tone": "#80726b",
+   "alt": "Largest continuous dance performance",
+   "caption": "3,050 children, 9 minutes 58 seconds",
+   "category": "records",
+   "year": 0,
+   "event": "Largest continuous dance performance",
+   "tags": [
+    "dance"
+   ],
+   "featured": false
+  },
+  {
+   "id": "cpr-004",
+   "src": "media/cpr/cpr-004-1181.webp",
+   "thumb": "media/cpr/cpr-004-640.webp",
+   "widths": {
+    "640": "media/cpr/cpr-004-640.webp",
+    "1181": "media/cpr/cpr-004-1181.webp"
+   },
+   "w": 1181,
+   "h": 1280,
+   "tone": "#8e8c89",
+   "alt": "2 Guinness World Records on CPR",
+   "caption": "St. Xavier's College, Jaipur",
+   "category": "media",
+   "year": 0,
+   "event": "2 Guinness World Records on CPR",
+   "tags": [
+    "cpr"
+   ],
+   "featured": false
+  },
+  {
+   "id": "cert-025",
+   "src": "media/cert/cert-025-774.webp",
+   "thumb": "media/cert/cert-025-640.webp",
+   "widths": {
+    "640": "media/cert/cert-025-640.webp",
+    "774": "media/cert/cert-025-774.webp"
+   },
+   "w": 774,
+   "h": 1032,
+   "tone": "#4d4843",
+   "alt": "Certificates and adjudications",
+   "caption": "",
+   "category": "certificates",
+   "year": 0,
+   "event": "Certificates and adjudications",
+   "tags": [
+    "cert"
+   ],
+   "featured": false
+  },
+  {
+   "id": "people-064",
+   "src": "media/people/people-064-1600.webp",
+   "thumb": "media/people/people-064-640.webp",
+   "widths": {
+    "640": "media/people/people-064-640.webp",
+    "1280": "media/people/people-064-1280.webp",
+    "1600": "media/people/people-064-1600.webp"
+   },
+   "w": 1600,
+   "h": 1059,
+   "tone": "#6d6468",
+   "alt": "Recognition and felicitations",
+   "caption": "",
+   "category": "people",
+   "year": 0,
+   "event": "Recognition and felicitations",
+   "tags": [
+    "people"
+   ],
+   "featured": false
+  },
+  {
    "id": "modi-029",
    "src": "media/modi/modi-029-1600.webp",
    "thumb": "media/modi/modi-029-640.webp",
@@ -88,6 +551,71 @@
    "featured": false
   },
   {
+   "id": "spoon-073",
+   "src": "media/spoon/spoon-073-1600.webp",
+   "thumb": "media/spoon/spoon-073-640.webp",
+   "widths": {
+    "640": "media/spoon/spoon-073-640.webp",
+    "1280": "media/spoon/spoon-073-1280.webp",
+    "1600": "media/spoon/spoon-073-1600.webp"
+   },
+   "w": 1600,
+   "h": 1062,
+   "tone": "#84725b",
+   "alt": "World's largest wooden spoon",
+   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wooden spoon",
+   "tags": [
+    "spoon"
+   ],
+   "featured": false
+  },
+  {
+   "id": "dance-019",
+   "src": "media/dance/dance-019-720.webp",
+   "thumb": "media/dance/dance-019-640.webp",
+   "widths": {
+    "640": "media/dance/dance-019-640.webp",
+    "720": "media/dance/dance-019-720.webp"
+   },
+   "w": 720,
+   "h": 478,
+   "tone": "#73605c",
+   "alt": "Largest continuous dance performance",
+   "caption": "3,050 children, 9 minutes 58 seconds",
+   "category": "records",
+   "year": 0,
+   "event": "Largest continuous dance performance",
+   "tags": [
+    "dance"
+   ],
+   "featured": false
+  },
+  {
+   "id": "people-067",
+   "src": "media/people/people-067-1600.webp",
+   "thumb": "media/people/people-067-640.webp",
+   "widths": {
+    "640": "media/people/people-067-640.webp",
+    "1280": "media/people/people-067-1280.webp",
+    "1600": "media/people/people-067-1600.webp"
+   },
+   "w": 1600,
+   "h": 1059,
+   "tone": "#47424f",
+   "alt": "Recognition and felicitations",
+   "caption": "",
+   "category": "people",
+   "year": 0,
+   "event": "Recognition and felicitations",
+   "tags": [
+    "people"
+   ],
+   "featured": false
+  },
+  {
    "id": "modi-030",
    "src": "media/modi/modi-030-1600.webp",
    "thumb": "media/modi/modi-030-640.webp",
@@ -106,6 +634,49 @@
    "event": "197,610 photographs of Prime Minister Narendra Modi",
    "tags": [
     "modi"
+   ],
+   "featured": false
+  },
+  {
+   "id": "spoon-074",
+   "src": "media/spoon/spoon-074-1600.webp",
+   "thumb": "media/spoon/spoon-074-640.webp",
+   "widths": {
+    "640": "media/spoon/spoon-074-640.webp",
+    "1280": "media/spoon/spoon-074-1280.webp",
+    "1600": "media/spoon/spoon-074-1600.webp"
+   },
+   "w": 1600,
+   "h": 1062,
+   "tone": "#85745d",
+   "alt": "World's largest wooden spoon",
+   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
+   "category": "records",
+   "year": 0,
+   "event": "World's largest wooden spoon",
+   "tags": [
+    "spoon"
+   ],
+   "featured": false
+  },
+  {
+   "id": "dance-020",
+   "src": "media/dance/dance-020-720.webp",
+   "thumb": "media/dance/dance-020-640.webp",
+   "widths": {
+    "640": "media/dance/dance-020-640.webp",
+    "720": "media/dance/dance-020-720.webp"
+   },
+   "w": 720,
+   "h": 478,
+   "tone": "#6b5b56",
+   "alt": "Largest continuous dance performance",
+   "caption": "3,050 children, 9 minutes 58 seconds",
+   "category": "records",
+   "year": 0,
+   "event": "Largest continuous dance performance",
+   "tags": [
+    "dance"
    ],
    "featured": false
   },
@@ -149,7 +720,7 @@
    "tags": [
     "modi"
    ],
-   "featured": false
+   "featured": true
   },
   {
    "id": "modi-033",
@@ -347,7 +918,7 @@
    "tags": [
     "modi"
    ],
-   "featured": true
+   "featured": false
   },
   {
    "id": "modi-042",
@@ -676,7 +1247,7 @@
    "tags": [
     "modi"
    ],
-   "featured": true
+   "featured": false
   },
   {
    "id": "modi-057",
@@ -808,7 +1379,7 @@
    "tags": [
     "modi"
    ],
-   "featured": true
+   "featured": false
   },
   {
    "id": "modi-063",
@@ -917,740 +1488,6 @@
    "event": "197,610 photographs of Prime Minister Narendra Modi",
    "tags": [
     "modi"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cal-001",
-   "src": "media/cal/cal-001-400.webp",
-   "thumb": "media/cal/cal-001-400.webp",
-   "widths": {
-    "400": "media/cal/cal-001-400.webp"
-   },
-   "w": 400,
-   "h": 257,
-   "tone": "#827670",
-   "alt": "World's largest wall calendar",
-   "caption": "120 ft x 40 ft, hand-painted",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wall calendar",
-   "tags": [
-    "cal"
-   ],
-   "featured": true
-  },
-  {
-   "id": "cal-002",
-   "src": "media/cal/cal-002-513.webp",
-   "thumb": "media/cal/cal-002-513.webp",
-   "widths": {
-    "513": "media/cal/cal-002-513.webp"
-   },
-   "w": 513,
-   "h": 329,
-   "tone": "#847771",
-   "alt": "World's largest wall calendar",
-   "caption": "120 ft x 40 ft, hand-painted",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wall calendar",
-   "tags": [
-    "cal"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cal-013",
-   "src": "media/cal/cal-013-513.webp",
-   "thumb": "media/cal/cal-013-513.webp",
-   "widths": {
-    "513": "media/cal/cal-013-513.webp"
-   },
-   "w": 513,
-   "h": 329,
-   "tone": "#847771",
-   "alt": "World's largest wall calendar",
-   "caption": "120 ft x 40 ft, hand-painted",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wall calendar",
-   "tags": [
-    "cal"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cal-023",
-   "src": "media/cal/cal-023-513.webp",
-   "thumb": "media/cal/cal-023-513.webp",
-   "widths": {
-    "513": "media/cal/cal-023-513.webp"
-   },
-   "w": 513,
-   "h": 329,
-   "tone": "#847771",
-   "alt": "World's largest wall calendar",
-   "caption": "120 ft x 40 ft, hand-painted",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wall calendar",
-   "tags": [
-    "cal"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cal-076",
-   "src": "media/cal/cal-076-1280.webp",
-   "thumb": "media/cal/cal-076-640.webp",
-   "widths": {
-    "640": "media/cal/cal-076-640.webp",
-    "1280": "media/cal/cal-076-1280.webp"
-   },
-   "w": 1280,
-   "h": 851,
-   "tone": "#6c6158",
-   "alt": "World's largest wall calendar",
-   "caption": "120 ft x 40 ft, hand-painted",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wall calendar",
-   "tags": [
-    "cal"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-011",
-   "src": "media/spoon/spoon-011-199.webp",
-   "thumb": "media/spoon/spoon-011-199.webp",
-   "widths": {
-    "199": "media/spoon/spoon-011-199.webp"
-   },
-   "w": 199,
-   "h": 300,
-   "tone": "#625550",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-012",
-   "src": "media/spoon/spoon-012-620.webp",
-   "thumb": "media/spoon/spoon-012-620.webp",
-   "widths": {
-    "620": "media/spoon/spoon-012-620.webp"
-   },
-   "w": 620,
-   "h": 932,
-   "tone": "#635651",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-022",
-   "src": "media/spoon/spoon-022-620.webp",
-   "thumb": "media/spoon/spoon-022-620.webp",
-   "widths": {
-    "620": "media/spoon/spoon-022-620.webp"
-   },
-   "w": 620,
-   "h": 932,
-   "tone": "#635651",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-069",
-   "src": "media/spoon/spoon-069-665.webp",
-   "thumb": "media/spoon/spoon-069-640.webp",
-   "widths": {
-    "640": "media/spoon/spoon-069-640.webp",
-    "665": "media/spoon/spoon-069-665.webp"
-   },
-   "w": 665,
-   "h": 665,
-   "tone": "#5d4d42",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-070",
-   "src": "media/spoon/spoon-070-665.webp",
-   "thumb": "media/spoon/spoon-070-640.webp",
-   "widths": {
-    "640": "media/spoon/spoon-070-640.webp",
-    "665": "media/spoon/spoon-070-665.webp"
-   },
-   "w": 665,
-   "h": 665,
-   "tone": "#5d4d42",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-072",
-   "src": "media/spoon/spoon-072-1062.webp",
-   "thumb": "media/spoon/spoon-072-640.webp",
-   "widths": {
-    "640": "media/spoon/spoon-072-640.webp",
-    "1062": "media/spoon/spoon-072-1062.webp"
-   },
-   "w": 1062,
-   "h": 1600,
-   "tone": "#755b43",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": true
-  },
-  {
-   "id": "spoon-073",
-   "src": "media/spoon/spoon-073-1600.webp",
-   "thumb": "media/spoon/spoon-073-640.webp",
-   "widths": {
-    "640": "media/spoon/spoon-073-640.webp",
-    "1280": "media/spoon/spoon-073-1280.webp",
-    "1600": "media/spoon/spoon-073-1600.webp"
-   },
-   "w": 1600,
-   "h": 1062,
-   "tone": "#84725b",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "spoon-074",
-   "src": "media/spoon/spoon-074-1600.webp",
-   "thumb": "media/spoon/spoon-074-640.webp",
-   "widths": {
-    "640": "media/spoon/spoon-074-640.webp",
-    "1280": "media/spoon/spoon-074-1280.webp",
-    "1600": "media/spoon/spoon-074-1600.webp"
-   },
-   "w": 1600,
-   "h": 1062,
-   "tone": "#85745d",
-   "alt": "World's largest wooden spoon",
-   "caption": "40 feet; now at the Alankar Museum, Jawahar Kala Kendra",
-   "category": "records",
-   "year": 0,
-   "event": "World's largest wooden spoon",
-   "tags": [
-    "spoon"
-   ],
-   "featured": false
-  },
-  {
-   "id": "dance-014",
-   "src": "media/dance/dance-014-720.webp",
-   "thumb": "media/dance/dance-014-640.webp",
-   "widths": {
-    "640": "media/dance/dance-014-640.webp",
-    "720": "media/dance/dance-014-720.webp"
-   },
-   "w": 720,
-   "h": 478,
-   "tone": "#72544b",
-   "alt": "Largest continuous dance performance",
-   "caption": "3,050 children, 9 minutes 58 seconds",
-   "category": "records",
-   "year": 0,
-   "event": "Largest continuous dance performance",
-   "tags": [
-    "dance"
-   ],
-   "featured": true
-  },
-  {
-   "id": "dance-016",
-   "src": "media/dance/dance-016-720.webp",
-   "thumb": "media/dance/dance-016-640.webp",
-   "widths": {
-    "640": "media/dance/dance-016-640.webp",
-    "720": "media/dance/dance-016-720.webp"
-   },
-   "w": 720,
-   "h": 478,
-   "tone": "#76625c",
-   "alt": "Largest continuous dance performance",
-   "caption": "3,050 children, 9 minutes 58 seconds",
-   "category": "records",
-   "year": 0,
-   "event": "Largest continuous dance performance",
-   "tags": [
-    "dance"
-   ],
-   "featured": false
-  },
-  {
-   "id": "dance-018",
-   "src": "media/dance/dance-018-720.webp",
-   "thumb": "media/dance/dance-018-640.webp",
-   "widths": {
-    "640": "media/dance/dance-018-640.webp",
-    "720": "media/dance/dance-018-720.webp"
-   },
-   "w": 720,
-   "h": 478,
-   "tone": "#80726b",
-   "alt": "Largest continuous dance performance",
-   "caption": "3,050 children, 9 minutes 58 seconds",
-   "category": "records",
-   "year": 0,
-   "event": "Largest continuous dance performance",
-   "tags": [
-    "dance"
-   ],
-   "featured": true
-  },
-  {
-   "id": "dance-019",
-   "src": "media/dance/dance-019-720.webp",
-   "thumb": "media/dance/dance-019-640.webp",
-   "widths": {
-    "640": "media/dance/dance-019-640.webp",
-    "720": "media/dance/dance-019-720.webp"
-   },
-   "w": 720,
-   "h": 478,
-   "tone": "#73605c",
-   "alt": "Largest continuous dance performance",
-   "caption": "3,050 children, 9 minutes 58 seconds",
-   "category": "records",
-   "year": 0,
-   "event": "Largest continuous dance performance",
-   "tags": [
-    "dance"
-   ],
-   "featured": false
-  },
-  {
-   "id": "dance-020",
-   "src": "media/dance/dance-020-720.webp",
-   "thumb": "media/dance/dance-020-640.webp",
-   "widths": {
-    "640": "media/dance/dance-020-640.webp",
-    "720": "media/dance/dance-020-720.webp"
-   },
-   "w": 720,
-   "h": 478,
-   "tone": "#6b5b56",
-   "alt": "Largest continuous dance performance",
-   "caption": "3,050 children, 9 minutes 58 seconds",
-   "category": "records",
-   "year": 0,
-   "event": "Largest continuous dance performance",
-   "tags": [
-    "dance"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cpr-000",
-   "src": "media/cpr/cpr-000-812.webp",
-   "thumb": "media/cpr/cpr-000-640.webp",
-   "widths": {
-    "640": "media/cpr/cpr-000-640.webp",
-    "812": "media/cpr/cpr-000-812.webp"
-   },
-   "w": 812,
-   "h": 1280,
-   "tone": "#9f9ea0",
-   "alt": "2 Guinness World Records on CPR",
-   "caption": "St. Xavier's College, Jaipur",
-   "category": "records",
-   "year": 0,
-   "event": "2 Guinness World Records on CPR",
-   "tags": [
-    "cpr"
-   ],
-   "featured": true
-  },
-  {
-   "id": "cpr-003",
-   "src": "media/cpr/cpr-003-954.webp",
-   "thumb": "media/cpr/cpr-003-640.webp",
-   "widths": {
-    "640": "media/cpr/cpr-003-640.webp",
-    "954": "media/cpr/cpr-003-954.webp"
-   },
-   "w": 954,
-   "h": 549,
-   "tone": "#888875",
-   "alt": "2 Guinness World Records on CPR",
-   "caption": "St. Xavier's College, Jaipur",
-   "category": "media",
-   "year": 0,
-   "event": "2 Guinness World Records on CPR",
-   "tags": [
-    "cpr"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cpr-004",
-   "src": "media/cpr/cpr-004-1181.webp",
-   "thumb": "media/cpr/cpr-004-640.webp",
-   "widths": {
-    "640": "media/cpr/cpr-004-640.webp",
-    "1181": "media/cpr/cpr-004-1181.webp"
-   },
-   "w": 1181,
-   "h": 1280,
-   "tone": "#8e8c89",
-   "alt": "2 Guinness World Records on CPR",
-   "caption": "St. Xavier's College, Jaipur",
-   "category": "media",
-   "year": 0,
-   "event": "2 Guinness World Records on CPR",
-   "tags": [
-    "cpr"
-   ],
-   "featured": false
-  },
-  {
-   "id": "perp-005",
-   "src": "media/perp/perp-005-1280.webp",
-   "thumb": "media/perp/perp-005-640.webp",
-   "widths": {
-    "640": "media/perp/perp-005-640.webp",
-    "1280": "media/perp/perp-005-1280.webp"
-   },
-   "w": 1280,
-   "h": 778,
-   "tone": "#5d5f5f",
-   "alt": "Perpetual calendar",
-   "caption": "Copyright registered with the Government of India",
-   "category": "records",
-   "year": 0,
-   "event": "Perpetual calendar",
-   "tags": [
-    "perp"
-   ],
-   "featured": true
-  },
-  {
-   "id": "perp-010",
-   "src": "media/perp/perp-010-1164.webp",
-   "thumb": "media/perp/perp-010-640.webp",
-   "widths": {
-    "640": "media/perp/perp-010-640.webp",
-    "1164": "media/perp/perp-010-1164.webp"
-   },
-   "w": 1164,
-   "h": 980,
-   "tone": "#857475",
-   "alt": "Perpetual calendar",
-   "caption": "Copyright registered with the Government of India",
-   "category": "records",
-   "year": 0,
-   "event": "Perpetual calendar",
-   "tags": [
-    "perp"
-   ],
-   "featured": false
-  },
-  {
-   "id": "launch-007",
-   "src": "media/launch/launch-007-1920.webp",
-   "thumb": "media/launch/launch-007-640.webp",
-   "widths": {
-    "640": "media/launch/launch-007-640.webp",
-    "1280": "media/launch/launch-007-1280.webp",
-    "1920": "media/launch/launch-007-1920.webp"
-   },
-   "w": 2056,
-   "h": 1212,
-   "tone": "#5a5151",
-   "alt": "Perpetual calendar launch",
-   "caption": "Jaipur",
-   "category": "events",
-   "year": 0,
-   "event": "Perpetual calendar launch",
-   "tags": [
-    "launch"
-   ],
-   "featured": false
-  },
-  {
-   "id": "launch-075",
-   "src": "media/launch/launch-075-1000.webp",
-   "thumb": "media/launch/launch-075-640.webp",
-   "widths": {
-    "640": "media/launch/launch-075-640.webp",
-    "1000": "media/launch/launch-075-1000.webp"
-   },
-   "w": 1000,
-   "h": 1504,
-   "tone": "#44403b",
-   "alt": "Perpetual calendar launch",
-   "caption": "Jaipur",
-   "category": "events",
-   "year": 0,
-   "event": "Perpetual calendar launch",
-   "tags": [
-    "launch"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cert-009",
-   "src": "media/cert/cert-009-1032.webp",
-   "thumb": "media/cert/cert-009-640.webp",
-   "widths": {
-    "640": "media/cert/cert-009-640.webp",
-    "1032": "media/cert/cert-009-1032.webp"
-   },
-   "w": 1032,
-   "h": 774,
-   "tone": "#4f4c47",
-   "alt": "Certificates and adjudications",
-   "caption": "",
-   "category": "certificates",
-   "year": 0,
-   "event": "Certificates and adjudications",
-   "tags": [
-    "cert"
-   ],
-   "featured": true
-  },
-  {
-   "id": "cert-015",
-   "src": "media/cert/cert-015-1032.webp",
-   "thumb": "media/cert/cert-015-640.webp",
-   "widths": {
-    "640": "media/cert/cert-015-640.webp",
-    "1032": "media/cert/cert-015-1032.webp"
-   },
-   "w": 1032,
-   "h": 774,
-   "tone": "#4f4c47",
-   "alt": "Certificates and adjudications",
-   "caption": "",
-   "category": "certificates",
-   "year": 0,
-   "event": "Certificates and adjudications",
-   "tags": [
-    "cert"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cert-017",
-   "src": "media/cert/cert-017-1032.webp",
-   "thumb": "media/cert/cert-017-640.webp",
-   "widths": {
-    "640": "media/cert/cert-017-640.webp",
-    "1032": "media/cert/cert-017-1032.webp"
-   },
-   "w": 1032,
-   "h": 774,
-   "tone": "#4f4a46",
-   "alt": "Certificates and adjudications",
-   "caption": "",
-   "category": "certificates",
-   "year": 0,
-   "event": "Certificates and adjudications",
-   "tags": [
-    "cert"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cert-025",
-   "src": "media/cert/cert-025-774.webp",
-   "thumb": "media/cert/cert-025-640.webp",
-   "widths": {
-    "640": "media/cert/cert-025-640.webp",
-    "774": "media/cert/cert-025-774.webp"
-   },
-   "w": 774,
-   "h": 1032,
-   "tone": "#4d4843",
-   "alt": "Certificates and adjudications",
-   "caption": "",
-   "category": "certificates",
-   "year": 0,
-   "event": "Certificates and adjudications",
-   "tags": [
-    "cert"
-   ],
-   "featured": false
-  },
-  {
-   "id": "cert-028",
-   "src": "media/cert/cert-028-774.webp",
-   "thumb": "media/cert/cert-028-640.webp",
-   "widths": {
-    "640": "media/cert/cert-028-640.webp",
-    "774": "media/cert/cert-028-774.webp"
-   },
-   "w": 774,
-   "h": 1032,
-   "tone": "#4c4843",
-   "alt": "Certificates and adjudications",
-   "caption": "",
-   "category": "certificates",
-   "year": 0,
-   "event": "Certificates and adjudications",
-   "tags": [
-    "cert"
-   ],
-   "featured": false
-  },
-  {
-   "id": "people-008",
-   "src": "media/people/people-008-1234.webp",
-   "thumb": "media/people/people-008-640.webp",
-   "widths": {
-    "640": "media/people/people-008-640.webp",
-    "1234": "media/people/people-008-1234.webp"
-   },
-   "w": 1234,
-   "h": 1008,
-   "tone": "#8c817d",
-   "alt": "Recognition and felicitations",
-   "caption": "",
-   "category": "people",
-   "year": 0,
-   "event": "Recognition and felicitations",
-   "tags": [
-    "people"
-   ],
-   "featured": false
-  },
-  {
-   "id": "people-021",
-   "src": "media/people/people-021-1500.webp",
-   "thumb": "media/people/people-021-640.webp",
-   "widths": {
-    "640": "media/people/people-021-640.webp",
-    "1280": "media/people/people-021-1280.webp",
-    "1500": "media/people/people-021-1500.webp"
-   },
-   "w": 1500,
-   "h": 1000,
-   "tone": "#513c39",
-   "alt": "Recognition and felicitations",
-   "caption": "",
-   "category": "people",
-   "year": 0,
-   "event": "Recognition and felicitations",
-   "tags": [
-    "people"
-   ],
-   "featured": false
-  },
-  {
-   "id": "people-064",
-   "src": "media/people/people-064-1600.webp",
-   "thumb": "media/people/people-064-640.webp",
-   "widths": {
-    "640": "media/people/people-064-640.webp",
-    "1280": "media/people/people-064-1280.webp",
-    "1600": "media/people/people-064-1600.webp"
-   },
-   "w": 1600,
-   "h": 1059,
-   "tone": "#6d6468",
-   "alt": "Recognition and felicitations",
-   "caption": "",
-   "category": "people",
-   "year": 0,
-   "event": "Recognition and felicitations",
-   "tags": [
-    "people"
-   ],
-   "featured": false
-  },
-  {
-   "id": "people-067",
-   "src": "media/people/people-067-1600.webp",
-   "thumb": "media/people/people-067-640.webp",
-   "widths": {
-    "640": "media/people/people-067-640.webp",
-    "1280": "media/people/people-067-1280.webp",
-    "1600": "media/people/people-067-1600.webp"
-   },
-   "w": 1600,
-   "h": 1059,
-   "tone": "#47424f",
-   "alt": "Recognition and felicitations",
-   "caption": "",
-   "category": "people",
-   "year": 0,
-   "event": "Recognition and felicitations",
-   "tags": [
-    "people"
-   ],
-   "featured": false
-  },
-  {
-   "id": "press-006",
-   "src": "media/press/press-006-720.webp",
-   "thumb": "media/press/press-006-640.webp",
-   "widths": {
-    "640": "media/press/press-006-640.webp",
-    "720": "media/press/press-006-720.webp"
-   },
-   "w": 720,
-   "h": 1600,
-   "tone": "#7a7670",
-   "alt": "Press coverage",
-   "caption": "",
-   "category": "media",
-   "year": 0,
-   "event": "Press coverage",
-   "tags": [
-    "press"
    ],
    "featured": false
   }
