@@ -57,7 +57,11 @@
   function mountChrome() {
     const links = NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("");
 
-    document.body.insertAdjacentHTML("afterbegin", `
+    /* The skip link has to stay the very first tab stop, so the chrome is
+       inserted after it rather than at the top of <body>. */
+    const skip = document.querySelector(".skip");
+    const at = skip ? [skip, "afterend"] : [document.body, "afterbegin"];
+    at[0].insertAdjacentHTML(at[1], `
       ${DEFS}
       <div id="progress"></div>
       <nav class="nav" id="nav">
@@ -86,12 +90,14 @@
               <p style="font-family:var(--display);font-style:italic;font-size:17px;color:var(--gold);margin-top:20px">
                 “Find your passion, and it’s no longer work.”</p>
             </div>
-            <div><h4>On this page</h4>
-              ${NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</div>
+            <nav aria-label="Sections of this page"><h4>On this page</h4>
+              ${NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</nav>
             <div><h4>Reach us</h4>
               <a href="tel:+918003003000">+91 80030 03000</a>
               <a href="mailto:manmohan.agarwal015@gmail.com">manmohan.agarwal015@gmail.com</a>
-              <a href="#">Jaipur, Rajasthan, India</a>
+              <!-- an address is information, not a destination: it was an
+                   href="#" that scrolled the reader back to the top -->
+              <p class="where">Jaipur, Rajasthan, India</p>
               <div class="creds mt-m">${["Guinness", "Limca", "India Book"]
                 .map(c => `<span class="cred" style="font-size:10px;padding:8px 12px">${c}</span>`).join("")}</div>
             </div>

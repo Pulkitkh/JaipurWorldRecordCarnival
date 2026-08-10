@@ -9,8 +9,15 @@
 
 /* ---------- 1. Tokens ---------- */
 :root {
+  /* The brand flame reads beautifully at display size, but white text on it
+     lands at 3.9:1 — under the 4.5:1 floor. So the palette carries three
+     weights of the same colour: --flame for large type, rules and glows;
+     --flame-btn behind white button text (5.1:1); --flame-deep for small
+     type sitting on ivory or sand (5.4:1 / 4.8:1). Same hue throughout, so
+     nothing about the identity changes — only the legibility. */
   --flame:      #E8461C;
   --flame-2:    #FF6A3D;
+  --flame-btn:  #C93A15;
   --flame-deep: #BE3411;
   --ember:      #F4813A;
   --gold:       #D9A441;
@@ -29,7 +36,12 @@
   --sand-2:     #E9DAC2;
   --ink:        #191510;
   --ink-soft:   #4C443A;
-  --ink-faint:  #8B8072;
+  /* Carries every small uppercase label on the page. At its old value it sat
+     at 3.6:1 on ivory and 3.3:1 on sand — the classic grey-on-cream that
+     looks refined on a designer's monitor and vanishes in daylight on a
+     phone. Two steps darker clears 4.5:1 on all three light grounds and
+     still reads as the quiet tone it is meant to be. */
+  --ink-faint:  #6E6558;
   --line:       rgba(25,21,16,.12);
   --line-lt:    rgba(252,248,240,.14);
 
@@ -47,6 +59,30 @@
 
   --ease: cubic-bezier(.22,.61,.36,1);
   --ease-out: cubic-bezier(.16,1,.3,1);
+
+  /* one focus ring for the whole site, in the brand colour, defined once so
+     no component has to reinvent it or switch it off */
+  --focus: var(--flame);
+  --focus-halo: rgba(232,70,28,.22);
+  --tap: 44px;                     /* the smallest thing a thumb should hit */
+  --tap-min: 0px;                  /* raised to --tap on touch screens, below */
+}
+
+/* Components write `min-height: max(<design height>, var(--tap-min))`, so the
+   thumb floor arrives by inheritance rather than by a later rule having to
+   out-specify them. Load order stops mattering, which is what went wrong when
+   this lived in a media query: the page stylesheet loads after the design
+   system, so its 38px chips beat the 44px floor every time. */
+@media (pointer: coarse) { :root { --tap-min: var(--tap); } }
+
+/* Everything that paints itself dark declares it once, here. The flame focus
+   ring disappears into navy, so it swaps to gold (7:1 on every dark ground
+   used on this page), and outline buttons pick up ivory instead of ink. */
+.dark, .deep, .ph, .nav, .foot {
+  --focus: var(--gold); --focus-halo: rgba(217,164,65,.24);
+  --ghost-fg: var(--ivory);
+  --ghost-line: rgba(252,248,240,.34);
+  --ghost-hov: var(--gold);
 }
 
 /* ---------- 2. Reset & base ---------- */
@@ -61,6 +97,31 @@ body {
 body.is-locked { overflow: hidden; }
 img, svg { max-width: 100%; display: block; }
 button { font: inherit; cursor: pointer; }
+
+/* Keyboard focus, everywhere, once. :focus-visible means a mouse click never
+   paints a ring while a Tab press always does, so this costs the pointer user
+   nothing and gives the keyboard user a way through the page. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 6px var(--focus-halo);
+}
+:where(a, button, input, select, textarea, summary, [tabindex]):focus:not(:focus-visible) { outline: none; }
+
+/* Off-screen until it is tabbed to, then it becomes the first thing on the
+   page — so a keyboard or screen-reader visitor is not walked through the
+   whole navigation before reaching the biography. */
+.skip {
+  position: fixed; top: 12px; left: 12px; z-index: 200;
+  display: inline-flex; align-items: center; min-height: var(--tap);
+  transform: translateY(-150%);
+  padding: 14px 22px; border-radius: 999px;
+  background: var(--flame-btn); color: #fff; text-decoration: none;
+  font: 600 13.5px/1 var(--body); letter-spacing: .03em;
+  box-shadow: var(--sh-2); transition: transform .25s var(--ease-out);
+}
+.skip:focus-visible { transform: translateY(0); }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--flame); color: #fff; }
 
@@ -95,6 +156,15 @@ section { position: relative; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px,4.5vw,72px); }
 .split.wide-l { grid-template-columns: 1.15fr .85fr; }
 .split.wide-r { grid-template-columns: .85fr 1.15fr; }
+
+/* A short headline beside a long column of prose leaves a half-page hole
+   under the headline. Pinning it means it travels down beside the paragraph
+   it introduces — the reader keeps the subject in view while they read, and
+   the hole closes on its own. Only worth doing when there is room to scroll
+   past, so it is off on narrow screens where the columns stack. */
+@media (min-width: 861px) {
+  .split.pin > :first-child { position: sticky; top: calc(var(--nav-h) + 56px); align-self: start; }
+}
 .flex { display: flex; } .center { align-items: center; } .between { justify-content: space-between; }
 .wrapf { flex-wrap: wrap; }
 .gs { gap: 12px; } .gm { gap: 24px; } .gl { gap: 44px; }
@@ -110,7 +180,9 @@ section { position: relative; }
 /* ---------- 4. Typographic bits ---------- */
 .eyebrow {
   font: 600 11.5px/1 var(--body); letter-spacing: .22em; text-transform: uppercase;
-  color: var(--flame); display: inline-flex; align-items: center; gap: 11px;
+  /* 11.5px uppercase is small type: it takes the deeper flame so it clears
+     4.5:1 on ivory and on sand. The display flame stays for headlines. */
+  color: var(--flame-deep); display: inline-flex; align-items: center; gap: 11px;
 }
 .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .6; }
 .dark .eyebrow, .deep .eyebrow, .eyebrow.gold { color: var(--gold); }
@@ -135,8 +207,9 @@ section { position: relative; }
 
 /* ---------- 5. Buttons ---------- */
 .btn {
-  --bg: var(--flame); --fg: #fff;
-  position: relative; display: inline-flex; align-items: center; gap: 10px;
+  --bg: var(--flame-btn); --fg: #fff;
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: var(--tap);
   font: 600 13.5px/1 var(--body); letter-spacing: .03em;
   padding: 16px 28px; border: 0; border-radius: 999px;
   background: var(--bg); color: var(--fg); overflow: hidden;
@@ -154,20 +227,27 @@ section { position: relative; }
 .btn svg { flex: none; transition: transform .4s var(--ease-out); position: relative; z-index: 1; }
 .btn:hover svg { transform: translateX(4px); }
 .btn.gold { --bg: var(--gold); --fg: #251B06; }
+/* The outline button takes its ink from whatever ground it stands on, rather
+   than from a list of section classes it has to be kept in sync with — the
+   hero used to be missing from that list, so "Get in touch" was navy on navy
+   and effectively invisible. --ghost-fg is set once per ground, above. */
 .btn.ghost {
-  --bg: transparent; --fg: var(--ink); box-shadow: none;
-  border: 1.5px solid var(--line);
+  --bg: transparent; --fg: var(--ghost-fg, var(--ink)); box-shadow: none;
+  border: 1.5px solid var(--ghost-line, var(--line));
 }
-.btn.ghost:hover { border-color: var(--flame); color: var(--flame); box-shadow: none; }
-.dark .btn.ghost, .deep .btn.ghost, .hero .btn.ghost { --fg: var(--ivory); border-color: rgba(252,248,240,.32); }
-.dark .btn.ghost:hover, .deep .btn.ghost:hover, .hero .btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn.ghost:hover {
+  border-color: var(--ghost-hov, var(--flame-deep));
+  color: var(--ghost-hov, var(--flame-deep));
+  box-shadow: none;
+}
 .btn.sm { padding: 12px 20px; font-size: 12.5px; }
 .btn.block { width: 100%; justify-content: center; padding-block: 18px; }
 
 .link-arrow {
   display: inline-flex; align-items: center; gap: 8px;
   font: 600 12.5px/1 var(--body); letter-spacing: .1em; text-transform: uppercase;
-  color: var(--flame); position: relative; padding-bottom: 4px;
+  color: var(--flame-deep); position: relative; padding-bottom: 4px;
+  min-height: var(--tap);
 }
 .link-arrow::after {
   content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
@@ -222,8 +302,8 @@ section { position: relative; }
   text-transform: uppercase; color: var(--flame);
 }
 .logo .l2 {
-  display: block; font: 600 8px/1.5 var(--body); letter-spacing: .2em;
-  text-transform: uppercase; color: rgba(252,248,240,.6); margin-top: 4px;
+  display: block; font: 600 10px/1.4 var(--body); letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(252,248,240,.82); margin-top: 4px;
 }
 
 .nav-links { display: flex; align-items: center; gap: 4px; }
@@ -393,8 +473,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 .scrollcue {
   display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
-  font: 500 9.5px/1 var(--body); letter-spacing: .24em; text-transform: uppercase;
-  color: rgba(252,248,240,.5);
+  font: 600 10.5px/1 var(--body); letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(252,248,240,.72);
 }
 .scrollcue i { display: block; width: 1px; height: 34px; background: linear-gradient(rgba(252,248,240,.6), transparent); animation: drop 1.9s var(--ease) infinite; }
 @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 56% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
@@ -592,12 +672,17 @@ svg.defs { position: absolute; width: 0; height: 0; }
 /* ---------- 22. Footer ---------- */
 .foot { background: var(--navy-3); color: rgba(252,248,240,.72); }
 .foot h4 { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
-.foot a { display: block; padding: 6px 0; font-size: 14.5px; color: rgba(252,248,240,.7); transition: color .3s, transform .3s var(--ease-out); }
+.foot a {
+  display: flex; align-items: center; padding: 6px 0; font-size: 14.5px;
+  min-height: max(36px, var(--tap-min));
+  color: rgba(252,248,240,.78); transition: color .3s, transform .3s var(--ease-out);
+}
 .foot a:hover { color: var(--flame-2); transform: translateX(3px); }
+.foot .where { padding: 6px 0; font-size: 14.5px; color: rgba(252,248,240,.78); margin: 0; }
 .foot .bottom {
   margin-top: 52px; padding-top: 24px; border-top: 1px solid rgba(252,248,240,.1);
   display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap;
-  font-size: 12.5px; color: rgba(252,248,240,.44);
+  font-size: 13px; color: rgba(252,248,240,.6);
 }
 
 /* ---------- 23. Demo banner + back to top ---------- */
@@ -751,13 +836,13 @@ html { overflow-x: clip; }
   display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
 .chaprail button { display: flex; align-items: center; gap: 10px; background: none; border: 0;
   padding: 6px 0; color: var(--ink-faint); }
-.chaprail em { font: 600 9px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+.chaprail em { font: 600 10.5px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
   font-style: normal; opacity: 0; transform: translateX(6px);
   transition: opacity .4s var(--ease), transform .4s var(--ease); }
 .chaprail .tick { display: block; width: 22px; height: 2px; border-radius: 2px;
   background: currentColor; opacity: .3; transition: all .45s var(--ease); }
 .chaprail button:hover em, .chaprail button.on em { opacity: 1; transform: none; }
-.chaprail button.on { color: var(--flame); }
+.chaprail button.on { color: var(--flame-deep); }
 .chaprail button.on .tick { width: 40px; opacity: 1; }
 .chaprail button:hover .tick { opacity: .7; }
 
@@ -848,7 +933,18 @@ body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-ins
   .has-cursor, .has-cursor a, .has-cursor button { cursor: auto !important; }
   .tilt .glare { display: none; }
   .gal-tile .gal-cap { opacity: 1; transform: none; }   /* captions always readable */
-  .nav-links a, .gal-chips button, .gal-pager button { min-height: 44px; }
+}
+
+/* A finger is about 9mm across; a mouse pointer is one pixel. Anything a
+   thumb has to land on grows to 44px on a touch screen — via --tap-min, so
+   each component keeps its own designed height on a desktop. */
+.nav-links a, .foot-links a, .foot nav a, .logo, .skip,
+.lb-close, .lb-prev, .lb-next, .burger, .chip, .link-arrow {
+  min-height: max(var(--own-h, 0px), var(--tap-min));
+}
+@media (pointer: coarse) {
+  .nav-links a, .foot-links a, .foot nav a { display: flex; align-items: center; }
+  .lb-close, .lb-prev, .lb-next, .burger { min-width: var(--tap); }
 }
 
 /* Momentum scrolling for the horizontal rails on iOS */
