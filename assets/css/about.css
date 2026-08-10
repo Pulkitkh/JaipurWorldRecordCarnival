@@ -73,22 +73,53 @@
 .bodies-grid span { display: block; font-weight: 500; font-size: 10px; letter-spacing: .15em;
   text-transform: uppercase; color: var(--gold); margin-top: 8px; }
 
-/* ---------- featured rail ---------- */
-.rail-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-  padding-bottom: 14px; scrollbar-width: thin; }
-.rail-scroll::-webkit-scrollbar { height: 6px; }
-.rail-scroll::-webkit-scrollbar-thumb { background: rgba(25,21,16,.2); border-radius: 6px; }
-.rail-item { flex: none; width: clamp(220px, 24vw, 320px); scroll-snap-align: start;
-  border-radius: 4px; overflow: hidden; border: 1px solid var(--line); background: var(--sand);
-  position: relative; cursor: pointer; padding: 0; text-align: left;
-  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
-.rail-item:hover { transform: translateY(-5px); box-shadow: var(--sh-2); }
-.rail-item .scene, .rail-item img { aspect-ratio: 4/3; width: 100%; object-fit: cover; display: block; }
-.rail-item .meta { padding: 14px 16px 18px; }
-.rail-item .meta b { display: block; font-family: var(--display); font-size: 16px; font-weight: 600;
-  line-height: 1.3; }
-.rail-item .meta span { display: block; font: 500 10.5px/1 var(--body); letter-spacing: .15em;
-  text-transform: uppercase; color: var(--ink-faint); margin-top: 8px; }
+/* ---------- featured carousel ----------
+   The track is twice the content and drifts continuously; the mask fades
+   both edges so cards enter and leave rather than being cut off. */
+.rail-mask {
+  position: relative; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.rail-scroll {
+  display: flex; gap: 20px; width: max-content; padding-block: 26px 30px;
+  will-change: transform;
+}
+.rail-scroll.is-static { width: auto; overflow-x: auto; }
+
+.rail-item {
+  flex: none; width: clamp(240px, 26vw, 340px);
+  border-radius: 5px; overflow: hidden; border: 1px solid var(--line);
+  background: var(--ivory); position: relative; cursor: pointer;
+  padding: 0; text-align: left;
+  transform: translateY(calc(var(--lift, 0px) * -1)) scale(var(--scale, 1));
+  box-shadow: 0 calc(6px + var(--glow, 0) * 22px) calc(18px + var(--glow, 0) * 40px)
+              -14px rgba(70,46,26, calc(.18 + var(--glow, 0) * .30));
+  transition: border-color .4s var(--ease);
+}
+.rail-item:hover, .rail-item:focus-visible { border-color: rgba(232,70,28,.55); }
+.rail-item:focus-visible { outline: 2px solid var(--flame); outline-offset: 3px; }
+
+.rail-item .scene, .rail-item img {
+  aspect-ratio: 4/3; width: 100%; object-fit: cover; display: block;
+  filter: saturate(calc(.88 + var(--glow, 0) * .22));
+  transition: filter .5s var(--ease);
+}
+.rail-item .meta { padding: 16px 18px 20px; }
+.rail-item .meta b {
+  display: block; font-family: var(--display); font-size: 17px; font-weight: 600;
+  line-height: 1.28;
+}
+.rail-item .meta > span {
+  display: block; font-size: 12.5px; line-height: 1.5; color: var(--ink-faint);
+  margin-top: 8px;
+}
+/* a hairline that fills as the card reaches the middle */
+.rail-item::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  background: linear-gradient(90deg, var(--flame), var(--gold));
+  transform: scaleX(var(--glow, 0)); transform-origin: left;
+}
 
 /* ---------- archive controls ---------- */
 .gal-bar {

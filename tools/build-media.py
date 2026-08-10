@@ -105,6 +105,74 @@ def describe(path):
     return category, year, event
 
 
+def dhash(img, size=8):
+    """A perceptual fingerprint: 64 bits describing where the image gets
+    lighter left-to-right. Two shots of the same thing land within a few bits
+    of each other, whatever the file size or compression."""
+    small = img.convert("L").resize((size + 1, size), Image.LANCZOS)
+    px = list(small.getdata())
+    bits = 0
+    for row in range(size):
+        for col in range(size):
+            left = px[row * (size + 1) + col]
+            right = px[row * (size + 1) + col + 1]
+            bits = (bits << 1) | (left < right)
+    return bits
+
+
+def dedupe(items, threshold=6):
+    """Collapse repeats. People send the same photograph several times — the
+    same file under two names, a full-size copy beside a resized one. On a page
+    that is one long mosaic those read as a mistake, so only the sharpest copy
+    of each picture survives. Curation (caption, event, featured) is carried
+    over from any twin that had it, so nothing hand-written is lost."""
+    kept, dropped = [], 0
+    for item in items:
+        fp = item.get("_hash")
+        twin = None
+        if fp is not None:
+            for other in kept:
+                if other.get("_hash") is None:
+                    continue
+                if bin(fp ^ other["_hash"]).count("1") <= threshold:
+                    twin = other
+                    break
+        if twin is None:
+            kept.append(item)
+            continue
+        dropped += 1
+        # keep whichever copy carries more pixels
+        better, worse = (item, twin) if item["w"] * item["h"] > twin["w"] * twin["h"] else (twin, item)
+        if better is item:
+            better.update({k: v for k, v in worse.items()
+                           if k in ("caption", "event", "category", "alt", "tags") and v and not better.get(k)})
+            better["featured"] = better.get("featured") or worse.get("featured", False)
+            kept[kept.index(twin)] = better
+        else:
+            better.update({k: v for k, v in worse.items()
+                           if k in ("caption", "event", "category", "alt", "tags") and v and not better.get(k)})
+            better["featured"] = better.get("featured") or worse.get("featured", False)
+    for item in kept:
+        item.pop("_hash", None)
+    return kept, dropped
+
+
+def interleave(items):
+    """Deal the photographs out round-robin by record. Grouped by event, the
+    first screen of the archive would be twelve shots of one wall calendar;
+    dealt out, every record shows up on every page."""
+    order, buckets = [], {}
+    for item in items:
+        buckets.setdefault(item["event"], []).append(item)
+    while any(buckets.values()):
+        for event in list(buckets):
+            if buckets[event]:
+                order.append(buckets[event].pop(0))
+            else:
+                del buckets[event]
+    return order
+
+
 def main():
     if not SRC.exists():
         sys.exit(
@@ -127,6 +195,7 @@ def main():
                 img = ImageOps.exif_transpose(img)      # honour camera rotation
                 year = year or exif_year(img) or 0
                 tone = dominant_tone(img)
+                fingerprint = dhash(img)
                 w0, h0 = img.size
 
                 stem = slug(f"{year or 'undated'}-{event or 'archive'}-{path.stem}")[:70]
@@ -170,17 +239,22 @@ def main():
             "event": titlecase(event) if event else "Unsorted",
             "tags": [],
             "featured": False,
+            "_hash": fingerprint,                       # stripped by dedupe()
         })
 
         if i % 25 == 0 or i == len(files):
             print(f"  {i}/{len(files)} processed…")
 
+    items, repeats = dedupe(items)
     items.sort(key=lambda x: (-(x["year"] or 0), x["event"], x["id"]))
+    items = interleave(items)
     (OUT / "manifest.json").write_text(json.dumps({"items": items}, indent=1))
 
     total_mb = sum(f.stat().st_size for f in OUT.rglob("*.webp")) / 1e6
     print(f"\n  {len(items)} photographs indexed")
     print(f"  {made} files written, {skipped} already present, {failed} unreadable")
+    if repeats:
+        print(f"  {repeats} repeated photographs collapsed to one copy each")
     print(f"  {total_mb:.1f} MB total in media/")
     print(f"  manifest: {(OUT / 'manifest.json').relative_to(ROOT)}")
     untagged = sum(1 for i in items if i["event"] == "Unsorted")
