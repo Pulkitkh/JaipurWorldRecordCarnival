@@ -23,12 +23,12 @@
   }
 
   const PAL_BASE = {
-    dawn:   { a: "#F5B841", b: "#E8461C", c: "#8E2A2E", ink: "#2A1226", sun: "#FFE9B0" },
+    dawn:   { a: "#F5B841", b: "#B31F2A", c: "#8E2A2E", ink: "#2A1226", sun: "#FFE9B0" },
     day:    { a: "#7FC4D8", b: "#2C6E80", c: "#16405A", ink: "#0E2436", sun: "#FFF4CE" },
     dusk:   { a: "#F08A3C", b: "#B9333F", c: "#3B2050", ink: "#180E28", sun: "#FFD79A" },
-    night:  { a: "#2E4A78", b: "#1B2334", c: "#0C111D", ink: "#060911", sun: "#F0E2B6" },
+    night:  { a: "#2E4A78", b: "#171613", c: "#0C111D", ink: "#060911", sun: "#F0E2B6" },
     rose:   { a: "#F2A07B", b: "#D95536", c: "#7C2739", ink: "#2A1020", sun: "#FFE6C8" },
-    indigo: { a: "#5C86B8", b: "#23406B", c: "#111C33", ink: "#080E1C", sun: "#E8EEF8" },
+    indigo: { a: "#5C86B8", b: "#2E2A22", c: "#111C33", ink: "#080E1C", sun: "#E8EEF8" },
   };
   const PAL = new Proxy({}, { get: (_, k) => Object.assign({}, PAL_BASE[k]) });
 
@@ -112,7 +112,7 @@
 
   function kites(seed, n) {
     const r = rng(seed);
-    const cols = ["#E8461C", "#D9A441", "#FCF8F0", "#2C6E80", "#B92B2C"];
+    const cols = ["#B31F2A", "#A17A2E", "#F7F4EC", "#2C6E80", "#8E1720"];
     let out = "";
     for (let i = 0; i < (n || 7); i++) {
       const x = 40 + r() * (W - 80), y = 30 + r() * 200, s = 7 + r() * 9;
@@ -184,7 +184,7 @@
           const x = cx + Math.cos(a) * rad * wob * 1.34;
           const y = cy + Math.sin(a) * rad * wob * .82;
           if (x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
-          const c = ring % 3 === 0 ? "#E8461C" : ring % 3 === 1 ? "#D9A441" : "#FCF8F0";
+          const c = ring % 3 === 0 ? "#B31F2A" : ring % 3 === 1 ? "#A17A2E" : "#F7F4EC";
           dots += `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${(3.4 + r() * 1.4).toFixed(1)}"
                     fill="${c}" opacity="${(.65 + r() * .35).toFixed(2)}"/>`;
         }
@@ -193,7 +193,7 @@
         + `<circle cx="${cx}" cy="${cy}" r="330" fill="${p.b}" opacity=".55"/>`
         + `<circle cx="${cx}" cy="${cy}" r="190" fill="${p.a}" opacity=".18"/>`
         + dots
-        + `<circle cx="${cx}" cy="${cy}" r="9" fill="#E8461C"/>`;
+        + `<circle cx="${cx}" cy="${cy}" r="9" fill="#B31F2A"/>`;
     },
     // a school ground, mid-morning
     school: (s) => {
@@ -297,7 +297,7 @@
                  transform="rotate(${(a * 180 / Math.PI).toFixed(0)} ${(100 + Math.cos(a) * 52).toFixed(1)} ${(100 + Math.sin(a) * 52).toFixed(1)})"/>`;
       }).join("")}
       <circle cx="100" cy="100" r="24" fill="currentColor" opacity=".85"/>
-      <circle cx="100" cy="100" r="11" fill="none" stroke="#FCF8F0" stroke-width="2"/></svg>`,
+      <circle cx="100" cy="100" r="11" fill="none" stroke="#F7F4EC" stroke-width="2"/></svg>`,
     block: () => `<svg viewBox="0 0 200 200">
       ${Array.from({ length: 4 }, (_, r) => Array.from({ length: 4 }, (_, c) => {
         const x = 25 + c * 50, y = 25 + r * 50;
@@ -321,8 +321,8 @@
 
   function portrait(seed) {
     const r = rng(seed);
-    const grounds = [["#F4EADA", "#E8461C"], ["#EADCC4", "#23406B"], ["#F7EEDD", "#2C6E80"],
-                     ["#EFE1CB", "#B92B2C"], ["#F4EADA", "#2E6A50"], ["#EDDFC8", "#D9A441"]];
+    const grounds = [["#EFE9DD", "#B31F2A"], ["#EADCC4", "#2E2A22"], ["#F7EEDD", "#2C6E80"],
+                     ["#EFE1CB", "#8E1720"], ["#EFE9DD", "#2E6A50"], ["#EDDFC8", "#A17A2E"]];
     const [bg, ac] = grounds[Math.floor(r() * grounds.length)];
     const head = r();
     let cover = "";

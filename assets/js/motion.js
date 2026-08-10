@@ -247,7 +247,7 @@
   if (canvas) {
     const ctx = canvas.getContext("2d");
     let W, H, pts = [], mouse = { x: -1e4, y: -1e4 }, raf;
-    const COLS = ["#E8461C", "#D9A441", "#FCF8F0", "#F4813A"];
+    const COLS = ["#B31F2A", "#A17A2E", "#F7F4EC", "#F4813A"];
     function size() {
       const r = canvas.getBoundingClientRect();
       const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -528,7 +528,7 @@
       const wrap = document.createElement("div");
       wrap.className = "burst";
       host.appendChild(wrap);
-      const cols = ["#E8461C", "#D9A441", "#FCF8F0", "#2C6E80"];
+      const cols = ["#B31F2A", "#A17A2E", "#F7F4EC", "#2C6E80"];
       for (let i = 0; i < 34; i++) {
         const d = document.createElement("i");
         d.style.background = cols[i % cols.length];
