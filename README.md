@@ -63,6 +63,15 @@ open http://localhost:8000/tools/sorter.html   # tag them, then Export
 number keys. Shift-click the filmstrip to select a range and tag it in one
 keypress. Export replaces `media/manifest.json`.
 
+## If the archive ever shows "Loading…"
+
+That is a stale browser cache: an old copy of one script against a new copy of
+another. Hard refresh (Ctrl/Cmd + Shift + R).
+
+It should not be possible now — every stylesheet and script is loaded with a
+`?v=` version string, so a deploy can never serve a mismatched pair. Bump the
+`VER` value in `index.html` if you ever edit an asset by hand.
+
 ## Content notes
 
 Everything on the page is real and sourced from the material supplied.
