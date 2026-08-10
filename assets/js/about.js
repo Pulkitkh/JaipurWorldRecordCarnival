@@ -69,11 +69,17 @@
     const lightbox = new window.JWRCGallery.Lightbox($("#lightbox"));
     const gallery = new window.JWRCGallery.Gallery($("#mosaic"), {
       status: $("#gal-count"),
+      pager: $("#gal-pager"),
+      perPage: 24,
       onOpen: (i, view) => lightbox.open(i, view),
+    });
+    $("#gal-pager").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-go]");
+      if (b && !b.disabled) gallery.goTo(+b.dataset.go);
     });
 
     /* ── filter bar, built from derived facets ── */
-    const q = { category: "all", year: "all", text: "" };
+    const q = { category: "all", text: "" };
 
     const cats = $("#gal-cats");
     cats.innerHTML =
@@ -81,9 +87,6 @@
       facets.cats.map((c) =>
         `<button data-cat="${c.id}">${c.label} <em>${c.count}</em></button>`).join("");
 
-    const yearSel = $("#gal-year");
-    yearSel.innerHTML = '<option value="all">All years</option>' +
-      facets.years.map((y) => `<option value="${y}">${y || "Undated"}</option>`).join("");
 
     cats.addEventListener("click", (e) => {
       const b = e.target.closest("button");
@@ -93,7 +96,6 @@
       q.category = b.dataset.cat;
       apply();
     });
-    yearSel.addEventListener("change", () => { q.year = yearSel.value; apply(); });
 
     let t;
     $("#gal-q").addEventListener("input", (e) => {
@@ -103,8 +105,7 @@
 
     function apply() {
       gallery.filter(q);
-      $("#gal-empty").classList.toggle("on", gallery.view.length === 0);
-      buildTimeline(gallery.view);
+      $("#gal-empty").classList.toggle("on", gallery.matched.length === 0);
     }
 
     gallery.setItems(items);
@@ -125,78 +126,6 @@
       const idx = pool.findIndex((x) => x.id === b.dataset.id);
       lightbox.open(idx, pool);
     });
-
-    /* ── timeline view ── */
-    const timeline = $("#timeline");
-
-    function buildTimeline(view) {
-      const byYear = new Map();
-      view.forEach((it) => {
-        if (!byYear.has(it.year)) byYear.set(it.year, []);
-        byYear.get(it.year).push(it);
-      });
-      const ys = [...byYear.keys()].sort((a, b) => (b || -1) - (a || -1));
-      timeline.innerHTML = `<div class="years">` + ys.map((y, k) => {
-        const list = byYear.get(y);
-        return `<details class="year-band"${k === 0 ? " open" : ""} data-year="${y}">
-          <summary>
-            <span class="y">${y || "Undated"}</span>
-            <span class="lbl">${uniqueEvents(list)}</span>
-            <span class="rule"></span>
-            <span class="n">${list.length} photographs</span>
-            <i>+</i>
-          </summary>
-          <div class="year-strip" data-year="${y}"></div>
-        </details>`;
-      }).join("") + `</div>`;
-
-      /* fill a band the first time it opens — nothing loads until asked for */
-      $$("details.year-band", timeline).forEach((d) => {
-        const fill = () => {
-          const strip = $(".year-strip", d);
-          if (strip.dataset.filled) return;
-          strip.dataset.filled = "1";
-          const list = byYear.get(+d.dataset.year);
-          const shown = list.slice(0, 14);
-          strip.innerHTML = shown.map((it, i) =>
-            `<button class="ys" data-id="${it.id}" data-cursor="View">${tileMedia(it, 210)}</button>`).join("")
-            + (list.length > shown.length
-               ? `<button class="more" data-year="${d.dataset.year}">
-                    +${list.length - shown.length} more<br><span style="color:var(--flame)">Open in mosaic</span>
-                  </button>` : "");
-          if (window.JWRCArt) window.JWRCArt.build(strip);
-          strip.addEventListener("click", (e) => {
-            const more = e.target.closest(".more");
-            if (more) {
-              yearSel.value = more.dataset.year; q.year = more.dataset.year;
-              showMosaic(); apply();
-              return;
-            }
-            const b = e.target.closest(".ys");
-            if (!b) return;
-            lightbox.open(list.findIndex((x) => x.id === b.dataset.id), list);
-          });
-        };
-        if (d.open) fill();
-        d.addEventListener("toggle", () => { if (d.open) fill(); }, { once: false });
-      });
-    }
-
-    /* ── view switch ── */
-    const bMos = $("#view-mosaic"), bTime = $("#view-time");
-    function showMosaic() {
-      bMos.classList.add("on"); bTime.classList.remove("on");
-      $("#mosaic").hidden = false; timeline.hidden = true;
-      gallery.layout();
-    }
-    function showTimeline() {
-      bTime.classList.add("on"); bMos.classList.remove("on");
-      $("#mosaic").hidden = true; timeline.hidden = false;
-      gallery.unmountAll();
-    }
-    bMos.addEventListener("click", showMosaic);
-    bTime.addEventListener("click", showTimeline);
-    buildTimeline(items);
 
     /* ── deep link: /about.html#photo=<id> opens that photograph ── */
     const hash = decodeURIComponent(location.hash.replace("#photo=", ""));

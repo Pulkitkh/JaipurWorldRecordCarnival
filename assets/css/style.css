@@ -822,3 +822,47 @@ html { overflow-x: clip; }
 .burst i { position: absolute; width: 8px; height: 8px; border-radius: 2px; display: block; }
 
 @media (max-width: 900px) { .readring { display: none; } }
+
+/* ---------- 28. Cross-device hardening ----------
+   iOS Safari, Android Chrome, notched phones and trackpad-less desktops. */
+
+/* iOS: 100vh includes the address bar, so full-height blocks overflow.
+   svh is the small viewport height and is what phones actually show. */
+@supports (height: 100svh) {
+  .hero, .hsec { min-height: min(88svh, 880px); }
+}
+
+/* Notches and rounded corners */
+body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+.foot { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+#totop { bottom: max(22px, env(safe-area-inset-bottom)); }
+
+/* iOS zooms the page when a font under 16px is focused */
+@media (max-width: 900px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Touch devices: no hover states, bigger targets, no custom cursor */
+@media (hover: none) {
+  .cursor { display: none !important; }
+  .has-cursor, .has-cursor a, .has-cursor button { cursor: auto !important; }
+  .tilt .glare { display: none; }
+  .gal-tile .gal-cap { opacity: 1; transform: none; }   /* captions always readable */
+  .nav-links a, .gal-chips button, .gal-pager button { min-height: 44px; }
+}
+
+/* Momentum scrolling for the horizontal rails on iOS */
+.rail-scroll, .hs-track, .strip { -webkit-overflow-scrolling: touch; }
+
+/* Windows/Android: keep long record titles from forcing a scrollbar */
+h1, h2, h3, .rec-b h3 { overflow-wrap: break-word; }
+
+/* Print — a portfolio gets printed more often than people expect */
+@media print {
+  .nav, .chaprail, .cursor, .veil, #totop, .gal-pager, .gal-bar, #preload { display: none !important; }
+  body { background: #fff; color: #000; }
+  .dark, .deep, .ph { background: #fff !important; color: #000 !important; }
+  .dark h1,.dark h2,.dark h3,.deep h1,.deep h2,.deep h3,.ph h1 { color: #000 !important; }
+  .rec-n b { color: #000 !important; }
+  a { text-decoration: underline; }
+}

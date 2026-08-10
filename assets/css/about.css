@@ -305,3 +305,38 @@
   body .rec-row { grid-template-columns: 1fr; gap: 14px; }
   body .rec-c { grid-column: 1; }
 }
+
+/* ---------- hero portrait (real photograph) ---------- */
+.portrait-photo { width: 100%; height: auto; display: block; aspect-ratio: 3/4; object-fit: cover; }
+
+/* ---------- archive entrance ----------
+   Tiles settle into place the first time they are seen. The delay is set
+   per tile by the engine, capped so a full page never feels slow. */
+.gal-tile { transition: transform .55s var(--ease-out), opacity .55s var(--ease-out); }
+.gal-tile.is-entering {
+  opacity: 0;
+  transform: translate3d(var(--tx,0), calc(var(--ty,0px) + 34px), 0) scale(.92) !important;
+  transition-delay: var(--enter-delay, 0ms);
+}
+.no-motion .gal-tile.is-entering { opacity: 1; transform: none !important; }
+
+/* ---------- pagination ---------- */
+.gal-pager {
+  display: flex; justify-content: center; align-items: center; gap: 6px;
+  flex-wrap: wrap; margin-top: 42px;
+}
+.gal-pager:empty { display: none; }
+.gal-pager button {
+  min-width: 42px; height: 42px; padding: 0 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink-soft);
+  font: 600 13.5px/1 var(--body); font-variant-numeric: tabular-nums;
+  transition: all .3s var(--ease);
+}
+.gal-pager button:hover:not(:disabled) { border-color: var(--flame); color: var(--flame); }
+.gal-pager button.on {
+  background: var(--flame); border-color: var(--flame); color: #fff;
+  box-shadow: 0 8px 20px -10px rgba(232,70,28,.9);
+}
+.gal-pager button:disabled { opacity: .3; cursor: not-allowed; }
+.gal-pager .pg-arrow { font-size: 20px; line-height: 1; }
+.gal-pager .pg-gap { color: var(--ink-faint); padding: 0 4px; }

@@ -133,10 +133,13 @@ def main():
                 folder = OUT / (str(year) if year else "undated") / slug(event or "archive")
                 folder.mkdir(parents=True, exist_ok=True)
 
+                # breakpoints below the original, plus the original itself when
+                # it sits between two of them — never upscale, never lose detail
+                targets = [t for t in WIDTHS if t <= w0]
+                if not targets or max(targets) < min(w0, max(WIDTHS)):
+                    targets.append(min(w0, max(WIDTHS)))
                 widths = {}
-                for target in WIDTHS:
-                    if target > w0 and target != WIDTHS[0]:
-                        continue                        # never upscale
+                for target in sorted(set(targets)):
                     dest = folder / f"{stem}-{target}.webp"
                     widths[target] = str(dest.relative_to(ROOT)).replace("\\", "/")
                     if dest.exists():

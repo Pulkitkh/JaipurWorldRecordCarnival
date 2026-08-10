@@ -1,85 +1,77 @@
-# Jaipur World Record Carnival
+# Manmohan Agarwal — portfolio
 
-A movement built on one belief: that extraordinary things happen when ordinary
-people decide to do them together.
-
-> **The Jaipur World Record Carnival website is not built to explain what we do.
-> It is built to make people understand why we exist.** Through immersive
-> storytelling, thoughtful design, and the subtle essence of Rajasthan's culture
-> and heritage, every visitor should feel emotionally connected to our vision,
-> inspired by our purpose, and excited to become part of a movement that
-> celebrates collective achievement, community, and the belief that extraordinary
-> things happen when people come together.
-
-*Every design decision on this site answers to the paragraph above.*
-
----
-
-## The three rules it enforces
-
-**1. Records are never the opening line.** Records are how the vision is achieved,
-not the vision itself. The homepage does not use the word until Chapter Three — by
-which point the visitor already understands *why* before *what*.
-
-**2. Rajasthan is the identity, not the topic.** The site never announces the
-state. There is no "Welcome to Rajasthan", no chapter explaining Mandana or blue
-pottery. The warmth, the arches, the palette, the block-print borders and the
-crowds do that work silently. A visitor should *feel* it without ever being told.
-Devanagari appears exactly twice on the whole site, both times as a welcome
-rather than as decoration.
-
-**3. The conversion is a feeling, not a button.** Not *Apply Now*, not *Register*.
-The only conversion that counts is "I believe in what these people are building."
-
-## The homepage is an interactive documentary
-
-Seven chapters, not seven sections. Every scroll reveals another piece of the
-story.
-
-| | |
-|---|---|
-| **One** | Welcome — ordinary people, extraordinary things, together |
-| **Two** | Why We Gather — connection, purpose, celebration |
-| **Three** | Why Records — a record is not a number, it is a symbol |
-| **Four** | What We Build — now, finally, the practical part |
-| **Five** | Stories — moments, not testimonials |
-| **Six** | Where This Goes — the vision, and the generation after |
-| **Seven** | Join the Journey — every great story begins with one decision |
-
-> **“Find your passion, and it’s no longer work.”**
-
-## What's here
-
-```
-JaipurWorldRecordCarnival/
-├── index.html            Homepage — the seven-chapter documentary
-├── gather.html           Why We Gather — story, vision, mission, values, people
-├── why-records.html      Why Records Matter — the founding argument
-├── what-we-build.html    Six stages, ten services, audiences, FAQ
-├── moments.html          Filterable archive with story detail
-├── join.html             Four ways in + three-step enquiry wizard
-├── assets/               CSS, JS, self-hosted fonts
-├── shoot.py              Screenshot harness
-├── shots/                Rendered page screenshots
-├── design-concepts/      Earlier static design mockups (reference only)
-└── DOCS.md               Full technical documentation
-```
-
-## Running it
-
-No build step, no dependencies, no external network requests.
+A single-page portfolio for Manmohan Agarwal, founder of the Jaipur World Record
+Carnival. Static: no build step, no framework, no external requests at runtime.
 
 ```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
+python3 -m http.server 8000     # then open http://localhost:8000
 ```
 
-Or simply open `index.html` in a browser.
+## Deploying
 
-## Before publishing
+The site is plain files, so any static host works. Configuration for the two
+easiest is already in the repository — **no build command, no output directory**.
 
-All record entries, participant figures and quotes are **illustrative demo
-content** pending verified information. See the checklist at the end of
-[`DOCS.md`](DOCS.md).
+| Host | What to do |
+|---|---|
+| **Vercel** | Import the repo. Framework preset: **Other**. Leave build and output empty. `vercel.json` sets caching and security headers. |
+| **Netlify** | Import the repo. Build command empty, publish directory `.`. `netlify.toml` does the rest. |
+| **GitHub Pages** | Settings → Pages → deploy from `main`, folder `/`. Paths are relative, so a project subpath works. |
+| **Cloudflare Pages** | Framework preset: **None**. Build output directory `/`. |
 
+After deploying, update the absolute URLs if the domain differs from
+`jaipurworldrecordcarnival.in` — `canonical`, `og:url` and `sitemap.xml`.
 
+## Structure
+
+```
+index.html              the whole site
+assets/css/style.css    design system — tokens, type, components, motion
+assets/css/about.css    portfolio-specific layout
+assets/js/app.js        nav, footer, scroll chrome
+assets/js/motion.js     GSAP + Lenis motion system
+assets/js/media.js      photo library loader and helpers
+assets/js/gallery.js    virtualised, paginated masonry + lightbox
+assets/js/about.js      page controller
+assets/vendor/          GSAP, Lenis — vendored, no CDN
+media/                  web-ready photographs + manifest.json
+media-source/           originals (gitignored)
+tools/build-media.py    turns originals into the web library
+tools/sorter.html       visual tagger for unlabelled photographs
+```
+
+## The archive
+
+77 photographs, grouped by record. Filter by kind, search by name, 24 to a page.
+
+The grid is **virtualised**: only tiles near the viewport exist in the DOM, and
+they recycle as you scroll, so cost is bounded by screen size rather than by
+library size. Layout is computed from each photograph's intrinsic dimensions, so
+nothing shifts as images load.
+
+### Adding more photographs
+
+```bash
+pip install pillow
+cp /path/to/new/photos/* media-source/
+python3 tools/build-media.py          # resizes, converts to WebP, writes the manifest
+python3 -m http.server 8000
+open http://localhost:8000/tools/sorter.html   # tag them, then Export
+```
+
+`tools/sorter.html` shows one photograph at a time with the records bound to
+number keys. Shift-click the filmstrip to select a range and tag it in one
+keypress. Export replaces `media/manifest.json`.
+
+## Content notes
+
+Everything on the page is real and sourced from the material supplied.
+
+- The **Limca certificate** in the archive is the authority on the 197,610-photograph
+  exhibition: *largest photo exhibition on a single personality*, Triton Mall,
+  Jaipur, **17 September 2018**. It is a **Limca** record, not Guinness — the page
+  says so.
+- Photographs carry no dates, so the archive has **no year filter**. If dates are
+  supplied later, set `year` in the manifest and the facet can be restored.
+- The hero portrait is cropped from a certificate photograph. Replace
+  `media/portrait/manmohan-agarwal-*.webp` with a proper portrait when one exists.
