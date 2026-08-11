@@ -23,8 +23,6 @@
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg>`;
 
-  /* The client's own mark, from their business card. The site theme was
-     rebuilt around it; the mark itself is left exactly as they drew it. */
   const MARK = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
     <path d="M20 1.6c-1.7 2.3-.5 3.6.5 4.4" stroke="#E8461C" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M4 39V19.6C4 11 11.2 4.2 20 4.2S36 11 36 19.6V39z" fill="#E8461C"/>
@@ -86,7 +84,7 @@
           <div class="grid" style="grid-template-columns:1.7fr 1fr 1.3fr;gap:44px">
             <div>
               ${logo("on-dark")}
-              <p class="mt-m" style="max-width:36ch;font-size:15px;color:rgba(247,244,236,.6)">
+              <p class="mt-m" style="max-width:36ch;font-size:15px;color:rgba(252,248,240,.6)">
                 Multiple world record holder, entrepreneur and social visionary.
                 Founder of the Jaipur World Record Carnival.</p>
               <p style="font-family:var(--display);font-style:italic;font-size:17px;color:var(--gold);margin-top:20px">
@@ -176,7 +174,7 @@
       const x = (i * 97.13) % W, y = (i * 53.77) % H;
       const d = Math.hypot(x - cx, (y - cy) * 2.4) / 640;
       out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.4 + (i % 3) * .35).toFixed(2)}"
-               fill="#F7F4EC" style="--d:${(n++ * 1.4).toFixed(0)}ms;--o:${(.09 + d * .3).toFixed(2)}"/>`;
+               fill="#FCF8F0" style="--d:${(n++ * 1.4).toFixed(0)}ms;--o:${(.09 + d * .3).toFixed(2)}"/>`;
     }
     for (let ring = 1; ring <= 5; ring++) {
       const k = ring * 12, rad = ring * 17;
@@ -185,15 +183,15 @@
         out += `<circle cx="${(cx + Math.cos(a) * rad * wob * 2.3).toFixed(1)}"
                  cy="${(cy + Math.sin(a) * rad * wob).toFixed(1)}" r="2.6"
                  style="--d:${(700 + ring * 90 + i * 6).toFixed(0)}ms;--o:.95"
-                 fill="${ring % 2 ? "#B31F2A" : "#A17A2E"}"/>`;
+                 fill="${ring % 2 ? "#E8461C" : "#D9A441"}"/>`;
       }
     }
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2;
       out += `<circle cx="${(cx + Math.cos(a) * 21 * 2.3).toFixed(1)}" cy="${(cy + Math.sin(a) * 21).toFixed(1)}"
-               r="3.6" fill="#F7F4EC" style="--d:${1250 + i * 30}ms;--o:1"/>`;
+               r="3.6" fill="#FCF8F0" style="--d:${1250 + i * 30}ms;--o:1"/>`;
     }
-    out += `<circle cx="${cx}" cy="${cy}" r="5.4" fill="#B31F2A" style="--d:1500ms;--o:1"/>`;
+    out += `<circle cx="${cx}" cy="${cy}" r="5.4" fill="#E8461C" style="--d:1500ms;--o:1"/>`;
     svg.innerHTML = out;
     $$("circle", svg).forEach((c) => {
       if (REDUCED) { c.style.opacity = c.style.getPropertyValue("--o") || 1; return; }
@@ -302,7 +300,7 @@
                 border-radius:50%;overflow:hidden"></span>
               <span>
                 <span style="display:block;font-weight:600">${s.name}</span>
-                <span style="display:block;font-size:13px;color:rgba(247,244,236,.55)">${s.role}</span>
+                <span style="display:block;font-size:13px;color:rgba(252,248,240,.55)">${s.role}</span>
               </span>
             </div>
           </div>
