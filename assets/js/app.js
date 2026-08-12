@@ -65,7 +65,13 @@
       ${MARK}<span><span class="l1">Jaipur</span><span class="l2">World Record Carnival</span></span></a>`;
   }
 
-  function mountChrome() {
+  /* The nav is position:sticky, so it occupies layout space — injecting it
+     after first paint pushed the whole page down 74px and was worth about
+     0.05 of CLS on its own. It is now written during parse, from a script
+     placed immediately after <body> opens, so the space exists before
+     anything is painted. The footer still waits for DOMContentLoaded,
+     because appending it early would put it above the page content. */
+  function mountNav() {
     const links = NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("");
 
     /* The skip link has to stay the very first tab stop, so the chrome is
@@ -87,7 +93,9 @@
         <a href="tel:+918003003000" class="btn mt-m" style="justify-content:center">
           Call +91 80030 03000 ${ARROW}</a>
       </div>`);
+  }
 
+  function mountFooter() {
     document.body.insertAdjacentHTML("beforeend", `
       <div class="blockprint"></div>
       <footer class="foot pad-sm">
@@ -124,6 +132,9 @@
           stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5"/></svg>
       </button>`);
 
+  }
+
+  function wireChrome() {
     // drawer
     const burger = $("#burger"), drawer = $("#drawer");
     burger.addEventListener("click", () => {
@@ -448,8 +459,12 @@
     p.style.display = "none";
   }
 
+  /* nav first, synchronously, while the parser is still inside <body> */
+  mountNav();
+
   document.addEventListener("DOMContentLoaded", function () {
-    mountChrome();
+    mountFooter();
+    wireChrome();
     if (window.JWRCArt) window.JWRCArt.build();
     stats(); marquee(); upcoming(); archive(); slider(); wizard();
     reveals(); scrollFx(); preloadFallback();

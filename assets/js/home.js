@@ -13,7 +13,7 @@
   const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   document.addEventListener("DOMContentLoaded", () => {
-    each(crowd, counters, glyphs, steps, reel);
+    each(crowd, counters, glyphs, steps, reel, parallax);
   });
 
   /* run each piece independently: one failure must not take the page down */
@@ -173,6 +173,44 @@
       });
     }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
     items.forEach((li) => io.observe(li));
+  }
+
+  /* ── Parallax ───────────────────────────────────────────────
+     Applied to the photograph only, never to the words over it — text that
+     drifts against its own background is harder to read, not more premium.
+     The travel is small (±7%) so foreground and backdrop never visibly
+     desync, and the whole thing is driven by one rAF-throttled scroll
+     listener rather than one ScrollTrigger per layer. */
+  function parallax() {
+    const layers = $$("[data-parallax]");
+    if (!layers.length || REDUCED) return;
+
+    let ticking = false;
+    const visible = new Set();
+
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target));
+      if (visible.size) request();
+    }, { rootMargin: "10% 0px" });
+    layers.forEach((l) => io.observe(l));
+
+    function apply() {
+      ticking = false;
+      const vh = innerHeight;
+      for (const layer of visible) {
+        const img = layer.querySelector("img");
+        if (!img) continue;
+        const r = layer.getBoundingClientRect();
+        // -1 when the band is entering from below, +1 when it has left above
+        const progress = ((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2);
+        img.style.transform = `translate3d(0, ${(progress * 7).toFixed(2)}%, 0)`;
+      }
+    }
+    function request() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
+
+    addEventListener("scroll", () => { if (visible.size) request(); }, { passive: true });
+    addEventListener("resize", request, { passive: true });
+    apply();
   }
 
   /* ── The record reel ────────────────────────────────────────

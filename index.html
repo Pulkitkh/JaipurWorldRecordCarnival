@@ -24,8 +24,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Jaipur World Record Carnival">
 <meta name="twitter:image" content="https://jaipurworldrecordcarnival.in/og-image.png">
-<link rel="stylesheet" href="assets/css/style.css?v=ba181ab1">
-<link rel="stylesheet" href="assets/css/home.css?v=ba181ab1">
+<!-- The display and body faces used above the fold. Without these the
+     headline paints in the fallback and reflows when the real face arrives,
+     which was worth ~0.09 of CLS on its own — the largest single shift on
+     the page. Only the latin subsets are preloaded; the rest still load
+     on demand from fonts.css. -->
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css?v=e5ea4a34">
+<link rel="stylesheet" href="assets/css/home.css?v=e5ea4a34">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,6 +51,11 @@
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
+
+<!-- Runs during parse, not after: the nav is position:sticky and so
+     occupies layout space. Mounting it after first paint pushed the whole
+     page down by its own height. -->
+<script src="assets/js/app.js?v=e5ea4a34"></script>
 
 <main id="main">
 
@@ -101,6 +113,21 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- The argument of this section is a photograph, not a paragraph: this is
+       what "we have always known how to gather" actually looks like. Full
+       bleed, with a slow parallax on the image only — never on the words. -->
+  <figure class="bleed" data-parallax>
+    <img src="media/dance/dance-019-720.webp"
+         srcset="media/dance/dance-019-640.webp 640w, media/dance/dance-019-720.webp 720w"
+         sizes="100vw" width="720" height="478" loading="lazy" decoding="async"
+         alt="Thousands of people filling a ground shoulder to shoulder during a
+              record attempt in Jaipur">
+    <figcaption><span>One morning. One ground. Everybody who said yes.</span></figcaption>
+  </figure>
+
+  <div class="wrap">
     <!-- three values, each with a small drawn glyph that animates on reveal -->
     <ul class="values" data-stag="0.12">
       <li class="value">
@@ -129,6 +156,22 @@
           rehearses, and the only part everybody remembers.</p>
       </li>
     </ul>
+
+    <!-- five frames of the same idea at different scales. The grid is
+         explicit so the row heights are known before the photographs load,
+         which keeps this band out of the layout-shift budget. -->
+    <div class="mosaic-strip mt-xl" data-stag="0.07">
+      <figure class="ms a"><img src="media/dance/dance-016-720.webp" width="720" height="478"
+        loading="lazy" decoding="async" alt="A ground filled with participants seen from above"></figure>
+      <figure class="ms b"><img src="media/dance/dance-014-720.webp" width="720" height="478"
+        loading="lazy" decoding="async" alt="Rows of participants in formation during an attempt"></figure>
+      <figure class="ms c"><img src="media/dance/dance-020-720.webp" width="720" height="478"
+        loading="lazy" decoding="async" alt="Participants in white and colour filling the frame"></figure>
+      <figure class="ms d"><img src="media/modi/modi-029-1600.webp" width="1600" height="1059"
+        loading="lazy" decoding="async" alt="Visitors walking the length of the photograph exhibition"></figure>
+      <figure class="ms e"><img src="media/dance/dance-018-720.webp" width="720" height="478"
+        loading="lazy" decoding="async" alt="A crowd gathered on a ground before an attempt begins"></figure>
+    </div>
   </div>
 </section>
 
@@ -156,8 +199,25 @@
         entirely itself.</p></li>
     </ol>
 
-    <p class="pullline" data-anim>The certificate is the receipt.
-      <span class="hl">The gathering was the purchase.</span></p>
+    <!-- The line is an argument about proportion, so the pictures are set at
+         that proportion: the certificate small, the crowd it stands for
+         large. Sizes are fixed by the grid, not by the images. -->
+    <div class="receipt">
+      <p class="pullline" data-anim>The certificate is the receipt.
+        <span class="hl">The gathering was the purchase.</span></p>
+      <figure class="rc-small" data-anim="right">
+        <img src="media/cert/cert-009-1032.webp" width="1032" height="774"
+             loading="lazy" decoding="async"
+             alt="Manmohan Agarwal holding two framed world record certificates">
+        <figcaption>The receipt</figcaption>
+      </figure>
+      <figure class="rc-large" data-anim="right" data-delay="0.12">
+        <img src="media/dance/dance-014-720.webp" width="720" height="478"
+             loading="lazy" decoding="async"
+             alt="Thousands of participants in formation across a ground">
+        <figcaption>The purchase</figcaption>
+      </figure>
+    </div>
   </div>
 
   <!-- the real records, as a scroll-driven reel -->
@@ -222,11 +282,33 @@
         becomes a memory or a mess. <strong>You bring the people.</strong></p>
     </div>
 
+    <!-- each kind of attempt carries a photograph of one. The image sits in
+         a fixed 5:4 box so the row never reflows as they load. -->
     <ul class="kinds" data-stag="0.09">
-      <li><h3>Educational</h3><p>Attempts built so students run them rather than attend them.</p></li>
-      <li><h3>For a cause</h3><p>Awareness carried at a scale a pamphlet will never reach.</p></li>
-      <li><h3>Cultural</h3><p>Where the artists are paid to teach, not booked to decorate.</p></li>
-      <li><h3>Civic</h3><p>Public initiatives where participation is genuine, not attendance.</p></li>
+      <li>
+        <span class="k-shot"><img src="media/modi/modi-026-1600.webp" width="1600" height="1059"
+          loading="lazy" decoding="async"
+          alt="Students walking the length of the photograph exhibition"></span>
+        <h3>Educational</h3><p>Attempts built so students run them rather than attend them.</p>
+      </li>
+      <li>
+        <span class="k-shot"><img src="media/cpr/cpr-003-954.webp" width="954" height="549"
+          loading="lazy" decoding="async"
+          alt="Newspaper coverage of four thousand children learning CPR on a single field"></span>
+        <h3>For a cause</h3><p>Awareness carried at a scale a pamphlet will never reach.</p>
+      </li>
+      <li>
+        <span class="k-shot"><img src="media/spoon/spoon-073-1600.webp" width="1600" height="1062"
+          loading="lazy" decoding="async"
+          alt="The carved wooden spoon on display at the Alankar Museum"></span>
+        <h3>Cultural</h3><p>Where the artists are paid to teach, not booked to decorate.</p>
+      </li>
+      <li>
+        <span class="k-shot"><img src="media/dance/dance-018-720.webp" width="720" height="478"
+          loading="lazy" decoding="async"
+          alt="A public ground filled with participants during a civic attempt"></span>
+        <h3>Civic</h3><p>Public initiatives where participation is genuine, not attendance.</p>
+      </li>
     </ul>
 
     <!-- the method, as a drawn line that fills on scroll -->
@@ -258,8 +340,12 @@
 </section>
 
 <!-- ══════ CHAPTER FIVE — TAKE PART ══════ -->
-<section class="pad-sm deep" id="join" data-chapter="Take part">
-  <div class="wrap narrow tc mxa">
+<section class="pad-sm deep join-c" id="join" data-chapter="Take part">
+  <div class="join-bg" aria-hidden="true">
+    <img src="media/dance/dance-016-720.webp" width="720" height="478"
+         loading="lazy" decoding="async" alt="">
+  </div>
+  <div class="wrap narrow tc mxa join-in">
     <div class="chapter" data-anim style="justify-content:center"><span class="no">05</span>
       <span class="lbl">Take part</span></div>
     <h2 data-split="lines">Every great story begins<br>with someone who turned up.</h2>
@@ -279,15 +365,14 @@
 
 </main>
 
-<script src="assets/js/app.js?v=ba181ab1"></script>
-<script src="assets/vendor/lenis.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/gsap.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/SplitText.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/CustomEase.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=ba181ab1"></script>
-<script src="assets/js/motion.js?v=ba181ab1"></script>
-<script src="assets/js/home.js?v=ba181ab1"></script>
+<script src="assets/vendor/lenis.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/gsap.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/SplitText.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/CustomEase.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=e5ea4a34"></script>
+<script src="assets/js/motion.js?v=e5ea4a34"></script>
+<script src="assets/js/home.js?v=e5ea4a34"></script>
 </body>
 </html>
