@@ -320,14 +320,26 @@ section { position: relative; }
 .nav .btn { margin-left: 10px; }
 
 .burger {
-  display: none; width: 42px; height: 42px; border: 1px solid rgba(252,248,240,.2);
-  border-radius: 50%; background: transparent; place-items: center;
+  display: none; position: relative; width: 44px; height: 44px;
+  border: 1px solid rgba(252,248,240,.2);
+  border-radius: 50%; background: transparent; flex: none;
 }
-.burger i { display: block; width: 17px; height: 1.6px; background: var(--ivory); transition: transform .4s var(--ease), opacity .3s; }
-.burger i + i { margin-top: 4.4px; }
-.burger.open i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+/* The bars are placed from the centre and moved only by transform, so the
+   two halves of the X are guaranteed to meet. Stacking them with margins
+   meant the closed spacing and the open translation had to agree by hand,
+   and they did not once the device pixel ratio rounded the 1.6px bar — on
+   a phone the X came out as a single diagonal stroke. */
+.burger i {
+  position: absolute; left: 50%; top: 50%;
+  width: 18px; height: 2px; margin: -1px 0 0 -9px;
+  background: var(--ivory); border-radius: 2px;
+  transition: transform .4s var(--ease), opacity .25s var(--ease);
+}
+.burger i:nth-child(1) { transform: translateY(-6px); }
+.burger i:nth-child(3) { transform: translateY(6px); }
+.burger.open i:nth-child(1) { transform: rotate(45deg); }
 .burger.open i:nth-child(2) { opacity: 0; }
-.burger.open i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.burger.open i:nth-child(3) { transform: rotate(-45deg); }
 
 .drawer {
   position: fixed; inset: var(--nav-h) 0 0; z-index: 880; background: var(--navy-2);
@@ -337,11 +349,17 @@ section { position: relative; }
   overflow-y: auto;
 }
 .drawer.open { opacity: 1; visibility: visible; transform: none; }
-.drawer a {
-  font-family: var(--display); font-size: 30px; font-weight: 600; color: var(--ivory);
-  padding: 15px 0; border-bottom: 1px solid rgba(252,248,240,.1);
+/* :not(.btn) matters. This rule is more specific than .btn, so without it
+   the call-to-action at the foot of the drawer was being rendered at 30px
+   in the display face — the phone number wrapped to two lines and spilled
+   straight out of its own pill. */
+.drawer a:not(.btn) {
+  font-family: var(--display); font-size: clamp(24px, 6.5vw, 30px); font-weight: 600;
+  color: var(--ivory); padding: 15px 0;
+  border-bottom: 1px solid rgba(252,248,240,.1);
 }
-.drawer a .n { font: 600 10px/1 var(--body); letter-spacing: .2em; color: var(--flame); display: block; margin-bottom: 8px; }
+.drawer .btn { align-self: stretch; text-align: center; white-space: nowrap; }
+.drawer a:not(.btn) .n { font: 600 10px/1 var(--body); letter-spacing: .2em; color: var(--flame); display: block; margin-bottom: 8px; }
 
 /* ---------- 9. Jharokha frames & scenes ---------- */
 svg.defs { position: absolute; width: 0; height: 0; }
@@ -713,7 +731,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 @media (max-width: 900px) {
   .nav-links { display: none; }
-  .burger { display: grid; }
+  .burger { display: block; }
   .nav .btn { display: none; }
   .hero-grid, .split, .split.wide-l, .split.wide-r { grid-template-columns: 1fr; }
   .g3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
