@@ -301,11 +301,81 @@
       if (next) { next.focus(); e.preventDefault(); }
     });
 
+    /* ── Continuous drift ──────────────────────────────────
+       The reel carries itself along rather than waiting to be pushed. It
+       is a real scroller, not a transformed track, so the finger, the
+       arrows, the scrollbar and the keyboard all still work — the drift
+       just nudges scrollLeft by a fraction of a pixel each frame and
+       wraps at the end.
+
+       It gives way to the reader immediately: hovering, focusing a card,
+       or touching or dragging it stops the drift, and it only resumes a
+       moment after they let go. It also stops completely when scrolled
+       out of view, and never starts under prefers-reduced-motion. */
+    const btns = $$("[data-reel]");
+
+    function drift() {
+      if (REDUCED) return;
+      const SPEED = 24;                       // px per second
+      let last = performance.now(), raf = 0;
+      let held = false, visible = false, resume = 0;
+
+      /* The position is kept here as a float rather than read back from the
+         element each frame. scrollLeft is rounded to whole pixels, so at
+         this speed every frame computed 72 + 0.35, assigned it, read back
+         72, and the reel never moved at all. */
+      let pos = track.scrollLeft;
+
+      function frame(now) {
+        const dt = Math.min(64, now - last) / 1000;
+        last = now;
+        const moving = !held && visible && now > resume;
+        track.classList.toggle("is-drifting", moving);
+        if (moving) {
+          const max = track.scrollWidth - track.clientWidth;
+          if (max > 1) {
+            pos += SPEED * dt;
+            if (pos >= max - .5) pos = 0;     // back to the beginning
+            track.scrollLeft = pos;
+          }
+        }
+        raf = requestAnimationFrame(frame);
+      }
+
+      const hold = () => { held = true; };
+      const release = () => {
+        held = false;
+        pos = track.scrollLeft;               // resync after a drag or a fling
+        resume = performance.now() + 900;
+        last = performance.now();
+      };
+      track.addEventListener("pointerenter", hold);
+      track.addEventListener("pointerleave", release);
+      track.addEventListener("focusin", hold);
+      track.addEventListener("focusout", release);
+      track.addEventListener("pointerdown", hold);
+      addEventListener("pointerup", release);
+      track.addEventListener("touchstart", hold, { passive: true });
+      track.addEventListener("touchend", release, { passive: true });
+      // an arrow press is a deliberate move; do not fight it
+      for (const b of btns) b.addEventListener("click", () => {
+        resume = performance.now() + 2200;
+        setTimeout(() => { pos = track.scrollLeft; }, 700);   // after the smooth scroll lands
+      });
+
+      new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting;
+        last = performance.now();
+      }, { threshold: 0 }).observe(track);
+
+      raf = requestAnimationFrame(frame);
+    }
+    drift();
+
     /* A horizontal scroller has to say how far along it is, or nobody
        knows there is more to the right. The rail reports position; the
        arrows move it by one card and disable themselves at each end. */
     const rail = $(".reel-rail i");
-    const btns = $$("[data-reel]");
     const step = () => {
       const c = track.querySelector(".rcard");
       return c ? c.getBoundingClientRect().width + 20 : 300;

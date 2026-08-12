@@ -83,13 +83,14 @@
 /* ---------- the mosaic ----------
    Five frames of the same idea at different sizes. An explicit grid means
    the row heights exist before the photographs arrive. */
-/* Five tiles have to tile exactly, or the last one drops into an orphan
-   row and leaves half the band empty. Four columns by three rows is twelve
-   cells: 4 + 2 + 1 + 1 + 4. */
+/* Four tiles, four different events. It was five, but the fifth was a
+   panoramic band showing the same crowd as the full-bleed image a screen
+   above it — the page looked like it was repeating itself. Four columns by
+   two rows is eight cells: 4 + 2 + 1 + 1. */
 .mosaic-strip {
   display: grid; gap: 10px;
   grid-template-columns: repeat(4, minmax(0,1fr));
-  grid-template-rows: repeat(3, clamp(104px, 12vw, 168px));
+  grid-template-rows: repeat(2, clamp(130px, 15vw, 210px));
 }
 .ms { margin: 0; overflow: hidden; border-radius: 3px; background: var(--sand-2); }
 .ms img { width: 100%; height: 100%; object-fit: cover; display: block;
@@ -99,7 +100,6 @@
 .ms.b { grid-column: span 2; }
 .ms.c { grid-column: span 1; }
 .ms.d { grid-column: span 1; }
-.ms.e { grid-column: 1 / -1; }                     /* a panoramic closing band */
 
 /* ---------- why records ---------- */
 .symbols { list-style: none; margin: 0 0 clamp(40px,5vw,70px); padding: 0;
@@ -164,11 +164,16 @@
 .reel-head h3 { font-size: clamp(21px,2vw,28px); color: var(--ivory); margin-bottom: 8px; }
 .reel-head p { font-size: 15px; color: rgba(252,248,240,.68); margin: 0 0 30px; max-width: 58ch; }
 .reel {
-  display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+  display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity;
   padding: 4px var(--gut) 28px; scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 .reel::-webkit-scrollbar { display: none; }
+/* Snapping fights the drift: the browser keeps pulling scrollLeft back to
+   the nearest card, so a slow nudge either stutters or is cancelled. Snap
+   is suspended while the reel is carrying itself and restored the moment
+   the reader takes hold of it. */
+.reel.is-drifting { scroll-snap-type: none; }
 .rcard {
   flex: none; width: clamp(260px, 30vw, 380px); scroll-snap-align: start;
   border: 1px solid var(--line-lt); border-radius: 4px; overflow: hidden;
@@ -261,7 +266,7 @@
   body .steps { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 1024px) {
-  body .mosaic-strip { grid-template-rows: repeat(3, clamp(96px, 14vw, 150px)); }
+  body .mosaic-strip { grid-template-rows: repeat(2, clamp(112px, 17vw, 180px)); }
 }
 @media (max-width: 760px) {
   body .values { grid-template-columns: 1fr; }
@@ -271,10 +276,9 @@
      feature tile that would be barely larger than the others */
   /* two columns, four rows: 2 + 1 + 1 + 2 + 2 */
   body .mosaic-strip { grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, clamp(96px, 24vw, 140px)); }
+    grid-template-rows: repeat(3, clamp(104px, 26vw, 155px)); }
   body .ms.a { grid-column: 1 / -1; grid-row: span 1; }
   body .ms.b { grid-column: 1 / -1; }
-  body .ms.e { grid-column: 1 / -1; }
   body .kinds { grid-template-columns: 1fr; }
   body .steps { grid-template-columns: 1fr; }
   body .symbols { grid-template-columns: 1fr; }
