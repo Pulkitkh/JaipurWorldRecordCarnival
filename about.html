@@ -26,8 +26,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Manmohan Agarwal — Founder, Jaipur World Record Carnival">
 <meta name="twitter:image" content="https://jaipurworldrecordcarnival.in/og-image.png">
-<link rel="stylesheet" href="assets/css/style.css?v=ba181ab1">
-<link rel="stylesheet" href="assets/css/about.css?v=ba181ab1">
+<!-- The display and body faces used above the fold. Without these the
+     headline paints in the fallback and reflows when the real face arrives,
+     which was worth ~0.09 of CLS on its own — the largest single shift on
+     the page. Only the latin subsets are preloaded; the rest still load
+     on demand from fonts.css. -->
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css?v=e5ea4a34">
+<link rel="stylesheet" href="assets/css/about.css?v=e5ea4a34">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -64,6 +71,11 @@
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
+
+<!-- Runs during parse, not after: the nav is position:sticky and so
+     occupies layout space. Mounting it after first paint pushed the whole
+     page down by its own height. -->
+<script src="assets/js/app.js?v=e5ea4a34"></script>
 
 <main id="main">
 
@@ -431,20 +443,19 @@
   </div>
 </div>
 
-<script src="assets/js/data.js?v=ba181ab1"></script>
-<script src="assets/js/art.js?v=ba181ab1"></script>
-<script src="assets/js/media.js?v=ba181ab1"></script>
-<script src="assets/js/gallery.js?v=ba181ab1"></script>
-<script src="assets/js/app.js?v=ba181ab1"></script>
-<script src="assets/vendor/lenis.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/gsap.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/Flip.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/SplitText.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/CustomEase.min.js?v=ba181ab1"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=ba181ab1"></script>
-<script src="assets/js/motion.js?v=ba181ab1"></script>
-<script src="assets/js/about.js?v=ba181ab1"></script>
+<script src="assets/js/data.js?v=e5ea4a34"></script>
+<script src="assets/js/art.js?v=e5ea4a34"></script>
+<script src="assets/js/media.js?v=e5ea4a34"></script>
+<script src="assets/js/gallery.js?v=e5ea4a34"></script>
+<script src="assets/vendor/lenis.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/gsap.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/Flip.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/SplitText.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/CustomEase.min.js?v=e5ea4a34"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=e5ea4a34"></script>
+<script src="assets/js/motion.js?v=e5ea4a34"></script>
+<script src="assets/js/about.js?v=e5ea4a34"></script>
 </body>
 </html>

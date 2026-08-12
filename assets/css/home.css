@@ -51,6 +51,56 @@
 .v-glyph .dr { fill: none; stroke: var(--flame); stroke-width: 2.2;
   stroke-linecap: round; stroke-linejoin: round; }
 
+/* ---------- full-bleed photographic band ----------
+   Breaks a long reading passage with the thing being described. Height is
+   fixed in vh rather than by the image, so nothing reflows when it loads,
+   and the picture is oversized inside its frame to leave room for the
+   parallax to travel without ever exposing an edge. */
+.bleed {
+  position: relative; margin: clamp(48px,6vw,88px) 0 0; padding: 0;
+  height: clamp(320px, 52vh, 560px); overflow: hidden;
+  background: var(--navy-2);
+}
+.bleed img {
+  position: absolute; inset: -12% 0; width: 100%; height: 124%;
+  object-fit: cover; will-change: transform;
+}
+.bleed::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(18,24,40,.15) 0%, rgba(18,24,40,.72) 78%);
+}
+.bleed figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: clamp(24px,4vw,52px) var(--gut);
+}
+.bleed figcaption span {
+  display: block; max-width: 22ch;
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(21px,2.4vw,36px); line-height: 1.18; letter-spacing: -.02em;
+  color: var(--ivory); text-wrap: balance;
+}
+
+/* ---------- the mosaic ----------
+   Five frames of the same idea at different sizes. An explicit grid means
+   the row heights exist before the photographs arrive. */
+/* Five tiles have to tile exactly, or the last one drops into an orphan
+   row and leaves half the band empty. Four columns by three rows is twelve
+   cells: 4 + 2 + 1 + 1 + 4. */
+.mosaic-strip {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  grid-template-rows: repeat(3, clamp(104px, 12vw, 168px));
+}
+.ms { margin: 0; overflow: hidden; border-radius: 3px; background: var(--sand-2); }
+.ms img { width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .9s var(--ease-out), filter .6s var(--ease); filter: saturate(.92); }
+.ms:hover img { transform: scale(1.045); filter: saturate(1.05); }
+.ms.a { grid-column: span 2; grid-row: span 2; }   /* the anchor frame */
+.ms.b { grid-column: span 2; }
+.ms.c { grid-column: span 1; }
+.ms.d { grid-column: span 1; }
+.ms.e { grid-column: 1 / -1; }                     /* a panoramic closing band */
+
 /* ---------- why records ---------- */
 .symbols { list-style: none; margin: 0 0 clamp(40px,5vw,70px); padding: 0;
   display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px;
@@ -61,9 +111,34 @@
   line-height: 1; flex: none; font-variant-numeric: tabular-nums; }
 .symbols p { margin: 0; font-size: 16px; line-height: 1.6; color: rgba(252,248,240,.84); }
 
+/* the line, and the two pictures it is comparing */
+.receipt {
+  display: grid; gap: clamp(20px,2.6vw,40px);
+  /* the receipt is deliberately the smallest thing in the row */
+  grid-template-columns: minmax(0,1.1fr) minmax(0,.62fr) minmax(0,1.28fr);
+  align-items: end;
+}
 .pullline {
-  font-family: var(--display); font-size: clamp(22px,2.6vw,38px); line-height: 1.3;
-  letter-spacing: -.02em; color: var(--ivory); max-width: 26ch; margin: 0;
+  font-family: var(--display); font-size: clamp(22px,2.4vw,36px); line-height: 1.26;
+  letter-spacing: -.02em; color: var(--ivory); margin: 0; align-self: center;
+}
+.receipt figure { margin: 0; }
+.receipt img {
+  /* height:auto is load-bearing. These images carry width/height attributes
+     so the browser can reserve their space before they load, but a used
+     height also beats aspect-ratio — which only applies when one dimension
+     is auto. Without this the box takes the attribute's 774px and the
+     landscape photograph gets sliced into a tall strip. */
+  width: 100%; height: auto; display: block;
+  border-radius: 3px; background: var(--navy);
+  transition: transform .8s var(--ease-out);
+}
+.rc-small img { aspect-ratio: 4/3; object-fit: cover; object-position: 50% 34%; }
+.rc-large img { aspect-ratio: 3/2; object-fit: cover; }
+.receipt figure:hover img { transform: scale(1.03); }
+.receipt figcaption {
+  margin-top: 12px; font: 600 11px/1 var(--body); letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold);
 }
 
 /* ---------- the record reel ----------
@@ -112,9 +187,15 @@
 /* ---------- what we build ---------- */
 .kinds { list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); }
-.kinds li { background: var(--ivory); padding: clamp(24px,2.4vw,34px); }
-.kinds h3 { font-size: 19px; margin-bottom: 10px; }
-.kinds p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+.kinds li { background: var(--ivory); padding: 0 0 clamp(24px,2.4vw,32px); overflow: hidden; }
+.k-shot { display: block; aspect-ratio: 5/4; overflow: hidden; background: var(--sand-2);
+  margin-bottom: clamp(18px,2vw,26px); }
+.k-shot img { width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .9s var(--ease-out); filter: saturate(.92); }
+.kinds li:hover .k-shot img { transform: scale(1.05); }
+.kinds h3 { font-size: 19px; margin-bottom: 10px; padding-inline: clamp(20px,2vw,28px); }
+.kinds p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft);
+  padding-inline: clamp(20px,2vw,28px); }
 
 /* the six steps, threaded on a rule that fills as you read down it */
 .method { position: relative; }
@@ -147,14 +228,37 @@
 }
 .partners span:hover { border-color: var(--flame-deep); color: var(--flame-deep); }
 
+/* ---------- take part, over the crowd ---------- */
+.join-c { position: relative; overflow: hidden; }
+.join-bg { position: absolute; inset: 0; z-index: 0; }
+.join-bg img { width: 100%; height: 100%; object-fit: cover; opacity: .22; }
+.join-c::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(80% 70% at 50% 50%, rgba(11,16,27,.55), rgba(11,16,27,.94));
+}
+.join-in { position: relative; z-index: 2; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 1024px) {
   body .values { grid-template-columns: 1fr 1fr; }
   body .kinds { grid-template-columns: 1fr 1fr; }
   body .steps { grid-template-columns: 1fr 1fr; }
 }
+@media (max-width: 1024px) {
+  body .mosaic-strip { grid-template-rows: repeat(3, clamp(96px, 14vw, 150px)); }
+}
 @media (max-width: 760px) {
   body .values { grid-template-columns: 1fr; }
+  body .receipt { grid-template-columns: 1fr 1.4fr; }
+  body .receipt .pullline { grid-column: 1 / -1; margin-bottom: 8px; }
+  /* the mosaic collapses to two even columns rather than trying to keep a
+     feature tile that would be barely larger than the others */
+  /* two columns, four rows: 2 + 1 + 1 + 2 + 2 */
+  body .mosaic-strip { grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, clamp(96px, 24vw, 140px)); }
+  body .ms.a { grid-column: 1 / -1; grid-row: span 1; }
+  body .ms.b { grid-column: 1 / -1; }
+  body .ms.e { grid-column: 1 / -1; }
   body .kinds { grid-template-columns: 1fr; }
   body .steps { grid-template-columns: 1fr; }
   body .symbols { grid-template-columns: 1fr; }
@@ -164,6 +268,8 @@
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .rcard, .rcard::before, .steps li::after { transition: none; }
+  .rcard, .rcard::before, .steps li::after,
+  .ms img, .k-shot img, .receipt img { transition: none; }
+  .bleed img { transform: none !important; }
   .hero-c-bg canvas { opacity: .3; }
 }
