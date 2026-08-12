@@ -11,14 +11,25 @@
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
-  /* Single-page site: the nav scrolls, it does not navigate. */
-  const NAV = [
+  /* Two pages now, so the nav has to carry page-qualified links. Anchors
+     into the page you are already on stay bare, so they scroll rather than
+     reload; anchors into the other page get its filename. */
+  const HOME = [
+    ["#gather", "Why we gather"],
+    ["#records", "Why records"],
+    ["#build", "What we build"],
+    ["#join", "Take part"],
+  ];
+  const ABOUT = [
     ["#story", "The Story"],
     ["#records", "Records"],
     ["#housing", "Housing"],
     ["#archive", "Archive"],
-    ["#contact", "Contact"],
   ];
+  const ON_ABOUT = /about\.html$/.test(location.pathname);
+  const NAV = ON_ABOUT
+    ? [...ABOUT.map(([h, t]) => [h, t]), ["index.html", "The Carnival"]]
+    : [...HOME.map(([h, t]) => [h, t]), ["about.html", "The Founder"]];
 
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg>`;
@@ -67,7 +78,7 @@
       <nav class="nav" id="nav">
         ${logo()}
         <div class="nav-links">${links}</div>
-        <a class="btn sm" href="#contact">Get in touch ${ARROW}</a>
+        <a class="btn sm" href="${ON_ABOUT ? "about.html#contact" : "#contact"}">Get in touch ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
       <div class="drawer" id="drawer">

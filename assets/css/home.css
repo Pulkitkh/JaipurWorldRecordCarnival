@@ -1,0 +1,169 @@
+/* ============================================================
+   JWRC — landing page
+   Loaded ONLY by index.html. Tokens, type and shared components
+   come from style.css unchanged; everything here is scoped to
+   this page so the founder's portfolio cannot be affected.
+   ============================================================ */
+
+/* ---------- chapter marker (shared idiom, page-local copy) ---------- */
+.chapter { display: flex; align-items: baseline; gap: 22px; margin-bottom: 44px; }
+.chapter .no { font-family: var(--display); font-size: clamp(36px,4.4vw,62px); font-weight: 600;
+  line-height: .82; color: var(--flame); letter-spacing: -.04em; }
+.chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
+  color: var(--ink-faint); }
+.dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.62); }
+.chapter .rule { flex: 1; height: 1px; background: var(--line); align-self: center; }
+.dark .chapter .rule, .deep .chapter .rule { background: var(--line-lt); }
+
+/* ---------- the crowd hero ----------
+   A field of points that arrives scattered and finds its formation. The
+   canvas sits behind the type at low opacity so the headline never has to
+   fight it, and the whole layer is skipped entirely for anyone who has
+   asked for reduced motion. */
+.hero-c {
+  position: relative; overflow: hidden; color: var(--ivory);
+  background:
+    radial-gradient(130% 100% at 18% 0%, rgba(35,64,107,.62), transparent 60%),
+    radial-gradient(100% 90% at 88% 8%, rgba(232,70,28,.30), transparent 58%),
+    var(--navy-2);
+  min-height: min(94svh, 940px);
+  display: flex; align-items: center;
+  padding-block: clamp(96px,11vw,150px) clamp(70px,8vw,110px);
+}
+.hero-c-bg { position: absolute; inset: 0; z-index: 1; }
+.hero-c-bg canvas { width: 100%; height: 100%; display: block; opacity: .5; }
+.hero-c-in { position: relative; z-index: 2; }
+.hero-c h1 { color: var(--ivory); max-width: 17ch; }
+.hero-c-lede { max-width: 56ch; color: rgba(252,248,240,.80); }
+.hero-c-note {
+  margin-top: clamp(44px,6vw,84px); max-width: 34ch;
+  font-family: var(--display); font-style: italic; font-size: clamp(17px,1.5vw,21px);
+  line-height: 1.45; color: var(--gold-lt);
+}
+
+/* ---------- values ---------- */
+.values { list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(24px,3vw,48px); }
+.value { padding-top: 26px; border-top: 2px solid var(--line); }
+.value h3 { font-size: clamp(20px,1.8vw,25px); margin: 20px 0 10px; }
+.value p { font-size: 15px; line-height: 1.62; color: var(--ink-soft); margin: 0; }
+.v-glyph { width: 46px; height: 46px; overflow: visible; }
+.v-glyph .dr { fill: none; stroke: var(--flame); stroke-width: 2.2;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- why records ---------- */
+.symbols { list-style: none; margin: 0 0 clamp(40px,5vw,70px); padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px;
+  background: var(--line-lt); }
+.symbols li { background: var(--navy); padding: clamp(26px,3vw,40px);
+  display: flex; gap: 22px; align-items: flex-start; }
+.s-n { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--gold);
+  line-height: 1; flex: none; font-variant-numeric: tabular-nums; }
+.symbols p { margin: 0; font-size: 16px; line-height: 1.6; color: rgba(252,248,240,.84); }
+
+.pullline {
+  font-family: var(--display); font-size: clamp(22px,2.6vw,38px); line-height: 1.3;
+  letter-spacing: -.02em; color: var(--ivory); max-width: 26ch; margin: 0;
+}
+
+/* ---------- the record reel ----------
+   A horizontal band of the real records. It scrolls with the finger on
+   touch and is nudged by scroll position on a pointer device. */
+.reel-wrap { margin-top: clamp(56px,7vw,110px); }
+.reel-head h3 { font-size: clamp(21px,2vw,28px); color: var(--ivory); margin-bottom: 8px; }
+.reel-head p { font-size: 15px; color: rgba(252,248,240,.68); margin: 0 0 30px; max-width: 58ch; }
+.reel {
+  display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 4px var(--gut) 28px; scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.reel::-webkit-scrollbar { display: none; }
+.rcard {
+  flex: none; width: clamp(260px, 30vw, 380px); scroll-snap-align: start;
+  border: 1px solid var(--line-lt); border-radius: 4px; overflow: hidden;
+  background: var(--navy); position: relative;
+  padding: clamp(24px,2.4vw,34px);
+  transition: border-color .45s var(--ease), transform .55s var(--ease-out);
+}
+/* the record's own photograph, held back so the words lead */
+.rcard::before {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  background-image: var(--shot); background-size: cover; background-position: center;
+  opacity: .16; transition: opacity .6s var(--ease), transform 1.1s var(--ease-out);
+  transform: scale(1.06);
+}
+.rcard::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(18,24,40,.55), rgba(18,24,40,.94));
+}
+.rcard > * { position: relative; z-index: 2; }
+.rcard:hover, .rcard:focus-within { border-color: rgba(217,164,65,.55); transform: translateY(-4px); }
+.rcard:hover::before, .rcard:focus-within::before { opacity: .34; transform: scale(1); }
+.rc-fig { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.rc-n { font-family: var(--display); font-weight: 600; font-size: clamp(32px,3.4vw,50px);
+  line-height: 1; letter-spacing: -.035em; color: var(--gold); font-variant-numeric: tabular-nums; }
+.rc-u { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(252,248,240,.66); }
+.rcard h4 { font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.3;
+  margin: 0 0 10px; color: var(--ivory); }
+.rcard p { margin: 0; font-size: 14px; line-height: 1.6; color: rgba(252,248,240,.72); }
+.reel-more { margin-top: 6px; }
+
+/* ---------- what we build ---------- */
+.kinds { list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); }
+.kinds li { background: var(--ivory); padding: clamp(24px,2.4vw,34px); }
+.kinds h3 { font-size: 19px; margin-bottom: 10px; }
+.kinds p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+
+/* the six steps, threaded on a rule that fills as you read down it */
+.method { position: relative; }
+.method-h { font-size: clamp(21px,2vw,28px); margin-bottom: 36px; }
+.steps { list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(24px,3vw,44px); }
+.steps li { position: relative; padding-top: 30px; }
+.steps li::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--line);
+}
+.steps li::after {
+  content: ""; position: absolute; top: 0; left: 0; height: 2px; width: 100%;
+  background: linear-gradient(90deg, var(--flame), var(--gold));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .8s var(--ease-out);
+}
+.steps li.is-in::after { transform: scaleX(1); }
+.st-n { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--flame-deep);
+  letter-spacing: .1em; }
+.steps h4 { font-family: var(--display); font-weight: 600; font-size: 18px; margin: 8px 0 8px; }
+.steps p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+
+.partners { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.partners span {
+  display: inline-flex; align-items: center; min-height: max(38px, var(--tap-min));
+  padding: 0 18px; border: 1px solid var(--line); border-radius: 999px;
+  font: 600 12.5px/1 var(--body); color: var(--ink-soft);
+  transition: border-color .35s var(--ease), color .35s var(--ease);
+}
+.partners span:hover { border-color: var(--flame-deep); color: var(--flame-deep); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1024px) {
+  body .values { grid-template-columns: 1fr 1fr; }
+  body .kinds { grid-template-columns: 1fr 1fr; }
+  body .steps { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  body .values { grid-template-columns: 1fr; }
+  body .kinds { grid-template-columns: 1fr; }
+  body .steps { grid-template-columns: 1fr; }
+  body .symbols { grid-template-columns: 1fr; }
+  body .hero-c { min-height: auto; }
+  body .reel { scroll-snap-type: none; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .rcard, .rcard::before, .steps li::after { transition: none; }
+  .hero-c-bg canvas { opacity: .3; }
+}
