@@ -24,7 +24,14 @@
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, CustomEase, ScrollToPlugin, Flip);
+  /* Register whatever actually loaded. Naming a plugin that failed to load
+     throws a ReferenceError here, which used to abort the whole module — and
+     because headlines start hidden for their reveal, a single missing vendor
+     file blanked every headline on the page. Missing a plugin should cost its
+     effect and nothing else. */
+  gsap.registerPlugin(...[
+    "ScrollTrigger", "SplitText", "DrawSVGPlugin", "CustomEase", "ScrollToPlugin", "Flip",
+  ].map((n) => window[n]).filter(Boolean));
   document.documentElement.classList.add("has-motion");
 
   /* app.js injects the nav, footer and counter values on DOMContentLoaded and

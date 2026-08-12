@@ -78,7 +78,7 @@
 /* Everything that paints itself dark declares it once, here. The flame focus
    ring disappears into navy, so it swaps to gold (7:1 on every dark ground
    used on this page), and outline buttons pick up ivory instead of ink. */
-.dark, .deep, .ph, .nav, .foot {
+.dark, .deep, .ph, .hero-c, .nav, .foot {
   --focus: var(--gold); --focus-halo: rgba(217,164,65,.24);
   --ghost-fg: var(--ivory);
   --ghost-line: rgba(252,248,240,.34);
@@ -792,8 +792,14 @@ html { overflow-x: clip; }
 .has-motion [data-stag] > * { will-change: transform, opacity; }
 .no-motion [data-anim], .no-motion [data-stag] > * { opacity: 1 !important; transform: none !important; }
 .sp-line { overflow: hidden; }
-[data-split] { opacity: 0; }
-.no-motion [data-split] { opacity: 1; }
+/* Headlines default to VISIBLE and are hidden only once motion.js has
+   confirmed it is going to animate them (it sets .has-motion on <html>).
+   The old default was opacity:0 with .no-motion turning it back on — which
+   meant any script that threw before that class was set left every headline
+   on the page permanently blank. A missing vendor plugin should cost an
+   animation, not the words. */
+[data-split] { opacity: 1; }
+.has-motion [data-split] { opacity: 0; }
 
 /* ---------- custom cursor ---------- */
 .has-cursor, .has-cursor a, .has-cursor button, .has-cursor .rec,
