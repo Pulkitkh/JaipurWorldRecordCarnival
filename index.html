@@ -31,8 +31,8 @@
      on demand from fonts.css. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=e5ea4a34">
-<link rel="stylesheet" href="assets/css/home.css?v=e5ea4a34">
+<link rel="stylesheet" href="assets/css/style.css?v=3fa87a56">
+<link rel="stylesheet" href="assets/css/home.css?v=3fa87a56">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,7 +55,7 @@
 <!-- Runs during parse, not after: the nav is position:sticky and so
      occupies layout space. Mounting it after first paint pushed the whole
      page down by its own height. -->
-<script src="assets/js/app.js?v=e5ea4a34"></script>
+<script src="assets/js/app.js?v=3fa87a56"></script>
 
 <main id="main">
 
@@ -118,7 +118,7 @@
   <!-- The argument of this section is a photograph, not a paragraph: this is
        what "we have always known how to gather" actually looks like. Full
        bleed, with a slow parallax on the image only — never on the words. -->
-  <figure class="bleed" data-parallax>
+  <figure class="bleed" data-reveal data-parallax>
     <img src="media/dance/dance-019-720.webp"
          srcset="media/dance/dance-019-640.webp 640w, media/dance/dance-019-720.webp 720w"
          sizes="100vw" width="720" height="478" loading="lazy" decoding="async"
@@ -161,16 +161,16 @@
          explicit so the row heights are known before the photographs load,
          which keeps this band out of the layout-shift budget. -->
     <div class="mosaic-strip mt-xl" data-stag="0.07">
-      <figure class="ms a"><img src="media/dance/dance-016-720.webp" width="720" height="478"
-        loading="lazy" decoding="async" alt="A ground filled with participants seen from above"></figure>
-      <figure class="ms b"><img src="media/dance/dance-014-720.webp" width="720" height="478"
-        loading="lazy" decoding="async" alt="Rows of participants in formation during an attempt"></figure>
-      <figure class="ms c"><img src="media/dance/dance-020-720.webp" width="720" height="478"
-        loading="lazy" decoding="async" alt="Participants in white and colour filling the frame"></figure>
-      <figure class="ms d"><img src="media/modi/modi-029-1600.webp" width="1600" height="1059"
-        loading="lazy" decoding="async" alt="Visitors walking the length of the photograph exhibition"></figure>
-      <figure class="ms e"><img src="media/dance/dance-018-720.webp" width="720" height="478"
-        loading="lazy" decoding="async" alt="A crowd gathered on a ground before an attempt begins"></figure>
+      <figure class="ms a" data-reveal><img src="media/modi/modi-056-640.webp" width="640" height="424"
+        loading="lazy" decoding="async" alt="Visitors with their hands raised at the photograph exhibition"></figure>
+      <figure class="ms b" data-reveal><img src="media/cal/cal-076-640.webp" width="640" height="426"
+        loading="lazy" decoding="async" alt="The hand-painted wall calendar rigged across its full 120 foot span"></figure>
+      <figure class="ms c" data-reveal><img src="media/launch/launch-007-640.webp" width="640" height="377"
+        loading="lazy" decoding="async" alt="The perpetual calendar being launched on stage"></figure>
+      <figure class="ms d" data-reveal><img src="media/people/people-021-640.webp" width="640" height="427"
+        loading="lazy" decoding="async" alt="A felicitation for the team behind a record attempt"></figure>
+      <figure class="ms e" data-reveal><img src="media/dance/dance-020-720.webp" width="720" height="478"
+        loading="lazy" decoding="async" alt="A ground filled end to end with participants"></figure>
     </div>
   </div>
 </section>
@@ -205,18 +205,25 @@
     <div class="receipt">
       <p class="pullline" data-anim>The certificate is the receipt.
         <span class="hl">The gathering was the purchase.</span></p>
-      <figure class="rc-small" data-anim="right">
-        <img src="media/cert/cert-009-1032.webp" width="1032" height="774"
-             loading="lazy" decoding="async"
-             alt="Manmohan Agarwal holding two framed world record certificates">
-        <figcaption>The receipt</figcaption>
-      </figure>
-      <figure class="rc-large" data-anim="right" data-delay="0.12">
-        <img src="media/dance/dance-014-720.webp" width="720" height="478"
-             loading="lazy" decoding="async"
-             alt="Thousands of participants in formation across a ground">
-        <figcaption>The purchase</figcaption>
-      </figure>
+
+      <!-- The two are the same argument at two scales, so they are composed
+           as one object rather than parked side by side: the crowd is the
+           picture, and the certificate lies on its corner the way a print
+           lies on a photograph. -->
+      <div class="stack" data-anim="right">
+        <figure class="rc-large" data-reveal>
+          <img src="media/dance/dance-014-720.webp" width="720" height="478"
+               loading="lazy" decoding="async"
+               alt="Thousands of participants in formation across a ground">
+          <figcaption>The purchase</figcaption>
+        </figure>
+        <figure class="rc-small">
+          <img src="media/cert/cert-009-1032.webp" width="1032" height="774"
+               loading="lazy" decoding="async"
+               alt="Manmohan Agarwal holding two framed world record certificates">
+          <figcaption>The receipt</figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 
@@ -242,7 +249,7 @@
         <h4>The world&rsquo;s largest wall calendar</h4>
         <p>Hand-painted, 120&nbsp;ft × 40&nbsp;ft.</p>
       </article>
-      <article class="rcard" data-shot="media/spoon/spoon-072-1062.webp">
+      <article class="rcard" data-shot="media/spoon/spoon-069-665.webp">
         <div class="rc-fig"><span class="rc-n" data-num="40">0</span><span class="rc-u">feet</span></div>
         <h4>The world&rsquo;s largest wooden spoon</h4>
         <p>Carved, and now displayed at the Alankar Museum, Jawahar Kala Kendra, Jaipur.</p>
@@ -252,11 +259,22 @@
         <h4>Most CPR mannequins at one venue, and most people in a CPR relay</h4>
         <p>St.&nbsp;Xavier&rsquo;s Campus, Nevta, 4 February 2026.</p>
       </article>
-      <article class="rcard" data-shot="media/perp/perp-005-1280.webp">
+      <article class="rcard" data-shot="media/perp/perp-005-640.webp">
         <div class="rc-fig"><span class="rc-n">∞</span><span class="rc-u">perpetual</span></div>
         <h4>A perpetual calendar</h4>
         <p>Copyright registered with the Government of India.</p>
       </article>
+    </div>
+    <div class="reel-rail" aria-hidden="true"><i></i></div>
+    <div class="reel-nav">
+      <button type="button" data-reel="-1" aria-label="Previous records">
+        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor"
+          stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 6.5H2M6 2.5l-4 4 4 4"/></svg></button>
+      <button type="button" data-reel="1" aria-label="More records">
+        <svg width="15" height="15" viewBox="0 0 13 13" fill="none" stroke="currentColor"
+          stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg></button>
     </div>
     <p class="reel-more wrap" data-anim>
       <a class="link-arrow" href="about.html#records">All eleven records, in full
@@ -286,27 +304,27 @@
          a fixed 5:4 box so the row never reflows as they load. -->
     <ul class="kinds" data-stag="0.09">
       <li>
-        <span class="k-shot"><img src="media/modi/modi-026-1600.webp" width="1600" height="1059"
+        <span class="k-shot" data-reveal><img src="media/modi/modi-045-640.webp" width="640" height="424"
           loading="lazy" decoding="async"
           alt="Students walking the length of the photograph exhibition"></span>
         <h3>Educational</h3><p>Attempts built so students run them rather than attend them.</p>
       </li>
       <li>
-        <span class="k-shot"><img src="media/cpr/cpr-003-954.webp" width="954" height="549"
+        <span class="k-shot" data-reveal><img src="media/cpr/cpr-003-954.webp" width="954" height="549"
           loading="lazy" decoding="async"
           alt="Newspaper coverage of four thousand children learning CPR on a single field"></span>
         <h3>For a cause</h3><p>Awareness carried at a scale a pamphlet will never reach.</p>
       </li>
       <li>
-        <span class="k-shot"><img src="media/spoon/spoon-073-1600.webp" width="1600" height="1062"
+        <span class="k-shot" data-reveal><img src="media/spoon/spoon-073-640.webp" width="640" height="425"
           loading="lazy" decoding="async"
           alt="The carved wooden spoon on display at the Alankar Museum"></span>
         <h3>Cultural</h3><p>Where the artists are paid to teach, not booked to decorate.</p>
       </li>
       <li>
-        <span class="k-shot"><img src="media/dance/dance-018-720.webp" width="720" height="478"
+        <span class="k-shot" data-reveal><img src="media/modi/modi-054-640.webp" width="640" height="424"
           loading="lazy" decoding="async"
-          alt="A public ground filled with participants during a civic attempt"></span>
+          alt="Members of the public reading the exhibition wall together"></span>
         <h3>Civic</h3><p>Public initiatives where participation is genuine, not attendance.</p>
       </li>
     </ul>
@@ -342,7 +360,7 @@
 <!-- ══════ CHAPTER FIVE — TAKE PART ══════ -->
 <section class="pad-sm deep join-c" id="join" data-chapter="Take part">
   <div class="join-bg" aria-hidden="true">
-    <img src="media/dance/dance-016-720.webp" width="720" height="478"
+    <img src="media/modi/modi-055-1600.webp" width="1600" height="1059"
          loading="lazy" decoding="async" alt="">
   </div>
   <div class="wrap narrow tc mxa join-in">
@@ -365,14 +383,14 @@
 
 </main>
 
-<script src="assets/vendor/lenis.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/gsap.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/SplitText.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/CustomEase.min.js?v=e5ea4a34"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=e5ea4a34"></script>
-<script src="assets/js/motion.js?v=e5ea4a34"></script>
-<script src="assets/js/home.js?v=e5ea4a34"></script>
+<script src="assets/vendor/lenis.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/gsap.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/SplitText.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/CustomEase.min.js?v=3fa87a56"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=3fa87a56"></script>
+<script src="assets/js/motion.js?v=3fa87a56"></script>
+<script src="assets/js/home.js?v=3fa87a56"></script>
 </body>
 </html>

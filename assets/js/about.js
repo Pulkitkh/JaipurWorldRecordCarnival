@@ -13,6 +13,8 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     try { counters(); } catch (e) { console.error("[counters]", e); }
+    try { reveal(); } catch (e) { console.error("[reveal]", e); }
+    try { tilt(); } catch (e) { console.error("[tilt]", e); }
     boot().catch((e) => {
       console.error("[archive] failed to build:", e);
       const s = $("#gal-count");
@@ -52,6 +54,48 @@
       });
     }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
     els.forEach((el) => io.observe(el));
+  }
+
+  /* Photographs uncover rather than fade. The archive tiles opt in as they
+     mount, so this only has to cover the markup that is in the page from
+     the start. */
+  function reveal() {
+    const els = $$("[data-reveal]");
+    if (!els.length) return;
+    if (REDUCED) { els.forEach((e) => e.classList.add("is-shown")); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("is-shown");
+        io.unobserve(e.target);
+        // hand the layer back once the transition has finished
+        setTimeout(() => e.target.classList.add("is-done"), 1200);
+      });
+    }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+    els.forEach((el) => io.observe(el));
+  }
+
+  /* Cards lean a couple of degrees toward the cursor — two custom
+     properties per move, so the browser only recomposites. */
+  function tilt() {
+    if (REDUCED || matchMedia("(hover: none)").matches) return;
+    const MAX = 2.4;
+    for (const card of $$(".role-card")) {
+      let rect = null;
+      card.addEventListener("pointerenter", () => {
+        rect = card.getBoundingClientRect();
+        card.classList.add("is-tilting");
+      });
+      card.addEventListener("pointermove", (e) => {
+        if (!rect) rect = card.getBoundingClientRect();
+        card.style.setProperty("--rx", (((e.clientX - rect.left) / rect.width - .5) * MAX * 2).toFixed(2));
+        card.style.setProperty("--ry", (((e.clientY - rect.top) / rect.height - .5) * MAX * 2).toFixed(2));
+      });
+      card.addEventListener("pointerleave", () => {
+        rect = null; card.classList.remove("is-tilting");
+        card.style.setProperty("--rx", 0); card.style.setProperty("--ry", 0);
+      });
+    }
   }
 
   async function boot() {

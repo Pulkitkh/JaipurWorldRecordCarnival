@@ -385,3 +385,45 @@
 .gal-pager button:disabled { opacity: .3; cursor: not-allowed; }
 .gal-pager .pg-arrow { font-size: 20px; line-height: 1; }
 .gal-pager .pg-gap { color: var(--ink-faint); padding: 0 4px; }
+
+/* Photographs uncover rather than fade: the image slides up from behind
+   its own frame and settles from a slight scale.
+
+   This was written with clip-path first, which was a mistake twice over.
+   Animating clip-path repaints rather than composites — on full-bleed
+   images it cost about 30fps of scrolling — and Chrome's
+   IntersectionObserver counts clip-path as visibility, so an element
+   hidden that way never reports as intersecting and never triggers the
+   reveal that would have shown it. Transform and opacity have neither
+   problem: the container clips, the image only ever moves. */
+[data-reveal] { overflow: hidden; }
+[data-reveal] img {
+  transform: translateY(14%) scale(1.06);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+[data-reveal].is-shown img {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition: transform 1.05s var(--ease-out), opacity .75s var(--ease);
+}
+/* released once it has played, so nothing keeps a layer it no longer needs */
+[data-reveal].is-done img { will-change: auto; }
+
+/* the role cards lean toward the cursor, like the carnival page's */
+/* the 3D context is created on enter and dropped on leave, rather than
+   sitting on every card for the whole page's life */
+.role-card { transition: transform .5s var(--ease-out), box-shadow .5s var(--ease); }
+.role-card.is-tilting {
+  transform: perspective(900px)
+             rotateX(calc(var(--ry, 0) * -1deg))
+             rotateY(calc(var(--rx, 0) * 1deg))
+             translateY(-4px);
+  box-shadow: var(--sh-2); will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] img { transform: none; opacity: 1; transition: none; }
+  .role-card.is-tilting { transform: none; }
+}
+@media (hover: none) { .role-card { transform: none; } }
