@@ -150,14 +150,22 @@
   }
   $$("[data-split]").forEach(splitReveal);
 
-  /* ═══ 5 · Generic entrance choreography ═══ */
+  /* ═══ 5 · Generic entrance choreography ═══
+     The travel distances are written for a desktop column and have to
+     shrink with the screen. A fixed 48px sideways offset is a sixth of a
+     320px phone: headings start well outside the frame, and if a trigger
+     ever fails to fire they stay there. Scaling by viewport width keeps the
+     same gesture at every size. */
+  const SHIFT = Math.max(14, Math.min(48, innerWidth * 0.045));
+  const RISE  = Math.max(16, Math.min(42, innerWidth * 0.04));
+
   $$("[data-anim]").forEach((el) => {
     const kind = el.dataset.anim || "up";
     const d = parseFloat(el.dataset.delay || 0);
     const from = { opacity: 0, duration: 1.05, ease: EASE, delay: d };
-    if (kind === "up") from.y = 42;
-    if (kind === "left") from.x = -48;
-    if (kind === "right") from.x = 48;
+    if (kind === "up") from.y = RISE;
+    if (kind === "left") from.x = -SHIFT;
+    if (kind === "right") from.x = SHIFT;
     if (kind === "scale") { from.scale = .92; from.filter = "blur(6px)"; }
     if (kind === "clip") { from.clipPath = "inset(0 0 100% 0)"; from.opacity = 1; from.duration = 1.3; }
     gsap.from(el, { ...from, scrollTrigger: { trigger: el, start: "top 86%", once: true } });
@@ -166,7 +174,7 @@
   // staggered groups
   $$("[data-stag]").forEach((el) => {
     gsap.from(el.children, {
-      opacity: 0, y: 46, filter: "blur(5px)",
+      opacity: 0, y: RISE, filter: "blur(5px)",
       duration: 1, ease: EASE, stagger: parseFloat(el.dataset.stag) || .11,
       scrollTrigger: { trigger: el, start: "top 84%", once: true },
     });

@@ -102,6 +102,13 @@
 .rail-scroll.is-static { width: auto; overflow-x: auto; }
 
 .rail-item {
+  /* A flex column, not a block. As a block the whitespace between the img
+     and the caption in the template became anonymous line boxes, which put
+     a phantom 12px above the photograph and pushed the card's content past
+     its own height — so every card with a long title was clipped by its own
+     overflow:hidden, at every width including desktop. Flex layout ignores
+     whitespace-only text nodes. */
+  display: flex; flex-direction: column;
   flex: none; width: clamp(240px, 26vw, 340px);
   border-radius: 5px; overflow: hidden; border: 1px solid var(--line);
   background: var(--ivory); position: relative; cursor: pointer;
@@ -119,13 +126,21 @@
   filter: saturate(calc(.88 + var(--glow, 0) * .22));
   transition: filter .5s var(--ease);
 }
-.rail-item .meta { padding: 16px 18px 20px; }
+.rail-item .meta { padding: 16px 18px 20px; flex: 1; }
+/* The cards sit in a flex row and are stretched to a common height, so a
+   long record title overflowed the card it belonged to and was cut off by
+   the card's own overflow:hidden — at every width, desktop included.
+   Clamping the title keeps the card's promise: two lines, then an ellipsis. */
 .rail-item .meta b {
-  display: block; font-family: var(--display); font-size: 17px; font-weight: 600;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-family: var(--display); font-size: 17px; font-weight: 600;
   line-height: 1.28;
 }
 .rail-item .meta > span {
-  display: block; font-size: 12.5px; line-height: 1.5; color: var(--ink-faint);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 12.5px; line-height: 1.5; color: var(--ink-faint);
   margin-top: 8px;
 }
 /* a hairline that fills as the card reaches the middle */
