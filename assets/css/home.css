@@ -113,33 +113,49 @@
 
 /* the line, and the two pictures it is comparing */
 .receipt {
-  display: grid; gap: clamp(20px,2.6vw,40px);
-  /* the receipt is deliberately the smallest thing in the row */
-  grid-template-columns: minmax(0,1.1fr) minmax(0,.62fr) minmax(0,1.28fr);
-  align-items: end;
+  display: grid; gap: clamp(24px,3vw,56px);
+  grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
+  align-items: center;
 }
 .pullline {
   font-family: var(--display); font-size: clamp(22px,2.4vw,36px); line-height: 1.26;
-  letter-spacing: -.02em; color: var(--ivory); margin: 0; align-self: center;
+  letter-spacing: -.02em; color: var(--ivory); margin: 0;
 }
-.receipt figure { margin: 0; }
-.receipt img {
-  /* height:auto is load-bearing. These images carry width/height attributes
-     so the browser can reserve their space before they load, but a used
-     height also beats aspect-ratio — which only applies when one dimension
-     is auto. Without this the box takes the attribute's 774px and the
-     landscape photograph gets sliced into a tall strip. */
-  width: 100%; height: auto; display: block;
-  border-radius: 3px; background: var(--navy);
-  transition: transform .8s var(--ease-out);
+
+/* The stack composes the pair as one object. The crowd sets the height;
+   the certificate is laid on its lower-left corner and given a mount and a
+   shadow so it reads as a physical print resting on top, rather than as a
+   second image that happens to be smaller. */
+.stack { position: relative; padding-bottom: clamp(30px,3.4vw,52px); }
+.stack figure { margin: 0; }
+.stack img {
+  /* height:auto is load-bearing: the width/height attributes reserve space
+     before load, but a used height also beats aspect-ratio, which only
+     applies when a dimension is auto. */
+  width: 100%; height: auto; display: block; border-radius: 3px;
+  background: var(--navy);
 }
-.rc-small img { aspect-ratio: 4/3; object-fit: cover; object-position: 50% 34%; }
 .rc-large img { aspect-ratio: 3/2; object-fit: cover; }
-.receipt figure:hover img { transform: scale(1.03); }
-.receipt figcaption {
-  margin-top: 12px; font: 600 11px/1 var(--body); letter-spacing: .2em;
-  text-transform: uppercase; color: var(--gold);
+.rc-large figcaption {
+  position: absolute; right: 0; bottom: 0;
+  font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gold);
 }
+.rc-small {
+  position: absolute; left: clamp(-14px, -1.4vw, -6px); bottom: 0;
+  width: clamp(116px, 26%, 210px); z-index: 2;
+}
+.rc-small img {
+  aspect-ratio: 4/3; object-fit: cover; object-position: 50% 36%;
+  border: 5px solid var(--ivory); border-radius: 2px;
+  box-shadow: 0 18px 40px -14px rgba(0,0,0,.75);
+  transition: transform .7s var(--ease-out);
+}
+.rc-small figcaption {
+  margin-top: 9px; font: 600 10.5px/1 var(--body); letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(252,248,240,.66);
+}
+.stack:hover .rc-small img { transform: translateY(-5px) rotate(-1.2deg); }
 
 /* ---------- the record reel ----------
    A horizontal band of the real records. It scrolls with the finger on
@@ -249,8 +265,8 @@
 }
 @media (max-width: 760px) {
   body .values { grid-template-columns: 1fr; }
-  body .receipt { grid-template-columns: 1fr 1.4fr; }
-  body .receipt .pullline { grid-column: 1 / -1; margin-bottom: 8px; }
+  body .receipt { grid-template-columns: 1fr; }
+  body .rc-small { width: clamp(104px, 30%, 150px); left: 0; }
   /* the mosaic collapses to two even columns rather than trying to keep a
      feature tile that would be barely larger than the others */
   /* two columns, four rows: 2 + 1 + 1 + 2 + 2 */
@@ -272,4 +288,75 @@
   .ms img, .k-shot img, .receipt img { transition: none; }
   .bleed img { transform: none !important; }
   .hero-c-bg canvas { opacity: .3; }
+}
+
+/* Photographs uncover rather than fade: the image slides up from behind
+   its own frame and settles from a slight scale.
+
+   This was written with clip-path first, which was a mistake twice over.
+   Animating clip-path repaints rather than composites — on full-bleed
+   images it cost about 30fps of scrolling — and Chrome's
+   IntersectionObserver counts clip-path as visibility, so an element
+   hidden that way never reports as intersecting and never triggers the
+   reveal that would have shown it. Transform and opacity have neither
+   problem: the container clips, the image only ever moves. */
+[data-reveal] { overflow: hidden; }
+[data-reveal] img {
+  transform: translateY(14%) scale(1.06);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+[data-reveal].is-shown img {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition: transform 1.05s var(--ease-out), opacity .75s var(--ease);
+}
+/* released once it has played, so nothing keeps a layer it no longer needs */
+[data-reveal].is-done img { will-change: auto; }
+
+/* ---------- the reel, made legible as a track ----------
+   A horizontal scroller needs to say how far along you are, or people do
+   not know there is more. */
+.reel-rail {
+  margin: 4px var(--gut) 0; height: 2px; background: var(--line-lt);
+  position: relative; border-radius: 2px; overflow: hidden;
+}
+.reel-rail i {
+  position: absolute; inset: 0 auto 0 0; width: 30%;
+  background: linear-gradient(90deg, var(--flame), var(--gold));
+  border-radius: 2px; transform-origin: left;
+}
+.reel-nav { display: flex; gap: 10px; margin: 18px var(--gut) 0; }
+.reel-nav button {
+  width: var(--tap); height: var(--tap); border-radius: 50%;
+  border: 1px solid var(--line-lt); background: transparent; color: var(--ivory);
+  display: grid; place-items: center;
+  transition: border-color .3s var(--ease), background-color .3s var(--ease),
+              transform .3s var(--ease-out);
+}
+.reel-nav button:hover:not(:disabled) { border-color: var(--gold); background: rgba(217,164,65,.12); }
+.reel-nav button:active:not(:disabled) { transform: scale(.93); }
+.reel-nav button:disabled { opacity: .32; cursor: not-allowed; }
+
+/* ---------- pointer-reactive cards ----------
+   The 3D transform is applied only while the pointer is actually over a
+   card. Leaving it on every card permanently put all thirteen of them into
+   their own 3D rendering contexts, which cost about 30fps of scrolling for
+   an effect nobody was looking at. */
+.rcard.is-tilting, .kinds li.is-tilting, .value.is-tilting {
+  transform: perspective(900px)
+             rotateX(calc(var(--ry, 0) * -1deg))
+             rotateY(calc(var(--rx, 0) * 1deg))
+             translateY(-3px);
+  transition: transform .35s var(--ease-out);
+  will-change: transform;
+}
+.rcard, .kinds li, .value { transition: transform .5s var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] img { transform: none; opacity: 1; transition: none; }
+  .is-tilting { transform: none !important; }
+}
+@media (hover: none) {
+  .is-tilting { transform: none !important; }
 }

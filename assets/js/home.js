@@ -13,7 +13,7 @@
   const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   document.addEventListener("DOMContentLoaded", () => {
-    each(crowd, counters, glyphs, steps, reel, parallax);
+    each(crowd, counters, glyphs, steps, reel, parallax, reveal, tilt);
   });
 
   /* run each piece independently: one failure must not take the page down */
@@ -175,6 +175,59 @@
     items.forEach((li) => io.observe(li));
   }
 
+  /* ── Image reveal ───────────────────────────────────────────
+     Photographs uncover rather than fade in. One observer for the whole
+     page, and each element is unobserved the moment it has played. */
+  function reveal() {
+    const els = $$("[data-reveal]");
+    if (!els.length) return;
+    if (REDUCED) { els.forEach((e) => e.classList.add("is-shown")); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("is-shown");
+        io.unobserve(e.target);
+        // hand the layer back once the transition has finished
+        setTimeout(() => e.target.classList.add("is-done"), 1200);
+      });
+    }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+    els.forEach((el) => io.observe(el));
+  }
+
+  /* ── Pointer tilt ───────────────────────────────────────────
+     Cards lean a couple of degrees toward the cursor. The handler only
+     writes two custom properties — no layout is read per move beyond one
+     cached rect — and it is wired once on the container rather than once
+     per card. Skipped entirely on touch, where there is no cursor to
+     follow, and under reduced motion. */
+  function tilt() {
+    if (REDUCED || matchMedia("(hover: none)").matches) return;
+    const cards = $$(".rcard, .kinds li, .value");
+    if (!cards.length) return;
+    const MAX = 2.4;                                   // degrees
+
+    for (const card of cards) {
+      let rect = null;
+      card.addEventListener("pointerenter", () => {
+        rect = card.getBoundingClientRect();
+        card.classList.add("is-tilting");
+      });
+      card.addEventListener("pointermove", (e) => {
+        if (!rect) rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - .5;
+        const y = (e.clientY - rect.top) / rect.height - .5;
+        card.style.setProperty("--rx", (x * MAX * 2).toFixed(2));
+        card.style.setProperty("--ry", (y * MAX * 2).toFixed(2));
+      });
+      card.addEventListener("pointerleave", () => {
+        rect = null;
+        card.classList.remove("is-tilting");
+        card.style.setProperty("--rx", 0);
+        card.style.setProperty("--ry", 0);
+      });
+    }
+  }
+
   /* ── Parallax ───────────────────────────────────────────────
      Applied to the photograph only, never to the words over it — text that
      drifts against its own background is harder to read, not more premium.
@@ -247,5 +300,39 @@
       const next = cards[i + (e.key === "ArrowRight" ? 1 : -1)];
       if (next) { next.focus(); e.preventDefault(); }
     });
+
+    /* A horizontal scroller has to say how far along it is, or nobody
+       knows there is more to the right. The rail reports position; the
+       arrows move it by one card and disable themselves at each end. */
+    const rail = $(".reel-rail i");
+    const btns = $$("[data-reel]");
+    const step = () => {
+      const c = track.querySelector(".rcard");
+      return c ? c.getBoundingClientRect().width + 20 : 300;
+    };
+    function sync() {
+      const max = track.scrollWidth - track.clientWidth;
+      if (rail) {
+        const seen = track.clientWidth / track.scrollWidth;
+        rail.style.width = Math.max(12, seen * 100) + "%";
+        rail.style.transform =
+          `translateX(${max > 0 ? (track.scrollLeft / max) * (100 / Math.max(.12, seen) - 100) : 0}%)`;
+      }
+      for (const b of btns) {
+        b.disabled = +b.dataset.reel < 0 ? track.scrollLeft <= 2
+                                         : track.scrollLeft >= max - 2;
+      }
+    }
+    let t = false;
+    track.addEventListener("scroll", () => {
+      if (t) return; t = true;
+      requestAnimationFrame(() => { t = false; sync(); });
+    }, { passive: true });
+    for (const b of btns) {
+      b.addEventListener("click", () => track.scrollBy({
+        left: +b.dataset.reel * step(), behavior: REDUCED ? "auto" : "smooth" }));
+    }
+    addEventListener("resize", sync, { passive: true });
+    sync();
   }
 })();
