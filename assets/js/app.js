@@ -1,35 +1,56 @@
 /* ============================================================
    JWRC — site behaviour
-   Shared chrome, scroll choreography, and the interactive modules
-   (records archive, stories slider, enquiry wizard).
+   The shared chrome — nav, drawer, footer, scroll progress — and
+   nothing else.
+
+   This file used to carry six modules built for the demo pages that
+   were removed long ago: a records archive, a stories slider, an
+   enquiry wizard, an upcoming list, a stats grid and a marquee. Every
+   element they bound to had gone, so they ran and silently did
+   nothing on every page — until the take-part form was given the id
+   the wizard was still looking for, and the wizard broke it. Dead
+   code is not free; it waits.
    ============================================================ */
 (function () {
   "use strict";
 
-  const D = window.JWRCData;
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
-  /* Two pages now, so the nav has to carry page-qualified links. Anchors
-     into the page you are already on stay bare, so they scroll rather than
-     reload; anchors into the other page get its filename. */
-  const HOME = [
-    ["#gather", "Why we gather"],
-    ["#records", "Why records"],
-    ["#build", "What we build"],
-    ["#join", "Take part"],
-  ];
-  const ABOUT = [
-    ["#story", "The Story"],
-    ["#records", "Records"],
-    ["#housing", "Housing"],
-    ["#archive", "Archive"],
-  ];
-  const ON_ABOUT = /about\.html$/.test(location.pathname);
-  const NAV = ON_ABOUT
-    ? [...ABOUT.map(([h, t]) => [h, t]), ["index.html", "The Carnival"]]
-    : [...HOME.map(([h, t]) => [h, t]), ["about.html", "The Founder"]];
+  /* Three pages, so the nav is built per page: anchors into the page you
+     are already on stay bare and scroll, links to the other pages carry
+     their filename. Each page also gets a route to the other two, so no
+     page is ever a dead end. */
+  const PAGES = {
+    home: [
+      ["#gather", "Why we gather"],
+      ["#records", "Why records"],
+      ["#build", "What we build"],
+      ["take-part.html", "Take part"],
+      ["about.html", "The Founder"],
+    ],
+    about: [
+      ["#story", "The Story"],
+      ["#records", "Records"],
+      ["#housing", "Housing"],
+      ["#archive", "Archive"],
+      ["take-part.html", "Take part"],
+      ["index.html", "The Carnival"],
+    ],
+    take: [
+      ["#who", "Who it is for"],
+      ["#how", "How it works"],
+      ["#takes", "What it takes"],
+      ["#start", "Start"],
+      ["index.html", "The Carnival"],
+    ],
+  };
+  const HERE = /take-part\.html$/.test(location.pathname) ? "take"
+             : /about\.html$/.test(location.pathname) ? "about"
+             : "home";
+  const NAV = PAGES[HERE];
+  const CONTACT = HERE === "take" ? "#start" : "take-part.html#start";
 
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg>`;
@@ -84,7 +105,7 @@
       <nav class="nav" id="nav">
         ${logo()}
         <div class="nav-links">${links}</div>
-        <a class="btn sm" href="${ON_ABOUT ? "about.html#contact" : "#contact"}">Get in touch ${ARROW}</a>
+        <a class="btn sm" href="${CONTACT}">Take part ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
       <div class="drawer" id="drawer">
@@ -172,55 +193,7 @@
     run();
   }
 
-  /* Entrance choreography lives in motion.js. This observer exists only to
-     build the mandana crowd once it is about to come into view. */
-  function reveals() {
-    const io = new IntersectionObserver((es) => {
-      es.forEach((e) => {
-        if (!e.isIntersecting) return;
-        crowd(e.target);
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px 10% 0px" });
-    $$(".crowdwrap").forEach(el => io.observe(el));
-  }
 
-  /* crowd of dots settling into a mandana rosette */
-  function crowd(el) {
-    const svg = $("svg", el);
-    if (!svg || svg.dataset.built) return;
-    svg.dataset.built = "1";
-    const W = 1200, H = 210, cx = 600, cy = 104;
-    let out = "", n = 0;
-    for (let i = 0; i < 560; i++) {
-      const x = (i * 97.13) % W, y = (i * 53.77) % H;
-      const d = Math.hypot(x - cx, (y - cy) * 2.4) / 640;
-      out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.4 + (i % 3) * .35).toFixed(2)}"
-               fill="#FCF8F0" style="--d:${(n++ * 1.4).toFixed(0)}ms;--o:${(.09 + d * .3).toFixed(2)}"/>`;
-    }
-    for (let ring = 1; ring <= 5; ring++) {
-      const k = ring * 12, rad = ring * 17;
-      for (let i = 0; i < k; i++) {
-        const a = (i / k) * Math.PI * 2, wob = 1 + .14 * Math.cos(a * 8);
-        out += `<circle cx="${(cx + Math.cos(a) * rad * wob * 2.3).toFixed(1)}"
-                 cy="${(cy + Math.sin(a) * rad * wob).toFixed(1)}" r="2.6"
-                 style="--d:${(700 + ring * 90 + i * 6).toFixed(0)}ms;--o:.95"
-                 fill="${ring % 2 ? "#E8461C" : "#D9A441"}"/>`;
-      }
-    }
-    for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2;
-      out += `<circle cx="${(cx + Math.cos(a) * 21 * 2.3).toFixed(1)}" cy="${(cy + Math.sin(a) * 21).toFixed(1)}"
-               r="3.6" fill="#FCF8F0" style="--d:${1250 + i * 30}ms;--o:1"/>`;
-    }
-    out += `<circle cx="${cx}" cy="${cy}" r="5.4" fill="#E8461C" style="--d:1500ms;--o:1"/>`;
-    svg.innerHTML = out;
-    $$("circle", svg).forEach((c) => {
-      if (REDUCED) { c.style.opacity = c.style.getPropertyValue("--o") || 1; return; }
-      c.style.animation = "dotin .6s var(--ease-out) forwards";
-      c.style.animationDelay = c.style.getPropertyValue("--d");
-    });
-  }
 
   /* ---------- records archive ---------- */
 
@@ -235,219 +208,21 @@
       </span></article>`;
   }
 
-  function archive() {
-    const grid = $("#recgrid");
-    if (!grid || !D) return;
-    grid.innerHTML = D.RECORDS.map(recordCard).join("");
-    window.JWRCArt.build(grid);
-
-    // filters
-    $$("#recfilters .chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        $$("#recfilters .chip").forEach(b => b.classList.remove("on"));
-        btn.classList.add("on");
-        const k = btn.dataset.filter, v = btn.dataset.value;
-        let shown = 0;
-        document.dispatchEvent(new CustomEvent("jwrc:filter-start"));
-        $$(".rec", grid).forEach(c => {
-          const ok = !k || c.dataset[k] === v;
-          c.classList.toggle("hide", !ok);
-          if (ok) shown++;
-        });
-        document.dispatchEvent(new CustomEvent("jwrc:filter-end"));
-        const empty = $("#recempty");
-        if (empty) empty.style.display = shown ? "none" : "block";
-      });
-    });
-
-    // detail modal
-    const modal = $("#recmodal");
-    grid.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        const c = e.target.closest(".rec");
-        if (c) { e.preventDefault(); c.click(); }
-      }
-    });
-    grid.addEventListener("click", (e) => {
-      const card = e.target.closest(".rec");
-      if (!card) return;
-      const r = D.RECORDS.find(x => x.id === card.dataset.id);
-      if (!r) return;
-      $("#modalbody").innerHTML = `
-        <span class="scene r169" data-scene="${r.scene}" data-seed="${r.id.slice(1) * 23 + 9}"></span>
-        <div class="body">
-          <span class="eyebrow">${r.body} · ${r.cause}</span>
-          <h2 class="mt-m" style="max-width:20ch">${r.title}</h2>
-          <p class="lede mt-s">${r.blurb}</p>
-          <div class="meta">
-            <div><div class="a">Participants</div><div class="b">${r.participants.toLocaleString("en-IN")}</div></div>
-            <div><div class="a">Volunteers</div><div class="b">${r.volunteers}</div></div>
-            <div><div class="a">Institutions</div><div class="b">${r.institutions}</div></div>
-            <div><div class="a">Date</div><div class="b" style="font-size:17px">${r.date}</div></div>
-          </div>
-          <p>${r.story}</p>
-          <blockquote style="margin:28px 0 0;padding-left:26px;border-left:3px solid var(--flame);
-            font-family:var(--display);font-style:italic;font-size:21px;line-height:1.4">
-            “${r.quote}”
-            <span style="display:block;font:500 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;
-              color:var(--ink-faint);margin-top:14px;font-style:normal">${r.quoteBy}</span>
-          </blockquote>
-          <p style="font-size:12.5px;color:var(--ink-faint);margin-top:28px">
-            Venue: ${r.venue}. This entry is illustrative demo content.</p>
-        </div>`;
-      window.JWRCArt.build($("#modalbody"));
-      modal.classList.add("open");
-      document.body.classList.add("is-locked");
-    });
-
-    function close() { modal.classList.remove("open"); document.body.classList.remove("is-locked"); }
-    $(".x", modal).addEventListener("click", close);
-    modal.addEventListener("click", e => { if (e.target === modal) close(); });
-    addEventListener("keydown", e => { if (e.key === "Escape") close(); });
-  }
 
   /* ---------- stories slider ---------- */
 
-  function slider() {
-    const root = $("#stories");
-    if (!root || !D) return;
-    const track = $(".slides", root);
-    track.innerHTML = D.STORIES.map(s => `
-      <div class="slide">
-        <div class="split center gl">
-          <div>
-            <p class="q">“${s.quote}”</p>
-            <div class="flex center gs mt-l">
-              <span class="portrait" data-seed="${s.seed}" style="width:56px;flex:none;
-                border-radius:50%;overflow:hidden"></span>
-              <span>
-                <span style="display:block;font-weight:600">${s.name}</span>
-                <span style="display:block;font-size:13px;color:rgba(252,248,240,.55)">${s.role}</span>
-              </span>
-            </div>
-          </div>
-          <div class="frame on-dark"><span class="in"><span class="scene r43"
-            data-scene="${["attempt","festival","school","heritage","night"][s.seed % 5]}"
-            data-seed="${s.seed}"></span></span></div>
-        </div>
-      </div>`).join("");
-    window.JWRCArt.build(track);
-
-    const dots = $("#sdots");
-    dots.innerHTML = D.STORIES.map((_, i) =>
-      `<button class="dot${i ? "" : " on"}" aria-label="Story ${i + 1}"></button>`).join("");
-
-    let i = 0, timer;
-    function go(n) {
-      i = (n + D.STORIES.length) % D.STORIES.length;
-      track.style.transform = `translateX(-${i * 100}%)`;
-      $$(".dot", dots).forEach((d, k) => d.classList.toggle("on", k === i));
-    }
-    $$(".dot", dots).forEach((d, k) => d.addEventListener("click", () => { go(k); restart(); }));
-    $("#sprev").addEventListener("click", () => { go(i - 1); restart(); });
-    $("#snext").addEventListener("click", () => { go(i + 1); restart(); });
-    function restart() { clearInterval(timer); if (!REDUCED) timer = setInterval(() => go(i + 1), 7000); }
-    restart();
-  }
 
   /* ---------- enquiry wizard ---------- */
 
-  function wizard() {
-    const form = $("#enquiry");
-    if (!form) return;
-    const steps = $$(".fstep", form);
-    const bars = $$(".formsteps i", form);
-    let cur = 0;
-
-    // path picker
-    $$(".pathpick button", form).forEach(b => b.addEventListener("click", () => {
-      $$(".pathpick button", form).forEach(x => x.classList.remove("on"));
-      b.classList.add("on");
-      const t = $("#pathnote");
-      if (t) t.textContent = b.dataset.note || "";
-    }));
-
-    function show(n) {
-      cur = n;
-      steps.forEach((s, k) => s.classList.toggle("on", k === n));
-      bars.forEach((b, k) => b.classList.toggle("on", k <= n));
-      form.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" });
-    }
-
-    function valid(step) {
-      let ok = true;
-      $$("[data-req]", step).forEach(inp => {
-        const wrap = inp.closest(".field");
-        const v = inp.value.trim();
-        let bad = !v;
-        if (!bad && inp.type === "email") bad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-        if (!bad && inp.type === "tel") bad = v.replace(/\D/g, "").length < 10;
-        wrap.classList.toggle("err", bad);
-        if (bad) ok = false;
-      });
-      return ok;
-    }
-
-    $$("[data-next]", form).forEach(b => b.addEventListener("click", () => {
-      if (valid(steps[cur])) show(cur + 1);
-    }));
-    $$("[data-back]", form).forEach(b => b.addEventListener("click", () => show(cur - 1)));
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!valid(steps[cur])) return;
-      const name = ($("#f-name", form) || {}).value || "friend";
-      const path = ($(".pathpick button.on", form) || {}).textContent || "";
-      $("#wizbody").style.display = "none";
-      const ok = $("#wizdone");
-      ok.classList.add("on");
-      $("#donename").textContent = name.split(" ")[0];
-      $("#donepath").textContent = path.trim().toLowerCase();
-      ok.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" });
-    });
-
-    $$("input,textarea", form).forEach(i =>
-      i.addEventListener("input", () => i.closest(".field").classList.remove("err")));
-  }
 
   /* ---------- upcoming events ---------- */
 
-  function upcoming() {
-    const el = $("#upcoming");
-    if (!el || !D) return;
-    el.innerHTML = D.UPCOMING.map((u, i) => `
-      <article class="card zoom" style="padding:0;overflow:hidden">
-        <span class="scene r32" data-scene="${u.scene}" data-seed="${(i + 3) * 41}"></span>
-        <div style="padding:24px 24px 28px">
-          <span class="num">${u.status}</span>
-          <h3 style="font-size:21px">${u.title}</h3>
-          <p class="mt-s">${u.when} · ${u.where}</p>
-          <div class="row" style="display:flex;justify-content:space-between;gap:12px;margin-top:18px;
-            padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-faint)">
-            <span>${u.cause}</span><span>${u.need}</span></div>
-        </div>
-      </article>`).join("");
-    window.JWRCArt.build(el);
-  }
 
   /* ---------- stats binding ---------- */
 
-  function stats() {
-    if (!D) return;
-    $$("[data-stat]").forEach(el => {
-      const v = D.STATS[el.dataset.stat];
-      if (v != null) el.dataset.count = v;
-    });
-  }
 
   /* ---------- marquee ---------- */
 
-  function marquee() {
-    const t = $("#marquee .track");
-    if (!t || !D) return;
-    const items = D.BODIES.map(b => `<span class="it"><b>${b.name}</b> ${b.note}</span>`).join("");
-    t.innerHTML = items + items;
-  }
 
   /* ---------- boot ---------- */
 
@@ -466,8 +241,7 @@
     mountFooter();
     wireChrome();
     if (window.JWRCArt) window.JWRCArt.build();
-    stats(); marquee(); upcoming(); archive(); slider(); wizard();
-    reveals(); scrollFx(); preloadFallback();
+    scrollFx(); preloadFallback();
   });
 })();
 

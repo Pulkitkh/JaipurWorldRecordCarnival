@@ -231,8 +231,14 @@ section { position: relative; }
    than from a list of section classes it has to be kept in sync with — the
    hero used to be missing from that list, so "Get in touch" was navy on navy
    and effectively invisible. --ghost-fg is set once per ground, above. */
+/* The fallback is currentColor, not --ink. Any section that sets its own
+   text colour gets a correct outline button for free — which is the whole
+   problem this had three times running, once per new dark section added:
+   the rule listed section class names, and a new section was never on the
+   list, so the button rendered navy on navy and vanished. --ghost-fg is
+   still honoured where a ground wants to override it. */
 .btn.ghost {
-  --bg: transparent; --fg: var(--ghost-fg, var(--ink)); box-shadow: none;
+  --bg: transparent; --fg: var(--ghost-fg, currentColor); box-shadow: none;
   border: 1.5px solid var(--ghost-line, var(--line));
 }
 .btn.ghost:hover {
