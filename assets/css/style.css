@@ -348,7 +348,10 @@ section { position: relative; }
 .burger.open i:nth-child(3) { transform: rotate(-45deg); }
 
 .drawer {
-  position: fixed; inset: var(--nav-h) 0 0; z-index: 880; background: var(--navy-2);
+  /* Declares its own ink. It is a dark surface, and anything inside it that
+     inherits colour — the outline button, for one — needs to know that. */
+  position: fixed; inset: var(--nav-h) 0 0; z-index: 880;
+  background: var(--navy-2); color: var(--ivory);
   padding: 34px var(--gut) 40px; display: flex; flex-direction: column; gap: 4px;
   transform: translateY(-12px); opacity: 0; visibility: hidden;
   transition: opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
@@ -738,7 +741,12 @@ svg.defs { position: absolute; width: 0; height: 0; }
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .burger { display: block; }
-  .nav .btn { display: none; }
+  /* The primary call to action stays on screen. It used to be hidden below
+     900px, which left a phone with no route to the one page the whole site
+     funnels toward — the drawer only offered a phone number. Room is made by
+     dropping the wordmark's second line, not by dropping the button. */
+  .nav .btn { padding: 11px 16px; font-size: 12px; margin-left: 0; }
+  .nav .btn svg { display: none; }
   .hero-grid, .split, .split.wide-l, .split.wide-r { grid-template-columns: 1fr; }
   .g3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .hero-grid > .hero-photo { max-width: 400px; }
@@ -937,6 +945,14 @@ html { overflow-x: clip; }
 .burst i { position: absolute; width: 8px; height: 8px; border-radius: 2px; display: block; }
 
 @media (max-width: 900px) { .readring { display: none; } }
+
+/* Below this the wordmark is just the mark and "JAIPUR": the second line
+   costs about a hundred pixels and the button needs them more. */
+@media (max-width: 560px) {
+  .logo .l2 { display: none; }
+  .logo .l1 { font-size: 17px; }
+  .nav .btn { padding: 11px 13px; font-size: 11.5px; letter-spacing: .02em; }
+}
 
 /* ---------- 28. Cross-device hardening ----------
    iOS Safari, Android Chrome, notched phones and trackpad-less desktops. */
