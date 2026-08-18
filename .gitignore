@@ -5,3 +5,7 @@ __pycache__/
 # Photograph originals live outside version control — they are large, and the
 # web-ready derivatives in media/ are generated from them by tools/build-media.py
 media-source/
+
+# Installed by npm from package.json + package-lock.json. Vercel installs them
+# itself at deploy time; the lockfile is what belongs in version control.
+node_modules/

@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
+# The enquiries console and the API behind it. Not secret — the password
+# is what keeps them private — but there is nothing here for a search
+# engine to read, and an admin page in search results only invites people
+# to try the door.
+Disallow: /admin
+Disallow: /api/
+
 Sitemap: https://jaipurworldrecordcarnival.in/sitemap.xml

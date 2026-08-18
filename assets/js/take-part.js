@@ -11,17 +11,20 @@
   const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ── Where enquiries go ─────────────────────────────────────
-     There is no server behind this site, so the form does not POST
-     anywhere. Rather than pretend to and lose enquiries silently, it
-     composes the message and opens WhatsApp or the mail client with it
-     already written.
+     To the site's own API, which writes them into the enquiries table
+     and answers with a reference the sender can quote on the phone.
 
-     To switch to a real endpoint later — a Formspree URL, a Vercel
-     function, anything that accepts a POST — put it in ENDPOINT below.
-     The form will send in the background and show its own confirmation,
-     and the two send buttons become a single Send. Nothing else needs
-     to change. */
-  const ENDPOINT = "";
+     WhatsApp is still offered, because a great many people here would
+     rather talk than fill in a form — but it is no longer instead of
+     recording the enquiry. Both buttons save first; the WhatsApp one
+     then opens the conversation with the message already written. An
+     enquiry that only ever existed inside somebody's phone is an
+     enquiry that gets lost.
+
+     If the API is unreachable — no database configured yet, the network
+     dropped — the form falls back to the old behaviour rather than
+     telling somebody their message is gone. */
+  const ENDPOINT = "/api/enquiry";
   const WHATSAPP = "918003003000";
   const EMAIL = "manmohan.agarwal015@gmail.com";
 
@@ -101,6 +104,8 @@
         name: get("name"), phone: get("phone"), email: get("email"),
         org: get("org"), people: get("people"), note: get("note"),
         as: as ? as.value : "",
+        website: get("website"),   // the honeypot; a person always sends this empty
+        page: "take-part",
       };
     }
 
@@ -118,9 +123,18 @@
       return lines.filter((l) => l !== "").join("\n");
     }
 
+    function say(html, isError) {
+      status.classList.toggle("err", Boolean(isError));
+      // the only markup this ever inserts is written here, never anything
+      // that came from the form
+      status.innerHTML = html;
+    }
+
+    const sendButtons = () => $$('button[type="submit"]', f);
+
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const how = (e.submitter && e.submitter.dataset.send) || "whatsapp";
+      const how = (e.submitter && e.submitter.dataset.send) || "site";
 
       // validate everything, then put the cursor on the first thing wrong
       let firstBad = null;
@@ -129,8 +143,7 @@
         if (!validate(input, true) && !firstBad) firstBad = input;
       }
       if (firstBad) {
-        status.textContent = "A couple of things still need filling in.";
-        status.classList.add("err");
+        say("A couple of things still need filling in.", true);
         firstBad.focus();
         firstBad.scrollIntoView({ block: "center", behavior: REDUCED ? "auto" : "smooth" });
         return;
@@ -138,39 +151,67 @@
 
       const d = collect();
       const body = compose(d);
-      status.classList.remove("err");
-
-      if (ENDPOINT) {
-        status.textContent = "Sending…";
-        try {
-          const res = await fetch(ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify(d),
-          });
-          if (!res.ok) throw new Error(res.status);
-          f.reset();
-          status.textContent = "Thank you — that has reached us. We will call you.";
-        } catch (err) {
-          console.error("[take-part] send failed", err);
-          status.classList.add("err");
-          status.innerHTML =
-            'That did not send. Please call <a href="tel:+918003003000">+91 80030 03000</a> ' +
-            'or email <a href="mailto:' + EMAIL + '">' + EMAIL + "</a>.";
-        }
-        return;
-      }
-
       const subject = `Record attempt enquiry — ${d.name}${d.org ? " (" + d.org + ")" : ""}`;
-      if (how === "email") {
-        location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}`
-                      + `&body=${encodeURIComponent(body)}`;
-        status.textContent = "Opening your email app with the message written out.";
-      } else {
-        window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(subject + "\n\n" + body)}`,
-                    "_blank", "noopener");
-        status.textContent = "Opening WhatsApp with the message written out.";
+      const waLink = `https://wa.me/${WHATSAPP}?text=`
+                   + encodeURIComponent(subject + "\n\n" + body);
+
+      /* A popup opened after an await has lost the click that justified
+         it, and every browser blocks it. So the tab is opened now, empty,
+         while the gesture is still live, and pointed somewhere once the
+         enquiry has been saved. */
+      let waTab = null;
+      if (how === "whatsapp") waTab = window.open("", "_blank", "noopener");
+
+      const buttons = sendButtons();
+      buttons.forEach((b) => { b.disabled = true; });
+      say("Sending…");
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(d),
+        });
+        const out = await res.json().catch(() => null);
+        if (!res.ok) throw new Error((out && out.error) || `Request failed (${res.status}).`);
+
+        f.reset();
+        if (waTab) {
+          waTab.location = waLink;
+          say("Saved, and WhatsApp is opening with the message written out. "
+            + "Your reference is <span class=\"form-ref\">" + esc(out.ref) + "</span>");
+        } else {
+          say("Thank you — that has reached us, and we read every one. "
+            + "We will call you on the number you gave. "
+            + "Your reference is <span class=\"form-ref\">" + esc(out.ref) + "</span>");
+        }
+      } catch (err) {
+        console.error("[take-part] send failed", err);
+        /* Nothing is lost here. The message is already composed, so the
+           visitor is handed it in the channel they can actually use. */
+        if (waTab) {
+          waTab.location = waLink;
+          say("We could not save that on our side, so WhatsApp is opening with the "
+            + "message written out — send it there and it will reach us.", true);
+        } else {
+          window.open(waLink, "_blank", "noopener");
+          say("That did not save. WhatsApp is opening with your message written out — "
+            + 'or call <a href="tel:+918003003000">+91 80030 03000</a>, '
+            + 'or email <a href="mailto:' + EMAIL + '">' + EMAIL + "</a>.", true);
+        }
+      } finally {
+        buttons.forEach((b) => { b.disabled = false; });
       }
     });
+  }
+
+  /* The reference comes from our own server and is six letters from a
+     fixed alphabet, so it cannot contain markup — but it is a value
+     arriving over the network being put into innerHTML, and those get
+     escaped without exception. */
+  function esc(value) {
+    const div = document.createElement("div");
+    div.textContent = String(value == null ? "" : value);
+    return div.innerHTML;
   }
 })();

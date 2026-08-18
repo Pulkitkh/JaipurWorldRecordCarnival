@@ -1,0 +1,17 @@
+{
+  "name": "jaipur-world-record-carnival",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for the Jaipur World Record Carnival, and the small API behind its enquiry form.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  },
+  "scripts": {
+    "check:devices": "python3 tools/check-devices.py",
+    "check:images": "python3 tools/check-images.py"
+  }
+}
