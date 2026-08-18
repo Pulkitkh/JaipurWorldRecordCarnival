@@ -94,7 +94,7 @@ CLIPPED = """() => {
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(executable_path="/opt/pw-browsers/chromium")
-        for page,label in ((f"{B}/","landing"),(f"{B}/about.html","about")):
+        for page,label in ((f"{B}/","landing"),(f"{B}/take-part.html","take part"),(f"{B}/about.html","about")):
             print(f"\n══ {label} ══")
             for w,h,dpr,touch,name in DEVICES:
                 ctx=await b.new_context(viewport={"width":w,"height":h},
@@ -109,6 +109,40 @@ async def main():
                 chk(not over, f"{label} {name} ({w}px): overflowing {over}")
                 chk(not clip, f"{label} {name} ({w}px): clipped text {clip}")
                 chk(not errs, f"{label} {name} ({w}px): JS errors {errs[:1]}")
+
+                # an outline button must never match the ground it stands on.
+                # This regressed once per new dark section until the rule
+                # stopped depending on a list of section names.
+                faint=await pg.evaluate("""() => {
+                  const px=(c)=>{const m=(c||'').match(/[\d.]+/g); return m?m.slice(0,3).map(Number):null;};
+                  const al=(c)=>{const m=(c||'').match(/[\d.]+/g); return m&&m.length>3?+m[3]:1;};
+                  const lum=(p)=>{const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};
+                    return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2]);};
+                  // composite every translucent layer down to an opaque colour.
+                  // Reading only the nearest background reports a 3.5% ivory
+                  // panel as near-white when it is really a shade of navy.
+                  const ground=(el)=>{
+                    const stack=[]; let n=el;
+                    while (n && n!==document.documentElement) {
+                      const cs=getComputedStyle(n), p=px(cs.backgroundColor), a=al(cs.backgroundColor);
+                      if (p && a>0) { stack.push([p,a]); if (a>=1) break; }
+                      n=n.parentElement;
+                    }
+                    if (!stack.length) return null;
+                    let out=[255,255,255];
+                    for (let i=stack.length-1;i>=0;i--){ const [c,a]=stack[i];
+                      out=[0,1,2].map(k=>c[k]*a+out[k]*(1-a)); }
+                    return out;
+                  };
+                  const out=[];
+                  for (const b of document.querySelectorAll('.btn.ghost')) {
+                    const bg=ground(b); if(!bg) continue;
+                    const fg=px(getComputedStyle(b).color); if(!fg) continue;
+                    const r=(Math.max(lum(fg),lum(bg))+.05)/(Math.min(lum(fg),lum(bg))+.05);
+                    if (r < 3) out.push(b.textContent.trim().slice(0,20)+' @'+r.toFixed(1)+':1');
+                  }
+                  return out; }""")
+                chk(not faint, f"{label} {name} ({w}px): outline button lost in its ground {faint}")
 
                 # the drawer, on the sizes that actually show a burger
                 if w < 900:

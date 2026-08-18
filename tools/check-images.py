@@ -146,7 +146,7 @@ def check(page):
 
 
 def main():
-    pages = sys.argv[1:] or ["index.html", "about.html"]
+    pages = sys.argv[1:] or ["index.html", "take-part.html", "about.html"]
     bad = 0
     for name in pages:
         page = ROOT / name
