@@ -226,6 +226,12 @@ section { position: relative; }
 .btn > * { position: relative; z-index: 1; }
 .btn svg { flex: none; transition: transform .4s var(--ease-out); position: relative; z-index: 1; }
 .btn:hover svg { transform: translateX(4px); }
+/* While an enquiry is being sent, both send buttons are disabled so it
+   cannot be sent twice. Without this they still lifted on hover and still
+   looked pressable — a button saying it will do something it will not. */
+.btn[disabled] { opacity: .55; cursor: default; box-shadow: none; }
+.btn[disabled]:hover { transform: none; box-shadow: none; }
+.btn[disabled]:hover::before { transform: translateX(-110%); }
 .btn.gold { --bg: var(--gold); --fg: #251B06; }
 /* The outline button takes its ink from whatever ground it stands on, rather
    than from a list of section classes it has to be kept in sync with — the

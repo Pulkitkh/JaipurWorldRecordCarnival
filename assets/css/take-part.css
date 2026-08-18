@@ -159,14 +159,37 @@
   outline: 2px solid var(--gold); outline-offset: 3px;
 }
 
-.send-as {
-  margin: 26px 0 12px; font: 600 10.5px/1 var(--body); letter-spacing: .17em;
-  text-transform: uppercase; color: rgba(252,248,240,.7);
+/* The honeypot. Taken out of the layout entirely rather than given
+   display:none, because some form bots skip anything display:none carries
+   and fill in everything else. The markup keeps it away from people —
+   tabindex="-1" so no keyboard reaches it, aria-hidden so no screen
+   reader announces it. */
+.hp {
+  position: absolute !important;
+  left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
 }
-.send-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.send-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
 .send-note {
   margin: 16px 0 0; font-size: 13px; line-height: 1.6;
-  color: rgba(252,248,240,.55); max-width: 46ch;
+  color: rgba(252,248,240,.7); max-width: 52ch;
+}
+.send-note a {
+  color: var(--gold-lt); text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.send-note a:hover { color: var(--ivory); }
+
+/* The reference the server hands back once an enquiry is stored. Somebody
+   reads this out on the phone, so it is monospaced and selects in one
+   click. */
+.form-ref {
+  display: inline-block; margin-top: 6px;
+  font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .12em; color: var(--ivory);
+  background: rgba(252,248,240,.1); border: 1px solid rgba(252,248,240,.2);
+  border-radius: 4px; padding: 8px 10px;
+  user-select: all;
 }
 .form-status {
   margin: 16px 0 0; font-size: 14px; line-height: 1.55; color: var(--gold-lt);

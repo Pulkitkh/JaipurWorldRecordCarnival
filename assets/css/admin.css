@@ -1,0 +1,369 @@
+/* ============================================================
+   JWRC — the enquiries console
+
+   Not part of the public site. It borrows the palette and the two
+   typefaces so it feels like the same organisation, and nothing else:
+   no motion, no photographs, no scroll choreography. This is a page
+   somebody opens on a phone between meetings to see who wrote in.
+
+   Everything below is built to the same rules as the rest of the site —
+   44px touch targets on coarse pointers, visible focus rings, no
+   horizontal overflow at 320px, and a layout that reflows rather than
+   scales.
+   ============================================================ */
+
+.admin {
+  background: var(--navy-3);
+  color: var(--ivory);
+  min-height: 100dvh;
+  font-family: var(--body);
+  /* the console is a dark surface, so every shared component that reads
+     currentColor — the ghost button, the focus ring — resolves light */
+  --focus: var(--gold);
+  --focus-halo: rgba(217, 164, 65, .26);
+  --ghost-fg: var(--ivory);
+  --card: #141B2B;
+  --card-2: #1B2334;
+  --edge: rgba(252, 248, 240, .12);
+  --dim: rgba(252, 248, 240, .58);
+  --dimmer: rgba(252, 248, 240, .40);
+}
+
+/* The three screens of this page are swapped by the hidden attribute, and
+   the browser's own [hidden] { display: none } is a bare attribute
+   selector — any class selector that sets display beats it. Every block
+   below that is laid out as a grid or a flex row would therefore have
+   stayed on the page while claiming to be hidden, and the console would
+   have appeared underneath the sign-in card rather than instead of it.
+   Said once, here, before anything sets display. */
+.admin [hidden] { display: none !important; }
+
+.admin :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.vh {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- boot ---------- */
+
+.ad-boot {
+  min-height: 100dvh;
+  display: grid; place-content: center; justify-items: center; gap: 16px;
+  color: var(--dim); font-size: 14px;
+}
+.ad-spin {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid rgba(252, 248, 240, .16);
+  border-top-color: var(--flame-2);
+  animation: ad-spin .8s linear infinite;
+}
+@keyframes ad-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .ad-spin { animation-duration: 2.4s; }
+}
+
+/* ---------- sign in ---------- */
+
+.ad-gate {
+  min-height: 100dvh;
+  display: grid; place-items: center;
+  padding: clamp(20px, 6vw, 60px);
+  /* a single warm light behind the card, so the page is not a black
+     rectangle with a form in the middle of it */
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(232, 70, 28, .16), transparent 70%),
+    radial-gradient(70% 50% at 50% 100%, rgba(44, 110, 128, .16), transparent 70%);
+}
+
+.ad-card {
+  width: min(420px, 100%);
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 18px;
+  padding: clamp(26px, 6vw, 40px);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .8);
+}
+.ad-mark { width: 40px; height: 40px; display: block; }
+.ad-card h1 {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(28px, 7vw, 34px); line-height: 1.1;
+  margin: 18px 0 6px;
+}
+.ad-sub { color: var(--dim); font-size: 14.5px; line-height: 1.55; margin: 0 0 26px; }
+
+.ad-card label, .ad-field-label {
+  display: block; font-size: 11px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dimmer); margin-bottom: 8px;
+}
+
+.admin input[type="password"],
+.admin input[type="text"],
+.admin input[type="search"],
+.admin select,
+.admin textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ivory);
+  background: rgba(252, 248, 240, .05);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: var(--tap-min, 0px);
+  transition: border-color .18s var(--ease), background .18s var(--ease);
+  /* iOS zooms the page in when a focused field is under 16px. Everything
+     here is 15px for rhythm, so the base size is nudged up on touch. */
+}
+@media (pointer: coarse) {
+  .admin input, .admin select, .admin textarea { font-size: 16px; }
+}
+.admin input:hover, .admin select:hover, .admin textarea:hover { border-color: rgba(252, 248, 240, .26); }
+.admin input:focus, .admin select:focus, .admin textarea:focus {
+  background: rgba(252, 248, 240, .08);
+  border-color: var(--gold);
+}
+.admin input::placeholder, .admin textarea::placeholder { color: rgba(252, 248, 240, .32); }
+.admin select {
+  appearance: none;
+  padding-right: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%23FCF8F0' stroke-opacity='.6' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+}
+.admin select option { background: var(--navy-2); color: var(--ivory); }
+
+#signin .btn { margin-top: 22px; }
+.ad-msg { font-size: 13.5px; line-height: 1.5; margin: 14px 0 0; min-height: 1.2em; color: var(--dim); }
+.ad-msg.err { color: #FFAF9B; }
+.ad-back { margin: 22px 0 0; font-size: 13px; }
+.ad-back a {
+  display: inline-flex; align-items: center; min-height: var(--tap-min, 0px);
+  color: var(--dimmer); text-decoration: underline; text-underline-offset: 3px;
+}
+.ad-back a:hover { color: var(--gold); }
+
+/* ---------- chrome ---------- */
+
+.ad-top {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(11, 16, 27, .86);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border-bottom: 1px solid var(--edge);
+}
+.ad-top-in {
+  max-width: 1180px; margin: 0 auto;
+  padding: 12px clamp(14px, 4vw, 28px);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.ad-home {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--ivory); text-decoration: none;
+  font-family: var(--display); font-size: 19px; font-weight: 600;
+  margin-right: auto;
+  /* a link is a target as much as a button is, and this one is 26px tall
+     on its own — the height of the mark beside it */
+  min-height: var(--tap-min, 0px);
+}
+.ad-home:hover { color: var(--gold); }
+.ad-top-acts { display: flex; gap: 8px; }
+
+.ad-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font: inherit; font-size: 13px; font-weight: 600;
+  color: var(--ivory); text-decoration: none;
+  background: rgba(252, 248, 240, .06);
+  border: 1px solid var(--edge);
+  border-radius: 9px;
+  padding: 9px 14px;
+  min-height: var(--tap-min, 0px);
+  cursor: pointer;
+  transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+}
+.ad-btn:hover { background: rgba(252, 248, 240, .12); border-color: rgba(252, 248, 240, .3); }
+.ad-btn[disabled] { opacity: .4; cursor: default; }
+
+.ad-wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding: clamp(20px, 5vw, 40px) clamp(14px, 4vw, 28px) 80px;
+}
+
+/* ---------- totals ---------- */
+
+.ad-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: clamp(20px, 4vw, 30px);
+}
+.ad-stat {
+  background: linear-gradient(160deg, var(--card-2), var(--card));
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.ad-stat b {
+  display: block;
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(26px, 5vw, 32px); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.ad-stat span {
+  display: block; margin-top: 7px;
+  font-size: 11px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--dimmer);
+}
+.ad-stat.hot b { color: var(--flame-2); }
+
+/* ---------- filters ---------- */
+
+.ad-filters { display: grid; gap: 12px; margin-bottom: 18px; }
+.ad-pills { display: flex; gap: 7px; flex-wrap: wrap; }
+.ad-pill {
+  font: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--dim); background: transparent;
+  border: 1px solid var(--edge); border-radius: 999px;
+  padding: 8px 14px; cursor: pointer;
+  min-height: var(--tap-min, 0px);
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: color .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease);
+}
+.ad-pill:hover { color: var(--ivory); border-color: rgba(252, 248, 240, .32); }
+.ad-pill[aria-pressed="true"] {
+  color: #2A1206; background: var(--gold); border-color: var(--gold);
+}
+.ad-pill i {
+  font-style: normal; font-variant-numeric: tabular-nums;
+  font-size: 11px; opacity: .7;
+}
+
+.ad-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; }
+.ad-search { position: relative; margin: 0; }
+.ad-search svg {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  color: var(--dimmer); pointer-events: none;
+}
+/* .admin input[type="search"] above sets the padding shorthand and carries
+   two class-or-attribute selectors to this one's one, so an unqualified
+   .ad-search input loses and the placeholder runs under the magnifier. */
+.admin .ad-search input { padding-left: 38px; }
+.ad-select { margin: 0; }
+.ad-select select { min-width: 150px; }
+
+.ad-count { font-size: 13px; color: var(--dimmer); margin: 0 0 14px; }
+
+/* ---------- the enquiries ---------- */
+
+.ad-list { display: grid; gap: 12px; }
+
+.ad-row {
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--st, var(--dimmer));
+  border-radius: 14px;
+  padding: 18px clamp(16px, 3vw, 22px);
+  display: grid; gap: 14px;
+}
+.ad-row[data-status="new"]       { --st: var(--flame); }
+.ad-row[data-status="contacted"] { --st: var(--gold); }
+.ad-row[data-status="planning"]  { --st: #6FA8DC; }
+.ad-row[data-status="confirmed"] { --st: #6FCF97; }
+.ad-row[data-status="closed"]    { --st: rgba(252, 248, 240, .22); }
+
+.ad-head { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.ad-who { min-width: 0; margin-right: auto; }
+.ad-who h2 {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(19px, 3.4vw, 22px); line-height: 1.2; margin: 0;
+  overflow-wrap: anywhere;
+}
+.ad-org { color: var(--dim); font-size: 14px; margin: 4px 0 0; overflow-wrap: anywhere; }
+.ad-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  margin-top: 9px; font-size: 11.5px; letter-spacing: .05em; color: var(--dimmer);
+}
+.ad-meta .ref { font-variant-numeric: tabular-nums; letter-spacing: .1em; }
+.ad-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  background: rgba(252, 248, 240, .07); border: 1px solid var(--edge);
+  border-radius: 999px; padding: 5px 10px; color: var(--dim);
+}
+.ad-tag.people { color: var(--gold-lt); border-color: rgba(217, 164, 65, .34); }
+
+.ad-status { flex: none; }
+.ad-status select { width: auto; min-width: 132px; font-size: 13px; padding: 9px 32px 9px 12px; }
+
+.ad-contact { display: flex; gap: 8px; flex-wrap: wrap; }
+.ad-contact a {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; font-weight: 500; text-decoration: none;
+  color: var(--ivory);
+  background: rgba(252, 248, 240, .06); border: 1px solid var(--edge);
+  border-radius: 9px; padding: 8px 13px;
+  min-height: var(--tap-min, 0px);
+  overflow-wrap: anywhere;
+  transition: background .18s var(--ease), border-color .18s var(--ease);
+}
+.ad-contact a:hover { background: rgba(252, 248, 240, .12); border-color: rgba(252, 248, 240, .3); }
+.ad-contact a svg { flex: none; opacity: .6; }
+.ad-contact a.wa:hover { border-color: #43C455; }
+
+.ad-note {
+  font-size: 15px; line-height: 1.62; color: rgba(252, 248, 240, .88);
+  white-space: pre-wrap; overflow-wrap: anywhere;
+  margin: 0; padding-left: 14px;
+  border-left: 2px solid rgba(252, 248, 240, .14);
+}
+
+.ad-mine { display: grid; gap: 7px; }
+.ad-mine textarea { resize: vertical; min-height: 62px; font-size: 14px; line-height: 1.5; }
+.ad-saved { font-size: 11.5px; color: var(--dimmer); min-height: 1.2em; }
+.ad-saved.ok { color: #8BD8A4; }
+.ad-saved.err { color: #FFAF9B; }
+
+.ad-empty {
+  border: 1px dashed var(--edge); border-radius: 14px;
+  padding: clamp(34px, 8vw, 60px) 24px; text-align: center; color: var(--dim);
+}
+.ad-empty h2 {
+  font-family: var(--display); font-weight: 600; font-size: 22px;
+  color: var(--ivory); margin: 0 0 8px;
+}
+.ad-empty p { margin: 0; font-size: 14.5px; line-height: 1.6; }
+.ad-empty code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px; background: rgba(252, 248, 240, .08);
+  padding: 2px 6px; border-radius: 5px;
+}
+
+.ad-pager {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-top: 26px; font-size: 13px; color: var(--dimmer);
+}
+
+/* ---------- narrow ---------- */
+
+@media (max-width: 720px) {
+  .ad-tools { grid-template-columns: 1fr; }
+  .ad-select select { width: 100%; }
+  .ad-status { width: 100%; }
+  .ad-status select { width: 100%; }
+  .ad-contact a { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (max-width: 380px) {
+  .ad-home span { display: none; }
+  .ad-btn { padding: 9px 11px; }
+}
+
+/* The console has no motion to speak of, but the spinner and the hover
+   transitions still answer to the preference. */
+@media (prefers-reduced-motion: reduce) {
+  .admin * { transition-duration: .01ms !important; }
+}

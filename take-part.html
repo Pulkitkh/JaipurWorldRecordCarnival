@@ -26,8 +26,8 @@
 <meta name="twitter:image" content="https://jaipurworldrecordcarnival.in/og-image.png">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=424d9832">
-<link rel="stylesheet" href="assets/css/take-part.css?v=424d9832">
+<link rel="stylesheet" href="assets/css/style.css?v=48f6c25b">
+<link rel="stylesheet" href="assets/css/take-part.css?v=48f6c25b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -51,7 +51,7 @@
 
 <!-- Runs during parse: the nav is position:sticky and occupies layout space,
      so mounting it after first paint would drop the page by its own height. -->
-<script src="assets/js/app.js?v=424d9832"></script>
+<script src="assets/js/app.js?v=48f6c25b"></script>
 
 <main id="main">
 
@@ -274,6 +274,15 @@
            visitor chooses with everything already filled in. One constant in
            take-part.js switches it to a real endpoint when there is one. -->
       <form class="start-form" id="enquiry" novalidate data-anim="right">
+
+        <!-- Not a field. It is off-screen and hidden from assistive
+             technology, so no person will ever meet it; form bots fill in
+             every input they find, and anything that arrives with this
+             filled in is dropped without being stored. -->
+        <div class="hp" aria-hidden="true">
+          <label for="q-website">Website</label>
+          <input id="q-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
         <div class="field">
           <label for="q-name">Your name</label>
           <input id="q-name" name="name" type="text" autocomplete="name" required>
@@ -324,18 +333,23 @@
           <span class="msg" id="q-note-msg">A sentence is plenty — we just need somewhere to start.</span>
         </div>
 
-        <p class="send-as">Send this by</p>
         <div class="send-row">
-          <button type="submit" class="btn" data-send="whatsapp">
-            WhatsApp
+          <button type="submit" class="btn" data-send="site">
+            Send this to us
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
+              stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg>
+          </button>
+          <button type="submit" class="btn ghost" data-send="whatsapp">
+            Send on WhatsApp instead
             <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
               <path d="M8 0a8 8 0 0 0-6.9 12L0 16l4.2-1.1A8 8 0 1 0 8 0Zm4.7 11.3c-.2.6-1.1 1.1-1.6 1.1-.4 0-.9.2-3-.6-2.5-1-4.1-3.6-4.2-3.7-.1-.2-1-1.3-1-2.5 0-1.2.6-1.8.9-2 .2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.1.1.3 0 .5l-.3.4-.3.3c-.1.1-.2.2-.1.4.1.2.5 1 1.2 1.5.8.7 1.5.9 1.7 1 .2.1.3.1.5-.1l.6-.8c.2-.2.3-.2.5-.1l1.8.9c.2.1.4.2.4.3.1.1.1.6-.1 1.2Z"/></svg>
           </button>
-          <button type="submit" class="btn ghost" data-send="email">Email</button>
         </div>
         <p class="send-note">
-          Nothing is sent from this page. Whichever you choose opens with the message already
-          written, so you can read it before it goes.
+          This reaches us directly and we read every one. Nothing is shared with anybody
+          else, and we will not add you to a list. If you would rather talk first, call
+          <a href="tel:+918003003000">+91 80030 03000</a>.
         </p>
 
         <p class="form-status" id="q-status" role="status" aria-live="polite"></p>
@@ -346,15 +360,15 @@
 
 </main>
 
-<script src="assets/vendor/lenis.min.js?v=424d9832"></script>
-<script src="assets/vendor/gsap.min.js?v=424d9832"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=424d9832"></script>
-<script src="assets/vendor/Flip.min.js?v=424d9832"></script>
-<script src="assets/vendor/SplitText.min.js?v=424d9832"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=424d9832"></script>
-<script src="assets/vendor/CustomEase.min.js?v=424d9832"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=424d9832"></script>
-<script src="assets/js/motion.js?v=424d9832"></script>
-<script src="assets/js/take-part.js?v=424d9832"></script>
+<script src="assets/vendor/lenis.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/gsap.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/Flip.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/SplitText.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/CustomEase.min.js?v=48f6c25b"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=48f6c25b"></script>
+<script src="assets/js/motion.js?v=48f6c25b"></script>
+<script src="assets/js/take-part.js?v=48f6c25b"></script>
 </body>
 </html>
