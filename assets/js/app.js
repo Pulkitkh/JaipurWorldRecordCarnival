@@ -111,8 +111,10 @@
       <div class="drawer" id="drawer">
         ${NAV.map(([h, t], i) =>
           `<a href="${h}"><span class="n">0${i + 1}</span>${t}</a>`).join("")}
-        <a href="tel:+918003003000" class="btn mt-m" style="justify-content:center">
-          Call +91 80030 03000 ${ARROW}</a>
+        <a href="${CONTACT}" class="btn mt-m" style="justify-content:center">
+          Take part ${ARROW}</a>
+        <a href="tel:+918003003000" class="btn ghost" style="justify-content:center;margin-top:10px">
+          Call +91 80030 03000</a>
       </div>`);
   }
 
