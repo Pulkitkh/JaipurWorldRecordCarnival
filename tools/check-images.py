@@ -47,7 +47,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 # The rule that matters is the one a reader experiences: never two frames of
 # the same event close enough to see at once. So an event may appear twice
 # across the page, but never twice inside one section.
-BOUND = {"rcard", "rc-large", "rc-small"}
+# rfig and rfig-2 are the record pages' own bound slots: a photograph of
+# the spoon standing beside the spoon record is not the page repeating
+# itself, it is the page being about the spoon.
+BOUND = {"rcard", "rc-large", "rc-small", "rfig", "r2"}
 MAX_PER_EVENT = 2
 
 
@@ -146,7 +149,7 @@ def check(page):
 
 
 def main():
-    pages = sys.argv[1:] or ["index.html", "take-part.html", "about.html"]
+    pages = sys.argv[1:] or ["index.html", "records.html", "take-part.html", "about.html"]
     bad = 0
     for name in pages:
         page = ROOT / name
