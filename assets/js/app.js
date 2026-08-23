@@ -18,23 +18,28 @@
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
-  /* Three pages, so the nav is built per page: anchors into the page you
+  /* Four pages, so the nav is built per page: anchors into the page you
      are already on stay bare and scroll, links to the other pages carry
-     their filename. Each page also gets a route to the other two, so no
-     page is ever a dead end. */
+     their filename. Every page carries a route to every other one, so no
+     page is ever a dead end.
+
+     Both the home and founder pages used to point at a local #records
+     section. Those sections still exist and still say what they said —
+     but the records now have a page of their own, and that is where the
+     word in the nav should take somebody. */
   const PAGES = {
     home: [
       ["#gather", "Why we gather"],
-      ["#records", "Why records"],
       ["#build", "What we build"],
+      ["records.html", "The records"],
       ["take-part.html", "Take part"],
       ["about.html", "The Founder"],
     ],
     about: [
       ["#story", "The Story"],
-      ["#records", "Records"],
       ["#housing", "Housing"],
       ["#archive", "Archive"],
+      ["records.html", "The records"],
       ["take-part.html", "Take part"],
       ["index.html", "The Carnival"],
     ],
@@ -42,11 +47,21 @@
       ["#who", "Who it is for"],
       ["#how", "How it works"],
       ["#takes", "What it takes"],
-      ["#start", "Start"],
+      ["records.html", "The records"],
       ["index.html", "The Carnival"],
+      ["about.html", "The Founder"],
+    ],
+    records: [
+      ["#gathered", "Gathered"],
+      ["#built", "Built"],
+      ["#drawn", "Drawn by hand"],
+      ["#proof", "The evidence"],
+      ["index.html", "The Carnival"],
+      ["about.html", "The Founder"],
     ],
   };
   const HERE = /take-part\.html$/.test(location.pathname) ? "take"
+             : /records\.html$/.test(location.pathname) ? "records"
              : /about\.html$/.test(location.pathname) ? "about"
              : "home";
   const NAV = PAGES[HERE];

@@ -359,7 +359,12 @@
     gsap.to(o, {
       v: target, duration: 2.1, ease: "power2.out",
       scrollTrigger: { trigger: el, start: "top 90%", once: true },
-      onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("en-IN") + suffix; },
+      /* en-US grouping, not en-IN. The lakh grouping is correct Indian
+         usage, but every one of these numbers is also written out in the
+         prose beside it as 508,603 — and a counter that lands on 5,08,603
+         next to a paragraph saying 508,603 reads as an error, whichever
+         convention you prefer. One page, one grouping. */
+      onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("en-US") + suffix; },
     });
   });
 

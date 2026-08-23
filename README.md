@@ -5,6 +5,7 @@ Three pages and a small API.
 | | |
 |---|---|
 | `index.html` | the Carnival — what it is, why it gathers people, what it builds |
+| `records.html` | the eleven world records, in full |
 | `take-part.html` | how to join, and the enquiry form |
 | `about.html` | Manmohan Agarwal, founder, and the record archive |
 | `admin.html` | the enquiries that came in — password only |
@@ -32,6 +33,35 @@ easiest is already in the repository — **no build command, no output directory
 
 After deploying, update the absolute URLs if the domain differs from
 `jaipurworldrecordcarnival.in` — `canonical`, `og:url` and `sitemap.xml`.
+
+## The records page
+
+Eleven entries, in three groups — gathered, built, drawn by hand — because
+that is the honest division: four of them needed a crowd, four needed a
+workshop, three needed one hand and a magnifying glass.
+
+Six of the eleven have photographs. The other five are given a **drawn
+plate** instead of a wall of text: a canvas that renders the number itself,
+one mark at a time. Where the count is small enough to draw honestly every
+mark is one thing — 11,111 miniatures, 366 birthdays laid out as a year with
+the 29th of February ringed. Where it is not, the plate states the ratio it
+used (*one mark for every thousand trees*) rather than quietly rescaling,
+and the screw is drawn against a person at the same scale so the comparison
+is arithmetic rather than an impression.
+
+Plates are drawn once, when they scroll into view, and redrawn only when the
+box actually changes width — not on every resize event, because a phone
+fires those continuously while the address bar slides away.
+
+### One rule worth knowing before editing any page
+
+**Never put `data-anim` on a direct child of a `[data-stag]` container.**
+Both are reveal mechanisms in `motion.js`, and both call `gsap.from()`. Run
+on the same element, the second one initialises mid-flight, reads the
+current opacity of 0 as its destination, and animates the element from
+invisible to invisible — permanently. Eight blocks of this page were built
+that way and could not be seen at all. `tools/check-devices.py` now fails on
+the structure as well as on the symptom.
 
 ## Enquiries, and where they go
 
@@ -134,11 +164,13 @@ database.
 
 ```
 index.html              the Carnival
+records.html            the eleven records
 take-part.html          how to join, and the form
 about.html              the founder, and the record archive
 admin.html              the enquiries console
 assets/css/style.css    design system — tokens, type, components, motion
 assets/css/home.css     the Carnival page
+assets/css/records.css  the records page
 assets/css/take-part.css  the Take part page
 assets/css/about.css    portfolio-specific layout
 assets/css/admin.css    the console

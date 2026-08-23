@@ -3,6 +3,8 @@
 Check every page across the device sizes the site actually has to survive.
 
     pip install playwright && playwright install chromium
+    python3 tools/check-devices.py                 # every page
+    python3 tools/check-devices.py records         # just one
     python3 tools/check-devices.py
 
 Loads each page at twelve viewports, from a 320px phone to a 2560px
@@ -20,7 +22,7 @@ picking up the drawer's 30px link styling and spilling out of its own pill.
 
 Exit code 1 on any finding, so it can run in CI.
 """
-import asyncio, subprocess, time, signal
+import asyncio, subprocess, sys, time, signal
 from playwright.async_api import async_playwright
 
 srv=subprocess.Popen(["python3","-m","http.server","8220","--bind","127.0.0.1"],
@@ -91,10 +93,15 @@ CLIPPED = """() => {
   return [...new Set(bad)].slice(0,6);
 }"""
 
+ALL_PAGES=[(f"{B}/","landing"),(f"{B}/records.html","records"),
+           (f"{B}/take-part.html","take part"),(f"{B}/about.html","about")]
+want=[a.replace(".html","") for a in sys.argv[1:]]
+PAGES=[p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
+
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(executable_path="/opt/pw-browsers/chromium")
-        for page,label in ((f"{B}/","landing"),(f"{B}/take-part.html","take part"),(f"{B}/about.html","about")):
+        for page,label in PAGES:
             print(f"\n══ {label} ══")
             for w,h,dpr,touch,name in DEVICES:
                 ctx=await b.new_context(viewport={"width":w,"height":h},
@@ -144,6 +151,39 @@ async def main():
                   return out; }""")
                 chk(not faint, f"{label} {name} ({w}px): outline button lost in its ground {faint}")
 
+                # Anything the site reveals must end up revealed. Two things
+                # can stop that, and both have happened: a stagger container
+                # whose children ALSO carry data-anim runs two competing
+                # gsap.from tweens on one element, and the second reads the
+                # mid-flight opacity as its target — so the element animates
+                # from 0 to 0 and is never seen again. Checking the structure
+                # catches the cause; walking the page catches everything else.
+                clash=await pg.evaluate("""()=>[...document.querySelectorAll('[data-stag]')]
+                  .flatMap(p=>[...p.children].filter(c=>c.hasAttribute('data-anim'))
+                    .map(c=>(p.className||p.tagName)+' > '+(c.className||c.tagName)))
+                  .slice(0,4)""")
+                chk(not clash, f"{label} {name} ({w}px): animated twice, will stay hidden {clash}")
+
+                if w >= 1024:      # walk the whole page once, on one size only
+                    H=await pg.evaluate("document.body.scrollHeight"); y=0
+                    while y < H:
+                        await pg.evaluate(f"window.scrollTo(0,{y})")
+                        await pg.wait_for_timeout(360); y += 700
+                    await pg.wait_for_timeout(1300)
+                    ghosts=await pg.evaluate("""()=>[...document.querySelectorAll(
+                        '[data-anim],[data-split],[data-stag] > *')]
+                      .filter(el=>{
+                        const r=el.getBoundingClientRect();
+                        if (r.width<4||r.height<4) return false;
+                        return +getComputedStyle(el).opacity < 0.06; })
+                      .map(el=>(el.className&&el.className.baseVal===undefined
+                                 ? el.className : el.tagName)+' :: '
+                               +el.textContent.trim().slice(0,26))
+                      .slice(0,5)""")
+                    chk(not ghosts, f"{label} {name} ({w}px): revealed nothing {ghosts}")
+                    await pg.evaluate("window.scrollTo(0,0)")
+                    await pg.wait_for_timeout(500)
+
                 # the drawer, on the sizes that actually show a burger
                 if w < 900:
                     burger=await pg.query_selector("#burger")
@@ -175,4 +215,4 @@ async def main():
         await b.close()
     print("\n"+("ALL PASS" if not FAIL else f"{len(FAIL)} FAILURES"))
 asyncio.run(main()); srv.send_signal(signal.SIGTERM)
-import sys; sys.exit(1 if FAIL else 0)
+sys.exit(1 if FAIL else 0)
