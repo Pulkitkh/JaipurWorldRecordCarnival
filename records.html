@@ -26,8 +26,8 @@
 <meta name="twitter:image" content="https://jaipurworldrecordcarnival.in/og-image.png">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=976ea1de">
-<link rel="stylesheet" href="assets/css/records.css?v=976ea1de">
+<link rel="stylesheet" href="assets/css/style.css?v=f8178b9c">
+<link rel="stylesheet" href="assets/css/records.css?v=f8178b9c">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,13 +43,13 @@
 }
 </script>
 </head>
-<body>
+<body data-page="records">
 
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- Runs during parse: the nav is position:sticky and occupies layout space,
      so mounting it after first paint would drop the page by its own height. -->
-<script src="assets/js/app.js?v=976ea1de"></script>
+<script src="assets/js/app.js?v=f8178b9c"></script>
 
 <main id="main">
 
@@ -155,8 +155,8 @@
 
     <article class="rrec" id="trees">
       <figure class="rfig plate" data-plate="marks" data-marks="509" data-shape="leaf"
-              data-ink="#7FBF4F" data-alt="A field of 509 marks, one for every thousand of the 508,603 trees planted.">
-        <figcaption class="plate-key">One mark for every thousand trees</figcaption>
+              data-ink="#7FBF4F" data-ghost="508,603" data-alt="A field of 509 marks, one for every thousand of the 508,603 trees planted.">
+        <figcaption class="plate-key">One leaf for every thousand trees planted</figcaption>
       </figure>
       <div class="rbody">
         <span class="rkind">Gathered · 01</span>
@@ -224,8 +224,8 @@
     </article>
 
     <article class="rrec flip" id="birthdays">
-      <figure class="rfig plate" data-plate="year" data-ink="#D9A441" data-alt="Three hundred and sixty-six marks laid out as a calendar year, twelve rows deep, with the twenty-ninth of February ringed.">
-        <figcaption class="plate-key">One mark for every date of the year</figcaption>
+      <figure class="rfig plate" data-plate="year" data-ink="#D9A441" data-ghost="366" data-alt="Three hundred and sixty-six marks laid out as a calendar year, twelve rows deep, with the twenty-ninth of February ringed.">
+        <figcaption class="plate-key">One mark per date · 29 February ringed</figcaption>
       </figure>
       <div class="rbody">
         <span class="rkind">Gathered · 04</span>
@@ -301,7 +301,7 @@
 
     <article class="rrec" id="screw">
       <figure class="rfig plate" data-plate="screw">
-        <figcaption class="plate-key">Eleven feet three inches, against a person of average height</figcaption>
+        <figcaption class="plate-key">Against a person of average height</figcaption>
       </figure>
       <div class="rbody">
         <span class="rkind">Built · 07</span>
@@ -352,9 +352,9 @@
     </div>
 
     <article class="rrec" id="ram">
-      <figure class="rfig plate" data-plate="marks" data-marks="4000" data-shape="stroke"
-              data-ink="#E8461C" data-alt="A dense field of marks standing for the 64,691 inscriptions written on one postcard.">
-        <figcaption class="plate-key">Each mark stands for sixteen inscriptions</figcaption>
+      <figure class="rfig plate" data-plate="word" data-marks="420" data-word="राम"
+              data-ink="#E8461C" data-ghost="64,691" data-alt="The word राम set repeatedly across the card, one here for every 154 of the 64,691 written on the original postcard.">
+        <figcaption class="plate-key">राम — one here for every 154 on the postcard</figcaption>
       </figure>
       <div class="rbody">
         <span class="rkind">Drawn by hand · 09</span>
@@ -374,7 +374,7 @@
 
     <article class="rrec flip" id="ganesha">
       <figure class="rfig plate" data-plate="marks" data-marks="11111" data-shape="dot"
-              data-ink="#D9A441" data-alt="Eleven thousand one hundred and eleven marks, one for each miniature drawn on a single postcard.">
+              data-ink="#D9A441" data-ghost="11,111" data-alt="Eleven thousand one hundred and eleven marks, one for each miniature drawn on a single postcard.">
         <figcaption class="plate-key">One mark for each of the 11,111 miniatures</figcaption>
       </figure>
       <div class="rbody">
@@ -396,11 +396,18 @@
     <article class="rrec" id="languages">
       <figure class="rfig plate mirror" data-plate="mirror">
         <div class="mir" aria-hidden="true">
-          <span>record</span><span>अभिलेख</span><span>ਰਿਕਾਰਡ</span><span>রেকর্ড</span>
-          <span>பதிவு</span><span>ರೆಕಾರ್ಡ್</span><span>റെക്കോർഡ്</span><span>રેકોર્ડ</span>
-          <span>ରେକର୍ଡ</span><span>سجل</span><span>記録</span><span>기록</span>
+          <span class="mir-h">As written</span>
+          <span class="mir-rule"></span>
+          <span class="mir-h">Held to a mirror</span>
+          <div class="mir-col flip">
+            <span>record</span><span>अभिलेख</span><span>রেকর্ড</span><span>ਰਿਕਾਰਡ</span><span>سجل</span>
+          </div>
+          <span class="mir-rule"></span>
+          <div class="mir-col">
+            <span>record</span><span>अभिलेख</span><span>রেকর্ড</span><span>ਰਿਕਾਰਡ</span><span>سجل</span>
+          </div>
         </div>
-        <figcaption class="plate-key">Mirror script — hold a mirror to the screen</figcaption>
+        <figcaption class="plate-key">Five of the sixty-three · left is as written</figcaption>
       </figure>
       <div class="rbody">
         <span class="rkind">Drawn by hand · 11</span>
@@ -525,15 +532,15 @@
 
 </main>
 
-<script src="assets/vendor/lenis.min.js?v=976ea1de"></script>
-<script src="assets/vendor/gsap.min.js?v=976ea1de"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=976ea1de"></script>
-<script src="assets/vendor/Flip.min.js?v=976ea1de"></script>
-<script src="assets/vendor/SplitText.min.js?v=976ea1de"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=976ea1de"></script>
-<script src="assets/vendor/CustomEase.min.js?v=976ea1de"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=976ea1de"></script>
-<script src="assets/js/motion.js?v=976ea1de"></script>
-<script src="assets/js/records.js?v=976ea1de"></script>
+<script src="assets/vendor/lenis.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/gsap.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/Flip.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/SplitText.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/CustomEase.min.js?v=f8178b9c"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=f8178b9c"></script>
+<script src="assets/js/motion.js?v=f8178b9c"></script>
+<script src="assets/js/records.js?v=f8178b9c"></script>
 </body>
 </html>

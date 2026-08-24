@@ -242,17 +242,44 @@
    ratio where it is not. The key line under each says which. */
 .plate {
   position: relative;
-  background: var(--navy-2);
+  background: linear-gradient(150deg, var(--navy) 0%, var(--navy-3) 100%);
   border-radius: 3px;
   box-shadow: var(--sh-2);
   overflow: hidden;
   aspect-ratio: 4 / 5;
   display: flex; align-items: center; justify-content: center;
 }
+
+/* The canvas plates paint their own ground, because the grain has to sit
+   under the marks. The screw and the mirror are drawn in SVG and CSS, so
+   they get the same warm light and the same paper grain from here — without
+   it they read as a different, flatter kind of card sitting in the middle
+   of the set. */
+.plate[data-plate="screw"]::before,
+.plate[data-plate="mirror"]::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(58% 46% at 26% 12%, rgba(232,70,28,.17), transparent 72%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+.plate[data-plate="mirror"]::before {
+  background:
+    radial-gradient(58% 46% at 26% 12%, rgba(217,164,65,.16), transparent 72%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+
+/* the same ruled border and corner ticks the canvas plates draw */
+.plate[data-plate="screw"]::after,
+.plate[data-plate="mirror"]::after {
+  content: ""; position: absolute; inset: 12px; pointer-events: none; z-index: 3;
+  border: 1px solid rgba(252,248,240,.16);
+}
+.plate[data-plate="screw"] svg, .plate.mirror .mir { position: relative; z-index: 1; }
 .plate canvas, .plate svg {
   display: block; width: 100%; height: 100%;
 }
 .plate .plate-key {
+  z-index: 4;
   position: absolute; left: 0; right: 0; bottom: 0;
   margin: 0; padding: 22px 18px 14px;
   font: 500 11.5px/1.45 var(--body); letter-spacing: .05em;
@@ -261,23 +288,44 @@
   text-align: center;
 }
 
-/* Mirror script. No canvas — the transform is the point, and CSS does it
-   natively at any size without a single drawn pixel. */
+/* Mirror script, shown as the thing it is: the same five words written
+   backwards on the left and read in a mirror on the right, with the mirror
+   itself ruled down the middle. A single block of reversed words only said
+   "here is some unreadable type"; a column beside it says what the record
+   actually was. No canvas — the transform is the whole trick, and CSS does
+   it natively at any size. */
 .plate.mirror { aspect-ratio: 4 / 5; }
 .mir {
-  display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
-  gap: 10px 18px;
-  padding: 30px 22px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-content: center;
+  gap: 14px 18px;
+  padding: 30px clamp(14px, 2.4vw, 26px) 54px;
   width: 100%;
 }
-.mir span {
-  transform: scaleX(-1);
-  font-family: var(--display); font-size: clamp(17px, 2.1vw, 26px);
-  color: var(--ivory);
-  opacity: .88;
+.mir-h {
+  font: 600 9.5px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(252, 248, 240, .45);
+  text-align: center;
 }
-.mir span:nth-child(3n) { color: var(--gold-lt); }
-.mir span:nth-child(4n) { opacity: .55; }
+/* the mirror */
+.mir-rule {
+  background: linear-gradient(rgba(217,164,65,0), rgba(217,164,65,.6) 18%,
+                              rgba(217,164,65,.6) 82%, rgba(217,164,65,0));
+}
+.mir-col {
+  display: flex; flex-direction: column; gap: clamp(13px, 2.6vw, 28px);
+  align-items: center; text-align: center;
+}
+.mir-col.flip { transform: scaleX(-1); }
+.mir-col span {
+  font-family: var(--display);
+  font-size: clamp(17px, 2.3vw, 27px); line-height: 1.08;
+  color: var(--ivory);
+  overflow-wrap: anywhere;
+}
+.mir-col span:nth-child(2) { color: var(--gold-lt); }
+.mir-col span:nth-child(4) { color: var(--flame-2); }
 
 /* ---------- how it is proved ---------- */
 

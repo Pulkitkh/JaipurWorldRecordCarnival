@@ -49,13 +49,32 @@ used (*one mark for every thousand trees*) rather than quietly rescaling,
 and the screw is drawn against a person at the same scale so the comparison
 is arithmetic rather than an impression.
 
-Plates are drawn once, when they scroll into view, and redrawn only when the
+Each plate is built the way a specimen card is: a warm light behind the
+field, paper grain over it, a ruled border with corner ticks, and the number
+itself set enormous and nearly invisible behind the marks. The Ram plate sets
+the actual word — राम — rather than an abstract tick, and the mirror plate
+shows five scripts as written beside the same five held to a mirror, which
+is the record itself rather than a picture of unreadable type.
+
+They are drawn once, when they scroll into view, and redrawn only when the
 box actually changes width — not on every resize event, because a phone
-fires those continuously while the address bar slides away.
+fires those continuously while the address bar slides away. They wait for
+the webfonts first: canvas does not re-render type when a font arrives late
+the way layout does, so drawing early means drawing in Times forever.
 
-### One rule worth knowing before editing any page
+### Two rules worth knowing before editing any page
 
-**Never put `data-anim` on a direct child of a `[data-stag]` container.**
+**One. Never identify a page by matching `.html` in the URL.** `vercel.json`
+sets `cleanUrls`, so the deployed addresses have no extension — `/records`,
+not `/records.html`. Each page declares itself with `data-page` on `<body>`
+and `app.js` reads that; the URL is only a fallback. Getting this wrong is
+invisible locally, where a file server only ever serves `/records.html`, and
+puts the landing page's menu on every page in production, where its `#gather`
+and `#build` links point at sections that do not exist. `tools/check-devices.py`
+now serves the site the way Vercel does and fails on any menu link that lands
+nowhere.
+
+**Two. Never put `data-anim` on a direct child of a `[data-stag]` container.**
 Both are reveal mechanisms in `motion.js`, and both call `gsap.from()`. Run
 on the same element, the second one initialises mid-flight, reads the
 current opacity of 0 as its destination, and animates the element from
