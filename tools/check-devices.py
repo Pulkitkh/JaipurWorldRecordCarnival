@@ -25,8 +25,31 @@ Exit code 1 on any finding, so it can run in CI.
 import asyncio, subprocess, sys, time, signal
 from playwright.async_api import async_playwright
 
-srv=subprocess.Popen(["python3","-m","http.server","8220","--bind","127.0.0.1"],
-    cwd=str(__import__("pathlib").Path(__file__).resolve().parent.parent),stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL); time.sleep(1.5)
+# A plain file server is the wrong thing to test against. The deployed site
+# runs with vercel.json's cleanUrls, so its real addresses have no extension
+# — /records, not /records.html — and a bug that only exists at those
+# addresses is invisible to a server that will not serve them. One did:
+# every page but the landing page rendered the landing page's navigation,
+# because the page was identified by matching ".html" in the path.
+#
+# So the harness serves the site the way Vercel does, and the pages below
+# are visited at BOTH addresses.
+_SERVER = r'''
+import http.server, os, sys
+ROOT = sys.argv[2]
+class H(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *a, **k): super().__init__(*a, directory=ROOT, **k)
+    def translate_path(self, path):
+        full = super().translate_path(path)
+        if not os.path.exists(full) and not os.path.splitext(full)[1]:
+            if os.path.exists(full + ".html"): return full + ".html"
+        return full
+    def log_message(self, *a): pass
+http.server.HTTPServer(("127.0.0.1", int(sys.argv[1])), H).serve_forever()
+'''
+_ROOT = str(__import__("pathlib").Path(__file__).resolve().parent.parent)
+srv=subprocess.Popen(["python3","-c",_SERVER,"8220",_ROOT],
+    stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL); time.sleep(1.5)
 B="http://127.0.0.1:8220"
 FAIL=[]
 def chk(c,m):
@@ -93,8 +116,8 @@ CLIPPED = """() => {
   return [...new Set(bad)].slice(0,6);
 }"""
 
-ALL_PAGES=[(f"{B}/","landing"),(f"{B}/records.html","records"),
-           (f"{B}/take-part.html","take part"),(f"{B}/about.html","about")]
+ALL_PAGES=[(f"{B}/","landing"),(f"{B}/records","records"),
+           (f"{B}/take-part","take part"),(f"{B}/about","about")]
 want=[a.replace(".html","") for a in sys.argv[1:]]
 PAGES=[p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
 
@@ -163,6 +186,21 @@ async def main():
                     .map(c=>(p.className||p.tagName)+' > '+(c.className||c.tagName)))
                   .slice(0,4)""")
                 chk(not clash, f"{label} {name} ({w}px): animated twice, will stay hidden {clash}")
+
+                # Every bare anchor the chrome offers must land somewhere on
+                # THIS page. A nav built for the wrong page still renders and
+                # still looks right — its links simply do nothing, which is
+                # how the whole site shipped with the landing page's menu on
+                # every page for a day.
+                dead=await pg.evaluate("""()=>{
+                  const out=[];
+                  for (const a of document.querySelectorAll('.nav a, .drawer a, .foot a')) {
+                    const h=a.getAttribute('href')||'';
+                    if (!h.startsWith('#') || h==='#') continue;
+                    if (!document.querySelector(h)) out.push(a.textContent.trim()+' -> '+h);
+                  }
+                  return [...new Set(out)].slice(0,4); }""")
+                chk(not dead, f"{label} {name} ({w}px): menu links go nowhere {dead}")
 
                 if w >= 1024:      # walk the whole page once, on one size only
                     H=await pg.evaluate("document.body.scrollHeight"); y=0

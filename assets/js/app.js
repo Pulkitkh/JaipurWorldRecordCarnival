@@ -60,10 +60,31 @@
       ["about.html", "The Founder"],
     ],
   };
-  const HERE = /take-part\.html$/.test(location.pathname) ? "take"
-             : /records\.html$/.test(location.pathname) ? "records"
-             : /about\.html$/.test(location.pathname) ? "about"
-             : "home";
+  /* Which page this is.
+
+     It used to be worked out by matching location.pathname against
+     "records.html" and friends. That is wrong the moment the site is
+     deployed, because vercel.json sets cleanUrls, so the real address is
+     /records with no extension — the match failed, every page except the
+     landing page fell back to the home nav, and its bare #gather and
+     #build anchors pointed at sections that do not exist there. Clicking
+     them did nothing at all. Locally it worked perfectly, because a
+     plain file server only ever serves /records.html.
+
+     So the page says what it is, in its own markup, and the URL is only
+     consulted as a fallback — now written to accept both forms, plus a
+     trailing slash and index.html. app.js runs during parse from just
+     inside <body>, so document.body and its attributes already exist. */
+  const FROM_URL = (() => {
+    const path = location.pathname.replace(/\/+$/, "").split("/").pop() || "";
+    const name = path.replace(/\.html$/, "");
+    if (name === "take-part") return "take";
+    if (name === "records") return "records";
+    if (name === "about") return "about";
+    return "home";
+  })();
+  const DECLARED = document.body && document.body.dataset.page;
+  const HERE = PAGES[DECLARED] ? DECLARED : FROM_URL;
   const NAV = PAGES[HERE];
   const CONTACT = HERE === "take" ? "#start" : "take-part.html#start";
 
