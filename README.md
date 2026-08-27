@@ -62,6 +62,28 @@ fires those continuously while the address bar slides away. They wait for
 the webfonts first: canvas does not re-render type when a font arrives late
 the way layout does, so drawing early means drawing in Times forever.
 
+### Putting a real photograph on a record
+
+Five of the eleven records have no photograph and carry a drawn plate
+instead. When a real one turns up:
+
+```bash
+pip install pillow
+python3 tools/add-photo.py ~/Downloads/tree-planting.jpg trees
+python3 tools/check-images.py records.html
+```
+
+One command per photograph. It resizes into the same WebP widths the rest
+of the library uses, writes the manifest entry with that record's own event
+and caption, and swaps the plate on `records.html` for the photograph —
+or, where the record already has one, lays the new one over its corner as
+the second frame. The record is named by its id on the page: `trees`,
+`photographs`, `dance`, `birthdays`, `calendar`, `spoon`, `screw`,
+`perpetual`, `ram`, `ganesha`, `languages`.
+
+It refuses to overwrite an existing file, and it warns when the record's
+own paragraph describes the plate being replaced.
+
 ### Two rules worth knowing before editing any page
 
 **One. Never identify a page by matching `.html` in the URL.** `vercel.json`
