@@ -1490,6 +1490,72 @@
     "modi"
    ],
    "featured": false
+  },
+  {
+   "id": "trees-001",
+   "src": "media/trees/trees-001-1609.webp",
+   "thumb": "media/trees/trees-001-640.webp",
+   "widths": {
+    "640": "media/trees/trees-001-640.webp",
+    "1280": "media/trees/trees-001-1280.webp",
+    "1609": "media/trees/trees-001-1609.webp"
+   },
+   "w": 1609,
+   "h": 977,
+   "tone": "#5d5752",
+   "alt": "Volunteers planting saplings during the Ek Ped Maa Ke Naam drive",
+   "caption": "Ek Ped Maa Ke Naam — 508,603 trees, one hour",
+   "category": "records",
+   "year": 0,
+   "event": "508,603 trees planted in a single hour",
+   "tags": [
+    "trees"
+   ],
+   "featured": false
+  },
+  {
+   "id": "ram-001",
+   "src": "media/ram/ram-001-1536.webp",
+   "thumb": "media/ram/ram-001-640.webp",
+   "widths": {
+    "640": "media/ram/ram-001-640.webp",
+    "1280": "media/ram/ram-001-1280.webp",
+    "1536": "media/ram/ram-001-1536.webp"
+   },
+   "w": 1536,
+   "h": 1024,
+   "tone": "#8d8278",
+   "alt": "The postcard carrying the word Ram written 64,691 times",
+   "caption": "64,691 inscriptions · one postcard",
+   "category": "records",
+   "year": 0,
+   "event": "Ram written 64,691 times on one postcard",
+   "tags": [
+    "ram"
+   ],
+   "featured": false
+  },
+  {
+   "id": "bday-001",
+   "src": "media/bday/bday-001-1536.webp",
+   "thumb": "media/bday/bday-001-640.webp",
+   "widths": {
+    "640": "media/bday/bday-001-640.webp",
+    "1280": "media/bday/bday-001-1280.webp",
+    "1536": "media/bday/bday-001-1536.webp"
+   },
+   "w": 1536,
+   "h": 1024,
+   "tone": "#715d51",
+   "alt": "The gathering of 366 people, one born on each date of the year",
+   "caption": "366 people, one for every date of the year",
+   "category": "records",
+   "year": 0,
+   "event": "One person for every date of the year",
+   "tags": [
+    "bday"
+   ],
+   "featured": false
   }
  ]
 }
