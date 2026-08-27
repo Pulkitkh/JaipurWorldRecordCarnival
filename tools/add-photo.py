@@ -10,7 +10,7 @@ Put one real photograph onto the records page.
     trees  photographs  dance  birthdays  calendar  spoon
     screw  perpetual    ram    ganesha    languages
 
-Five of those records have no photograph and are carrying a drawn plate
+Some of those records have no photograph and are carrying a drawn plate
 instead. Hand this script a real one and it does the whole job: resizes it
 into the WebP widths the rest of the library uses, writes the manifest
 entry with that record's own event and caption, and swaps the plate in
@@ -210,6 +210,15 @@ def main():
     biggest = made[max(made, key=lambda k: int(k))]
     smallest = made[min(made, key=lambda k: int(k))]
 
+    # No record photograph is ever displayed wider than about 640 CSS px —
+    # half of a 1280 wrap — so 1280 is already twice what the densest screen
+    # can show. Anything larger is bytes nobody sees. The bigger derivative
+    # stays in the manifest for the archive; the page gets this one.
+    page_key = max((k for k in made if int(k) <= 1280), key=int, default=max(made, key=int))
+    page_src = made[page_key]
+    page_w = int(page_key)
+    page_h = round(h * page_w / w)
+
     add_manifest({
         "id": f"{prefix}-{number:03d}",
         "src": biggest, "thumb": smallest, "widths": made,
@@ -219,13 +228,14 @@ def main():
         "event": meta["event"], "tags": [prefix], "featured": False,
     })
 
-    what = put_on_page(record, biggest, w, h, meta)
+    what = put_on_page(record, page_src, page_w, page_h, meta)
     if record == "ganesha":
         print("\nNOTE: the paragraph for this record says \"the figures above are one\n"
               "mark each\", which described the drawn plate you have just replaced.\n"
               "That sentence needs rewriting to talk about the photograph.")
 
     print(f"{src.name}  ->  {biggest}  ({w}x{h})")
+    print(f"  on the page: {page_src}  ({page_w}x{page_h})")
     print(f"  widths: {', '.join(sorted(made, key=int))}")
     print(f"  manifest: {prefix}-{number:03d}, event \"{meta['event']}\"")
     print(f"  records.html: {what} for #{record}")

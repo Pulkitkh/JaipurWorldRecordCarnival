@@ -40,7 +40,7 @@ Eleven entries, in three groups — gathered, built, drawn by hand — because
 that is the honest division: four of them needed a crowd, four needed a
 workshop, three needed one hand and a magnifying glass.
 
-Six of the eleven have photographs. The other five are given a **drawn
+Eight of the eleven have photographs. The other three are given a **drawn
 plate** instead of a wall of text: a canvas that renders the number itself,
 one mark at a time. Where the count is small enough to draw honestly every
 mark is one thing — 11,111 miniatures, 366 birthdays laid out as a year with
@@ -64,8 +64,8 @@ the way layout does, so drawing early means drawing in Times forever.
 
 ### Putting a real photograph on a record
 
-Five of the eleven records have no photograph and carry a drawn plate
-instead. When a real one turns up:
+Three of the eleven records have no photograph and carry a drawn plate
+instead — the screw, the Ganesha postcard and the mirror script. When a real one turns up:
 
 ```bash
 pip install pillow
@@ -231,7 +231,10 @@ tools/check-*.py        the guards — see above
 
 ## The archive
 
-77 photographs, grouped by record. Filter by kind, search by name, 24 to a page.
+Every photograph in `media/manifest.json`, grouped by record — 72 of them at
+the time of writing. Filter by kind, search by name, 24 to a page. The count
+is read from the manifest, so adding a photograph updates it without anyone
+editing a number (this line said 77 for a long time while there were 69).
 
 The grid is **virtualised**: only tiles near the viewport exist in the DOM, and
 they recycle as you scroll, so cost is bounded by screen size rather than by

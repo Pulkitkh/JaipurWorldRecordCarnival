@@ -1,9 +1,9 @@
 /* ============================================================
    JWRC — The records
 
-   Six of the eleven records have photographs. Five do not, and a page
+   Eight of the eleven records have photographs. Three do not, and a page
    about counting can do better than a paragraph where a picture should
-   be: those five get a drawn plate that renders the number itself, one
+   be: those three get a drawn plate that renders the number itself, one
    mark at a time.
 
    Where the count is small enough to draw honestly, every mark is one
