@@ -107,6 +107,10 @@ CLIPPED = """() => {
     const cs=getComputedStyle(el);
     if (cs.display==='none'||cs.visibility==='hidden') continue;
     if (cs.overflow!=='hidden' && cs.overflowY!=='hidden') continue;
+    // A visually-hidden label is a 1px box holding real text on purpose —
+    // that is how a screen reader is told what an icon button does. Text
+    // overflowing a box that small is the technique working, not a fault.
+    if (el.clientHeight <= 2 || el.clientWidth <= 2) continue;
     if (el.scrollHeight > el.clientHeight + 2 && el.clientHeight > 0) {
       const t=(el.textContent||'').trim().slice(0,26);
       if (t) bad.push('.'+(el.className||el.tagName).toString().split(' ')[0]

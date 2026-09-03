@@ -62,6 +62,38 @@ fires those continuously while the address bar slides away. They wait for
 the webfonts first: canvas does not re-render type when a font arrives late
 the way layout does, so drawing early means drawing in Times forever.
 
+### Themes
+
+Light, dark, or follow the device — chosen from the control in the nav (in
+the drawer on a phone), remembered in `localStorage`, and applied by a tiny
+inline script in every page's `<head>` so no page ever paints one frame of
+the wrong colour.
+
+Only **surfaces and the ink on them** change. `--bg`, `--bg-2`, `--bg-3`,
+`--ink*` and `--line` are what a theme remaps. The brand colours —
+`--ivory`, `--sand`, the flames, the gold — never move, and that separation
+is the whole design: `--ivory` is the ink used on every dark ground on the
+site, so remapping it for dark mode would have turned every headline
+standing on navy into navy on navy. Anything already dark (the hero, `.dark`
+and `.deep` sections, the nav, the footer) is left exactly as designed.
+
+**When adding a light-ground panel, reach for `--bg*`, not `--ivory`/`--sand`.**
+The brand tokens still exist and are still correct for text and rules on
+dark grounds; using them as a background is what breaks dark mode.
+
+```bash
+python3 tools/check-theme.py            # every page, both themes
+python3 tools/check-theme.py records    # just one
+```
+
+It measures every piece of text against the ground it actually stands on,
+compositing translucent layers the way a browser does, and checks the
+control itself — exclusivity, persistence across pages, and that a stored
+choice is on the document before the first paint. It found a real
+pre-existing fault the first time it ran: the selected chip on the Take part
+form used `--flame` behind white text at 3.94:1, when the palette carries
+`--flame-btn` (5.12:1) for exactly that job.
+
 ### Putting a real photograph on a record
 
 Three of the eleven records have no photograph and carry a drawn plate

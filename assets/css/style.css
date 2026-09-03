@@ -31,9 +31,23 @@
   --crimson:    #B92B2C;
   --leaf:       #2E6A50;
 
+  /* ── brand colours ──
+     These are the identity and they do not move. --ivory in particular is
+     the ink used on every dark ground on the site; if it were remapped for
+     a dark theme, every headline standing on navy would turn navy too. */
   --ivory:      #FCF8F0;
   --sand:       #F4EADA;
   --sand-2:     #E9DAC2;
+
+  /* ── surfaces and ink ──
+     These are what a theme changes. The light grounds and the text that
+     stands on them are named separately from the brand colours precisely
+     so that a dark theme can swap the grounds without touching anything
+     that is already dark. In the light theme they are the same values the
+     site has always used. */
+  --bg:         #FCF8F0;   /* the page itself */
+  --bg-2:       #F4EADA;   /* a panel raised off it */
+  --bg-3:       #E9DAC2;   /* a well sunk into it, and image placeholders */
   --ink:        #191510;
   --ink-soft:   #4C443A;
   /* Carries every small uppercase label on the page. At its old value it sat
@@ -44,6 +58,7 @@
   --ink-faint:  #6E6558;
   --line:       rgba(25,21,16,.12);
   --line-lt:    rgba(252,248,240,.14);
+
 
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -68,6 +83,66 @@
   --tap-min: 0px;                  /* raised to --tap on touch screens, below */
 }
 
+/* ---------- 1b. The dark theme ----------
+
+   Only the surfaces and the ink on them move. Everything already dark —
+   the hero, the .dark and .deep sections, the nav, the footer — is left
+   exactly as it is, because it was designed dark and it is already
+   correct. That is the whole reason --bg and --ivory are separate tokens:
+   remapping --ivory would have turned every headline standing on navy
+   into navy on navy.
+
+   The grounds are not simply inverted. Pure black against this palette
+   looks like a different site, so they are the same navy family the dark
+   sections already use, one step lighter than --deep, which keeps the
+   light/dark rhythm of the page legible rather than flattening it.
+
+   Written twice on purpose: once for a stated choice, once for a system
+   preference with no stated choice. A single :is() selector would be one
+   rule that fails whole if a browser does not understand one half of it. */
+:root[data-theme="dark"] {
+  --bg:         #121826;
+  --bg-2:       #182034;
+  --bg-3:       #202942;
+  --ink:        #F3EEE4;
+  --ink-soft:   rgba(243,238,228,.74);
+  --ink-faint:  rgba(243,238,228,.6);
+  --line:       rgba(243,238,228,.15);
+
+  /* The warm paper shadows read as brown smudges on a dark ground. */
+  --sh-1: 0 1px 2px rgba(0,0,0,.34), 0 8px 20px -10px rgba(0,0,0,.5);
+  --sh-2: 0 2px 6px rgba(0,0,0,.4), 0 22px 46px -18px rgba(0,0,0,.62);
+  --sh-3: 0 4px 10px rgba(0,0,0,.46), 0 44px 80px -28px rgba(0,0,0,.72);
+
+  /* Small type on a dark ground wants the lighter flame; the deep one was
+     mixed for contrast against ivory and goes muddy here. */
+  --flame-deep: var(--flame-2);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #121826;
+    --bg-2:       #182034;
+    --bg-3:       #202942;
+    --ink:        #F3EEE4;
+    --ink-soft:   rgba(243,238,228,.74);
+    --ink-faint:  rgba(243,238,228,.6);
+    --line:       rgba(243,238,228,.15);
+    --sh-1: 0 1px 2px rgba(0,0,0,.34), 0 8px 20px -10px rgba(0,0,0,.5);
+    --sh-2: 0 2px 6px rgba(0,0,0,.4), 0 22px 46px -18px rgba(0,0,0,.62);
+    --sh-3: 0 4px 10px rgba(0,0,0,.46), 0 44px 80px -28px rgba(0,0,0,.72);
+    --flame-deep: var(--flame-2);
+    color-scheme: dark;
+  }
+}
+
+/* The grain is a paper texture. On a dark ground it reads as dust. */
+:root[data-theme="dark"] body::after { opacity: .12; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::after { opacity: .12; }
+}
+
 /* Components write `min-height: max(<design height>, var(--tap-min))`, so the
    thumb floor arrives by inheritance rather than by a later rule having to
    out-specify them. Load order stops mattering, which is what went wrong when
@@ -89,7 +164,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 20px); }
 body {
-  margin: 0; background: var(--ivory); color: var(--ink);
+  margin: 0; background: var(--bg); color: var(--ink);
   font: 400 17px/1.65 var(--body);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -174,7 +249,7 @@ section { position: relative; }
 
 .dark { background: var(--navy); color: var(--ivory); }
 .deep { background: var(--navy-3); color: var(--ivory); }
-.sandbg { background: var(--sand); }
+.sandbg { background: var(--bg-2); }
 .dark h1,.dark h2,.dark h3,.deep h1,.deep h2,.deep h3 { color: var(--ivory); }
 
 /* ---------- 4. Typographic bits ---------- */
@@ -344,7 +419,7 @@ section { position: relative; }
 .burger i {
   position: absolute; left: 50%; top: 50%;
   width: 18px; height: 2px; margin: -1px 0 0 -9px;
-  background: var(--ivory); border-radius: 2px;
+  background: var(--bg); border-radius: 2px;
   transition: transform .4s var(--ease), opacity .25s var(--ease);
 }
 .burger i:nth-child(1) { transform: translateY(-6px); }
@@ -379,7 +454,7 @@ section { position: relative; }
 /* ---------- 9. Jharokha frames & scenes ---------- */
 svg.defs { position: absolute; width: 0; height: 0; }
 
-.frame { position: relative; padding: 11px; background: var(--sand-2); clip-path: url(#jw-cusp); }
+.frame { position: relative; padding: 11px; background: var(--bg-3); clip-path: url(#jw-cusp); }
 .frame.on-dark { background: rgba(252,248,240,.14); }
 .frame > .in { display: block; clip-path: url(#jw-cusp); overflow: hidden; position: relative; }
 .frame.plain { clip-path: url(#jw-arch); }
@@ -412,11 +487,11 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 .jband {
   height: 44px; background-repeat: repeat-x; background-position: center bottom;
-  background-size: auto 44px; background-color: var(--ivory);
+  background-size: auto 44px; background-color: var(--bg);
   border-bottom: 2px solid rgba(232,70,28,.32);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='44' viewBox='0 0 40 44'%3E%3Cpath d='M9 44V20c0-8.6 4.9-13.4 11-13.4S31 11.4 31 20v24z' fill='%23E8461C'/%3E%3Cpath d='M20 13.8c2.8 0 5 2.2 5 5v6.2H15v-6.2c0-2.8 2.2-5 5-5z' fill='%23FCF8F0'/%3E%3Ccircle cx='16' cy='32' r='1.8' fill='%23FCF8F0'/%3E%3Ccircle cx='24' cy='32' r='1.8' fill='%23FCF8F0'/%3E%3C/svg%3E");
 }
-.jband.on-sand { background-color: var(--sand); }
+.jband.on-sand { background-color: var(--bg-2); }
 .blockprint {
   height: 28px; background-repeat: repeat-x; background-size: auto 28px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='28' viewBox='0 0 44 28'%3E%3Cg fill='%23B92B2C'%3E%3Cpath d='M22 2l5 6.6c2.8 3.7 4.6 7.4 4.6 11.1V26H12.4v-6.3c0-3.7 1.8-7.4 4.6-11.1z'/%3E%3Ccircle cx='4' cy='22' r='2.8'/%3E%3Ccircle cx='40' cy='22' r='2.8'/%3E%3C/g%3E%3C/svg%3E");
@@ -436,7 +511,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 /* ---------- 11. Cards ---------- */
 .card {
-  position: relative; background: var(--ivory); border: 1px solid var(--line);
+  position: relative; background: var(--bg); border: 1px solid var(--line);
   border-radius: 4px; padding: 30px 28px 32px; box-shadow: var(--sh-1);
   transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out), border-color .4s;
 }
@@ -561,7 +636,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 .step i {
   position: relative; display: grid; place-items: center; width: 29px; height: 29px;
-  border-radius: 50%; background: var(--ivory); border: 1.5px solid var(--flame);
+  border-radius: 50%; background: var(--bg); border: 1.5px solid var(--flame);
   font: 700 11.5px/1 var(--body); font-style: normal; color: var(--flame);
   transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease-out);
 }
@@ -581,7 +656,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 .rec {
   display: block; text-align: left; width: 100%; padding: 0; border: 1px solid var(--line);
-  background: var(--ivory); border-radius: 4px; overflow: hidden; box-shadow: var(--sh-1);
+  background: var(--bg); border-radius: 4px; overflow: hidden; box-shadow: var(--sh-1);
   transition: transform .55s var(--ease-out), box-shadow .55s var(--ease-out), opacity .4s;
 }
 .rec:hover { transform: translateY(-6px); box-shadow: var(--sh-2); }
@@ -604,7 +679,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .modal.open { opacity: 1; visibility: visible; }
 .modal .sheet {
   position: relative; width: min(940px, 100%); max-height: 88vh; overflow-y: auto;
-  background: var(--ivory); border-radius: 5px; box-shadow: var(--sh-3);
+  background: var(--bg); border-radius: 5px; box-shadow: var(--sh-3);
   transform: translateY(26px) scale(.98); transition: transform .5s var(--ease-out);
 }
 .modal.open .sheet { transform: none; }
@@ -616,7 +691,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .modal .x:hover { background: var(--flame); transform: rotate(90deg); }
 .modal .body { padding: 34px clamp(24px,4vw,46px) 42px; }
 .modal .meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); margin: 26px 0; }
-.modal .meta div { background: var(--ivory); padding: 17px 15px; }
+.modal .meta div { background: var(--bg); padding: 17px 15px; }
 .modal .meta .a { font: 600 9.5px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); }
 .modal .meta .b { font-family: var(--display); font-size: 21px; margin-top: 8px; }
 
@@ -1013,4 +1088,57 @@ h1, h2, h3, .rec-b h3 { overflow-wrap: break-word; }
   .dark h1,.dark h2,.dark h3,.deep h1,.deep h2,.deep h3,.ph h1 { color: #000 !important; }
   .rec-n b { color: #000 !important; }
   a { text-decoration: underline; }
+}
+
+/* ---------- 29. The theme control ----------
+   It lives in the nav and in the drawer, both of which are dark in either
+   theme, so it needs one styling context rather than two. */
+.theme {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 3px;
+  background: rgba(252,248,240,.07);
+  border: 1px solid rgba(252,248,240,.14);
+  border-radius: 999px;
+  flex: none;
+}
+.th-b {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 30px;
+  min-width: var(--tap-min, 0px); min-height: var(--tap-min, 0px);
+  padding: 0; border: 0; border-radius: 999px;
+  background: transparent; color: rgba(252,248,240,.62);
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+.th-b svg { width: 16px; height: 16px; }
+.th-b:hover { color: var(--ivory); background: rgba(252,248,240,.1); }
+/* aria-pressed is the state, so the style hangs off it rather than off a
+   class the script would have to keep in step with the attribute. */
+.th-b[aria-pressed="true"] {
+  background: var(--gold); color: #2A1206;
+}
+.th-b[aria-pressed="true"]:hover { background: var(--gold-lt); color: #2A1206; }
+
+/* Below the burger breakpoint the nav has no room to spare — the wordmark
+   and the one call to action already fill it — so the control moves into
+   the drawer, where it can carry its label. */
+@media (max-width: 900px) { .theme.in-nav { display: none; } }
+@media (min-width: 901px) { .drawer-theme { display: none; } }
+
+.drawer-theme {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-top: 26px; padding-top: 22px;
+  border-top: 1px solid rgba(252,248,240,.14);
+}
+.drawer-theme .lbl {
+  font: 600 10.5px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(252,248,240,.5);
+}
+.theme.in-drawer .th-b { width: 44px; height: 40px; }
+.theme.in-drawer .th-b svg { width: 18px; height: 18px; }
+
+/* Used by the control and by the admin console for labels that exist for a
+   screen reader and nothing else. */
+.vh {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
