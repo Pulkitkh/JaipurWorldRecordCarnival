@@ -66,9 +66,11 @@
   --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --deva: "Noto Sans Devanagari", var(--body);
 
-  --sh-1: 0 1px 2px rgba(70,46,26,.05), 0 8px 20px -10px rgba(70,46,26,.16);
-  --sh-2: 0 2px 6px rgba(70,46,26,.07), 0 22px 46px -18px rgba(70,46,26,.26);
-  --sh-3: 0 4px 10px rgba(70,46,26,.08), 0 44px 80px -28px rgba(70,46,26,.36);
+  /* Composed from the --sh-* colour tokens in 1b, so one set of shadows
+     serves both themes: warm brown on paper, near-black on a dark ground. */
+  --sh-1: 0 1px 2px var(--sh-a), 0 8px 20px -10px var(--sh-b);
+  --sh-2: 0 2px 6px var(--sh-a), 0 22px 46px -18px var(--sh-c);
+  --sh-3: 0 4px 10px var(--sh-a), 0 44px 80px -28px var(--sh-d);
 
   --gut: clamp(20px, 5vw, 84px);
   --maxw: 1280px;
@@ -87,97 +89,143 @@
 
 /* ---------- 1b. The themes ----------
 
-   The first attempt at this flipped every light surface to one navy and
-   left the dark sections where they were. It was correct and it was dull:
-   the landing page went from cream / navy / cream / navy to five bands
-   inside a single narrow navy, and the alternation that gives the page its
-   pulse simply vanished.
+   Every themed colour is declared once, as light-dark(light, dark), and
+   which half applies is decided by color-scheme further down. There is no
+   second copy of the palette anywhere in this file.
 
-   So a theme remaps the bands as well as the page. Two rules do the work:
+   That is not tidiness. The previous version wrote the dark palette out
+   twice — once for a stated choice, once for a device preference — and the
+   two drifted within a day: --band was #2B1A15 in one and #2E1A13 in the
+   other, so somebody who pressed the dark button saw different colours
+   from somebody whose phone asked for dark. Nobody would ever notice, and
+   it would never come right.
 
-     1. Keep the rhythm. A page ground and a feature band must never sit
-        within a few points of each other in either theme.
-     2. Keep it chromatic. A dull dark theme is almost always a desaturated
-        one — grey-blue everywhere. The grounds here carry real hue, and
-        the bands run WARM against a COOL page, so the alternation is felt
-        as temperature as well as tone. That is also what makes flame and
-        gold look lit rather than printed.
+   The plain light value is declared first on every token. A browser too
+   old for light-dark() throws the second declaration away as invalid and
+   keeps the light palette, which is a working site rather than an unstyled
+   one.
 
-   --ivory and --sand still never move. They are the ink on every dark
-   ground on this site; remapping them would turn every headline standing
-   on a band into the band. */
+   ── what a theme changes ──
+   Surfaces (--bg*), the bands (--band*), the ink standing on them, the
+   rules, and the colours inside the shadows. The brand colours never move:
+   --ivory is the ink on every dark ground here, so remapping it would turn
+   every headline standing on a band into the band.
+
+   ── the bands ──
+   These used to be the navy the site was designed around, #1B2334 and
+   #0B101B, at 1.7% and 0.6% relative luminance. Five of them down one page
+   is a great deal of weight, and the site read heavy — nearer a printed
+   annual report than a carnival. They are now a block-print indigo around
+   7%, four times lighter, which still leaves body copy on them at 5.2:1
+   against a 4.5 floor. The measured ceiling is about #42528C, where
+   72%-alpha body copy lands at 4.55:1; these sit short of it on purpose,
+   so the margin is real rather than nominal. */
 
 :root {
-  /* The band family. Light keeps the navy the site was designed around. */
-  --band:       var(--navy);
-  --band-2:     var(--navy-2);
-  --band-deep:  var(--navy-3);
-}
+  /* surfaces — the page, a panel raised off it, a well sunk into it */
+  --bg:   #FFFBF3;
+  --bg:   light-dark(#FFFBF3, #1C1731);
+  --bg-2: #FDF4E7;
+  --bg-2: light-dark(#FDF4E7, #251F42);
+  --bg-3: #F6E7D2;
+  --bg-3: light-dark(#F6E7D2, #312956);
 
-/* ── dark ── */
-:root[data-theme="dark"] {
-  /* A deep indigo-plum, not a grey. Flame and gold sit on this like light
-     rather than like paint. */
-  --bg:         #15111F;
-  --bg-2:       #1D1830;
-  --bg-3:       #271F3D;
+  /* the bands: a feature band, the hero/overlay tone, and the deepest one
+     which the footer also uses. Light runs indigo, dark runs ember, so in
+     both themes a band is a change of temperature as well as of tone. */
+  --band:      #3A4A80;
+  --band:      light-dark(#3A4A80, #3B251B);
+  --band-2:    #2F3C68;
+  --band-2:    light-dark(#2F3C68, #241D3E);
+  --band-deep: #26314F;
+  --band-deep: light-dark(#26314F, #171227);
 
-  /* The feature band runs warm against that cool ground — deep ember-brown
-     — so the page still alternates instead of flattening. */
-  --band:       #2B1A15;
-  --band-2:     #1B1526;
-  --band-deep:  #0C0812;
+  /* ink */
+  --ink:       #191510;
+  --ink:       light-dark(#191510, #F6F0E6);
+  --ink-soft:  #4C443A;
+  --ink-soft:  light-dark(#4C443A, rgba(246,240,230,.78));
+  /* Carries every small uppercase label. Two steps darker than it once was,
+     which clears 4.5:1 on all three light grounds and still reads quiet. */
+  --ink-faint: #6E6558;
+  --ink-faint: light-dark(#6E6558, rgba(246,240,230,.64));
+  --line:      rgba(25,21,16,.12);
+  --line:      light-dark(rgba(25,21,16,.12), rgba(246,240,230,.16));
 
-  --ink:        #F6F0E6;
-  --ink-soft:   rgba(246,240,230,.76);
-  --ink-faint:  rgba(246,240,230,.62);
-  --line:       rgba(246,240,230,.16);
-
-  /* The warm paper shadows read as brown smudges on a dark ground. */
-  --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -10px rgba(0,0,0,.56);
-  --sh-2: 0 2px 6px rgba(0,0,0,.46), 0 22px 46px -18px rgba(0,0,0,.68);
-  --sh-3: 0 4px 10px rgba(0,0,0,.5), 0 44px 80px -28px rgba(0,0,0,.78);
+  /* Shadow colours are tokens so the shadows themselves can be written
+     once. light-dark() takes colours only, never a whole shadow. */
+  --sh-a: rgba(70,46,26,.05);
+  --sh-a: light-dark(rgba(70,46,26,.05), rgba(0,0,0,.42));
+  --sh-b: rgba(70,46,26,.16);
+  --sh-b: light-dark(rgba(70,46,26,.16), rgba(0,0,0,.58));
+  --sh-c: rgba(70,46,26,.26);
+  --sh-c: light-dark(rgba(70,46,26,.26), rgba(0,0,0,.7));
+  --sh-d: rgba(70,46,26,.36);
+  --sh-d: light-dark(rgba(70,46,26,.36), rgba(0,0,0,.8));
 
   /* Small type on a dark ground wants the lighter flame; the deep one was
-     mixed for contrast against ivory and goes muddy here. */
-  --flame-deep: #FF7A4D;
-  color-scheme: dark;
+     mixed for contrast against ivory and goes muddy there. */
+  --flame-deep: #BE3411;
+  --flame-deep: light-dark(#BE3411, #FF7A4D);
+
+  /* ── accents ──
+     The flames and the golds were mixed against a near-black band. Now
+     that a band is a mid indigo, flame on it is 2.15:1 — it disappears.
+     So every accent that colours TEXT reads through these tokens, and a
+     band context re-points them at a marigold that clears 5.29:1 on the
+     lightest band. Marigold and saffron are the right answer twice over:
+     they are legible on indigo, and they are what actually hangs over a
+     doorway in Jaipur.
+
+     Backgrounds, borders and rules keep the brand flame — this is about
+     text only, where contrast is a requirement rather than a preference. */
+  --acc:      var(--flame);        /* display-size accent */
+  --acc-sm:   var(--flame-deep);   /* small-text accent */
+  --acc-gold: var(--gold);         /* the gold accent */
+
+  /* How strongly the glows on a band read. A lighter band needs less of
+     them: at the old near-black they were barely visible, and at that same
+     strength on indigo they would look like a lens flare. */
+  --glow-flame: .17;
+  --glow-flame: light-dark(.17, .3);
+  --glow-teal:  .15;
+  --glow-teal:  light-dark(.15, .24);
+  --glow-gold:  .13;
+  --glow-gold:  light-dark(.13, .18);
 }
 
-/* The console is a back office and is always dark by its own design. It
-   must not inherit a band remap meant for the public pages. */
-:root[data-theme="dark"] body.admin {
+/* Which half of every light-dark() applies. This is the whole switch. */
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* Two glows over the band colour keep a dark section from reading as a flat
+   rectangle. Layered gradients rather than a pseudo-element, so no section
+   has to give up its own ::before to get them. */
+.dark {
+  background:
+    radial-gradient(78% 62% at 8% -4%, rgba(232,70,28,var(--glow-flame)), transparent 68%),
+    radial-gradient(70% 56% at 96% 104%, rgba(44,110,128,var(--glow-teal)), transparent 70%),
+    radial-gradient(46% 40% at 62% 34%, rgba(244,169,58,var(--glow-gold)), transparent 72%),
+    var(--band);
+  color: var(--ivory);
+}
+.deep {
+  background:
+    radial-gradient(66% 56% at 90% 0%, rgba(244,169,58,var(--glow-gold)), transparent 68%),
+    radial-gradient(78% 62% at 6% 100%, rgba(232,70,28,var(--glow-flame)), transparent 70%),
+    var(--band-deep);
+  color: var(--ivory);
+}
+
+/* The console is a back office, always dark by its own design, and must not
+   inherit bands meant for the public pages. */
+body.admin {
   --band: var(--navy); --band-2: var(--navy-2); --band-deep: var(--navy-3);
 }
 
-/* Same values again for somebody who has stated no preference and whose
-   device asks for dark. Written out rather than folded into one :is()
-   selector, which would fail whole in a browser that did not understand
-   one half of it. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg:         #15111F;
-    --bg-2:       #201A36;
-    --bg-3:       #2C2247;
-    --band:       #2E1A13;
-    --band-2:     #1B1526;
-    --band-deep:  #0C0812;
-    --ink:        #F6F0E6;
-    --ink-soft:   rgba(246,240,230,.76);
-    --ink-faint:  rgba(246,240,230,.62);
-    --line:       rgba(246,240,230,.16);
-    --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -10px rgba(0,0,0,.56);
-    --sh-2: 0 2px 6px rgba(0,0,0,.46), 0 22px 46px -18px rgba(0,0,0,.68);
-    --sh-3: 0 4px 10px rgba(0,0,0,.5), 0 44px 80px -28px rgba(0,0,0,.78);
-    --flame-deep: #FF7A4D;
-    color-scheme: dark;
-  }
-  :root:not([data-theme="light"]) body.admin {
-    --band: var(--navy); --band-2: var(--navy-2); --band-deep: var(--navy-3);
-  }
-}
-
-/* The grain is a paper texture. On a dark ground it reads as dust. */
+/* The grain is a paper texture; on a dark ground it reads as dust. Opacity
+   is not a colour, so this is the one thing light-dark() cannot carry. */
 :root[data-theme="dark"] body::after { opacity: .1; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) body::after { opacity: .1; }
@@ -198,6 +246,15 @@
   --ghost-fg: var(--ivory);
   --ghost-line: rgba(252,248,240,.34);
   --ghost-hov: var(--gold);
+}
+
+/* Every band re-points the text accents at marigold. The nav is not in this
+   list on purpose: its ground is a hardcoded near-black rather than a band,
+   so flame is legible on it and the wordmark keeps the brand colour. */
+.dark, .deep, .ph, .hero-c, .foot, .rec-hero, .tp-hero {
+  --acc:      #FFC24D;
+  --acc-sm:   #FFC24D;
+  --acc-gold: var(--gold-lt);
 }
 
 /* ---------- 2. Reset & base ---------- */
@@ -313,10 +370,10 @@ section { position: relative; }
   font: 600 11.5px/1 var(--body); letter-spacing: .22em; text-transform: uppercase;
   /* 11.5px uppercase is small type: it takes the deeper flame so it clears
      4.5:1 on ivory and on sand. The display flame stays for headlines. */
-  color: var(--flame-deep); display: inline-flex; align-items: center; gap: 11px;
+  color: var(--acc-sm); display: inline-flex; align-items: center; gap: 11px;
 }
 .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .6; }
-.dark .eyebrow, .deep .eyebrow, .eyebrow.gold { color: var(--gold); }
+.dark .eyebrow, .deep .eyebrow, .eyebrow.gold { color: var(--acc-gold); }
 
 .lede { font-size: clamp(18px, 1.55vw, 22px); line-height: 1.62; color: var(--ink-soft); }
 .dark .lede, .deep .lede { color: rgba(252,248,240,.74); }
@@ -333,8 +390,8 @@ section { position: relative; }
   font-family: var(--display); font-weight: 400; font-style: italic;
   font-size: clamp(24px, 3vw, 44px); line-height: 1.26; letter-spacing: -.02em;
 }
-.hl { color: var(--flame); }
-.deep .hl, .dark .hl { color: var(--flame-2); }
+.hl { color: var(--acc); }
+.deep .hl, .dark .hl { color: var(--acc); }
 
 /* ---------- 5. Buttons ---------- */
 .btn {
@@ -389,7 +446,7 @@ section { position: relative; }
 .link-arrow {
   display: inline-flex; align-items: center; gap: 8px;
   font: 600 12.5px/1 var(--body); letter-spacing: .1em; text-transform: uppercase;
-  color: var(--flame-deep); position: relative; padding-bottom: 4px;
+  color: var(--acc-sm); position: relative; padding-bottom: 4px;
   min-height: var(--tap);
 }
 .link-arrow::after {
@@ -400,7 +457,7 @@ section { position: relative; }
 .link-arrow:hover::after { transform: scaleX(1); transform-origin: left; }
 .link-arrow svg { transition: transform .4s var(--ease-out); }
 .link-arrow:hover svg { transform: translateX(4px); }
-.dark .link-arrow, .deep .link-arrow { color: var(--gold); }
+.dark .link-arrow, .deep .link-arrow { color: var(--acc-gold); }
 
 /* ---------- 6. Preloader ---------- */
 #preload {
@@ -408,12 +465,12 @@ section { position: relative; }
   display: grid; place-items: center; transition: opacity .7s var(--ease), visibility .7s;
 }
 #preload.done { opacity: 0; visibility: hidden; }
-#preload .mark { width: 132px; color: var(--gold); }
+#preload .mark { width: 132px; color: var(--acc-gold); }
 #preload .mark svg circle, #preload .mark svg path { opacity: 0; animation: pop .5s var(--ease-out) forwards; }
 @keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
 #preload .cap {
   margin-top: 26px; text-align: center; font-family: var(--deva); font-size: 20px;
-  color: var(--gold); opacity: 0; animation: fadeUp .8s .7s var(--ease-out) forwards;
+  color: var(--acc-gold); opacity: 0; animation: fadeUp .8s .7s var(--ease-out) forwards;
 }
 #preload .bar { width: 148px; height: 2px; background: rgba(252,248,240,.15); margin: 20px auto 0; overflow: hidden; }
 #preload .bar i { display: block; height: 100%; width: 0; background: var(--flame); animation: load 1.5s var(--ease) forwards; }
@@ -442,7 +499,11 @@ section { position: relative; }
 .logo:hover .mark { transform: rotate(-4deg) scale(1.06); }
 .logo .l1 {
   display: block; font: 800 19px/1 var(--body); letter-spacing: -.02em;
-  text-transform: uppercase; color: var(--flame);
+  text-transform: uppercase;
+  /* The brand mark, not an accent: it stays flame wherever it stands. At
+     19px/800 it counts as large text, and flame clears 3.26:1 even on the
+     footer's band. */
+  color: var(--flame);
 }
 .logo .l2 {
   display: block; font: 600 10px/1.4 var(--body); letter-spacing: .18em;
@@ -505,7 +566,7 @@ section { position: relative; }
   border-bottom: 1px solid rgba(252,248,240,.1);
 }
 .drawer .btn { align-self: stretch; text-align: center; white-space: nowrap; }
-.drawer a:not(.btn) .n { font: 600 10px/1 var(--body); letter-spacing: .2em; color: var(--flame); display: block; margin-bottom: 8px; }
+.drawer a:not(.btn) .n { font: 600 10px/1 var(--body); letter-spacing: .2em; color: var(--acc); display: block; margin-bottom: 8px; }
 
 /* ---------- 9. Jharokha frames & scenes ---------- */
 svg.defs { position: absolute; width: 0; height: 0; }
@@ -538,7 +599,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .zoom:hover .scene svg { transform: scale(1.07); }
 
 /* ---------- 10. Motifs & friezes ---------- */
-.motif { color: var(--flame); }
+.motif { color: var(--acc); }
 .motif svg { width: 100%; height: auto; }
 
 .jband {
@@ -579,7 +640,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 .card:hover { transform: translateY(-5px); box-shadow: var(--sh-2); border-color: rgba(232,70,28,.3); }
 .card:hover::before { transform: scaleX(1); }
-.card .num { display: block; font: 600 11px/1 var(--body); letter-spacing: .2em; color: var(--flame); margin-bottom: 16px; }
+.card .num { display: block; font: 600 11px/1 var(--body); letter-spacing: .2em; color: var(--acc); margin-bottom: 16px; }
 .card h3 { margin-bottom: 10px; }
 .card p { color: var(--ink-soft); font-size: 15.5px; }
 .dark .card, .deep .card { background: rgba(252,248,240,.05); border-color: var(--line-lt); color: var(--ivory); box-shadow: none; }
@@ -626,8 +687,8 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .hero .wrap { position: relative; z-index: 2; }
 .hero-grid { display: grid; grid-template-columns: 1.22fr .78fr; gap: clamp(28px,4vw,64px); align-items: end; }
 .hero h1 { color: var(--ivory); }
-.hero h1 em { font-style: italic; color: var(--flame-2); }
-.hero-deva { font-family: var(--deva); font-size: clamp(26px,3vw,42px); font-weight: 600; color: var(--gold); line-height: 1.4; }
+.hero h1 em { font-style: italic; color: var(--acc); }
+.hero-deva { font-family: var(--deva); font-size: clamp(26px,3vw,42px); font-weight: 600; color: var(--acc-gold); line-height: 1.4; }
 .hero-strip {
   margin-top: clamp(34px,4vw,64px); border-top: 1px solid rgba(252,248,240,.13);
   padding: 24px 0 32px; display: flex; justify-content: space-between; align-items: center; gap: 28px; flex-wrap: wrap;
@@ -652,16 +713,16 @@ svg.defs { position: absolute; width: 0; height: 0; }
   display: inline-flex; align-items: center; gap: 14px; padding-inline: 30px;
   font-family: var(--display); font-size: 21px; color: rgba(252,248,240,.62); white-space: nowrap;
 }
-.marquee .it b { color: var(--gold); font-weight: 600; }
-.marquee .it::after { content: "✦"; color: var(--flame); font-size: 12px; margin-left: 24px; }
+.marquee .it b { color: var(--acc-gold); font-weight: 600; }
+.marquee .it::after { content: "✦"; color: var(--acc); font-size: 12px; margin-left: 24px; }
 
 /* ---------- 15. Counters ---------- */
 .stat .n {
   font-family: var(--display); font-weight: 600; letter-spacing: -.03em; line-height: 1;
-  font-size: clamp(36px, 4.4vw, 62px); color: var(--flame);
+  font-size: clamp(36px, 4.4vw, 62px); color: var(--acc);
   font-variant-numeric: tabular-nums;
 }
-.dark .stat .n, .deep .stat .n { color: var(--gold); }
+.dark .stat .n, .deep .stat .n { color: var(--acc-gold); }
 .stat .k { font: 500 11px/1.5 var(--body); letter-spacing: .17em; text-transform: uppercase; color: var(--ink-faint); margin-top: 10px; }
 .dark .stat .k, .deep .stat .k { color: rgba(252,248,240,.56); }
 
@@ -679,9 +740,9 @@ svg.defs { position: absolute; width: 0; height: 0; }
   color: rgba(252,248,240,.84); transition: border-color .35s, color .35s, transform .35s var(--ease-out);
 }
 .cred::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
-.cred:hover { border-color: var(--gold); color: var(--gold-lt); transform: translateY(-2px); }
+.cred:hover { border-color: var(--gold); color: var(--acc-gold); transform: translateY(-2px); }
 .creds.light .cred { border-color: var(--line); color: var(--ink-soft); }
-.creds.light .cred:hover { border-color: var(--flame); color: var(--flame); }
+.creds.light .cred:hover { border-color: var(--flame); color: var(--acc); }
 
 /* ---------- 17. Step / journey ---------- */
 .steps { display: grid; grid-template-columns: repeat(6, 1fr); }
@@ -693,7 +754,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .step i {
   position: relative; display: grid; place-items: center; width: 29px; height: 29px;
   border-radius: 50%; background: var(--bg); border: 1.5px solid var(--flame);
-  font: 700 11.5px/1 var(--body); font-style: normal; color: var(--flame);
+  font: 700 11.5px/1 var(--body); font-style: normal; color: var(--acc);
   transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease-out);
 }
 .step:hover i { background: var(--flame); color: #fff; transform: scale(1.14); }
@@ -707,7 +768,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   font: 600 12px/1 var(--body); color: var(--ink-soft); background: transparent;
   transition: all .35s var(--ease);
 }
-.chip:hover { border-color: var(--flame); color: var(--flame); }
+.chip:hover { border-color: var(--flame); color: var(--acc); }
 .chip.on { background: var(--band); border-color: var(--band); color: var(--ivory); }
 
 .rec {
@@ -717,7 +778,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 .rec:hover { transform: translateY(-6px); box-shadow: var(--sh-2); }
 .rec .in { display: block; padding: 22px 22px 24px; }
-.rec .cat { font: 600 10px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--flame); }
+.rec .cat { font: 600 10px/1 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--acc); }
 .rec h3 { font-size: 20px; line-height: 1.22; margin: 12px 0 10px; }
 .rec p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 16px; }
 .rec .row { display: flex;
@@ -776,10 +837,10 @@ svg.defs { position: absolute; width: 0; height: 0; }
   transition: color .3s;
 }
 .acc summary::-webkit-details-marker { display: none; }
-.acc summary:hover { color: var(--flame); }
+.acc summary:hover { color: var(--acc); }
 .acc summary i {
   flex: none; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line);
-  display: grid; place-items: center; font-style: normal; color: var(--flame);
+  display: grid; place-items: center; font-style: normal; color: var(--acc);
   transition: transform .4s var(--ease), background .3s, color .3s;
 }
 .acc details[open] summary i { transform: rotate(45deg); background: var(--flame); color: #fff; border-color: var(--flame); }
@@ -835,13 +896,13 @@ svg.defs { position: absolute; width: 0; height: 0; }
 
 /* ---------- 22. Footer ---------- */
 .foot { background: var(--band-deep); color: rgba(252,248,240,.72); }
-.foot h4 { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.foot h4 { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--acc-gold); margin-bottom: 18px; }
 .foot a {
   display: flex; align-items: center; padding: 6px 0; font-size: 14.5px;
   min-height: max(36px, var(--tap-min));
   color: rgba(252,248,240,.78); transition: color .3s, transform .3s var(--ease-out);
 }
-.foot a:hover { color: var(--flame-2); transform: translateX(3px); }
+.foot a:hover { color: var(--acc); transform: translateX(3px); }
 .foot .where { padding: 6px 0; font-size: 14.5px; color: rgba(252,248,240,.78); margin: 0; }
 .foot .bottom {
   margin-top: 52px; padding-top: 24px; border-top: 1px solid rgba(252,248,240,.1);
@@ -855,7 +916,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   font: 500 11px/1.4 var(--body); letter-spacing: .05em;
   padding: 9px var(--gut); display: flex; gap: 16px; align-items: center; justify-content: center;
 }
-.demobar b { color: var(--flame); letter-spacing: .16em; text-transform: uppercase; font-size: 10px; }
+.demobar b { color: var(--acc); letter-spacing: .16em; text-transform: uppercase; font-size: 10px; }
 .demobar button { background: none; border: 0; color: rgba(255,255,255,.5); font-size: 15px; line-height: 1; padding: 4px; }
 .demobar.hide { display: none; }
 
@@ -1017,7 +1078,7 @@ html { overflow-x: clip; }
 .chaprail .tick { display: block; width: 22px; height: 2px; border-radius: 2px;
   background: currentColor; opacity: .3; transition: all .45s var(--ease); }
 .chaprail button:hover em, .chaprail button.on em { opacity: 1; transform: none; }
-.chaprail button.on { color: var(--flame-deep); }
+.chaprail button.on { color: var(--acc-sm); }
 .chaprail button.on .tick { width: 40px; opacity: 1; }
 .chaprail button:hover .tick { opacity: .7; }
 

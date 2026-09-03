@@ -8,7 +8,7 @@
 /* ---------- chapter marker (shared idiom, page-local copy) ---------- */
 .chapter { display: flex; align-items: baseline; gap: 22px; margin-bottom: 44px; }
 .chapter .no { font-family: var(--display); font-size: clamp(36px,4.4vw,62px); font-weight: 600;
-  line-height: .82; color: var(--flame); letter-spacing: -.04em; }
+  line-height: .82; color: var(--acc); letter-spacing: -.04em; }
 .chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
   color: var(--ink-faint); }
 .dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.62); }
@@ -38,7 +38,7 @@
 .hero-c-note {
   margin-top: clamp(44px,6vw,84px); max-width: 34ch;
   font-family: var(--display); font-style: italic; font-size: clamp(17px,1.5vw,21px);
-  line-height: 1.45; color: var(--gold-lt);
+  line-height: 1.45; color: var(--acc-gold);
 }
 
 /* ---------- values ---------- */
@@ -107,7 +107,7 @@
   background: var(--line-lt); }
 .symbols li { background: var(--band); padding: clamp(26px,3vw,40px);
   display: flex; gap: 22px; align-items: flex-start; }
-.s-n { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--gold);
+.s-n { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--acc-gold);
   line-height: 1; flex: none; font-variant-numeric: tabular-nums; }
 .symbols p { margin: 0; font-size: 16px; line-height: 1.6; color: rgba(252,248,240,.84); }
 
@@ -139,7 +139,7 @@
 .rc-large figcaption {
   position: absolute; right: 0; bottom: 0;
   font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acc-gold);
 }
 .rc-small {
   position: absolute; left: clamp(-14px, -1.4vw, -6px); bottom: 0;
@@ -197,7 +197,7 @@
 .rcard:hover::before, .rcard:focus-within::before { opacity: .34; transform: scale(1); }
 .rc-fig { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
 .rc-n { font-family: var(--display); font-weight: 600; font-size: clamp(32px,3.4vw,50px);
-  line-height: 1; letter-spacing: -.035em; color: var(--gold); font-variant-numeric: tabular-nums; }
+  line-height: 1; letter-spacing: -.035em; color: var(--acc-gold); font-variant-numeric: tabular-nums; }
 .rc-u { font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase;
   color: rgba(252,248,240,.66); }
 .rcard h4 { font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.3;
@@ -235,7 +235,7 @@
   transition: transform .8s var(--ease-out);
 }
 .steps li.is-in::after { transform: scaleX(1); }
-.st-n { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--flame-deep);
+.st-n { font-family: var(--display); font-size: 15px; font-weight: 600; color: var(--acc-sm);
   letter-spacing: .1em; }
 .steps h4 { font-family: var(--display); font-weight: 600; font-size: 18px; margin: 8px 0 8px; }
 .steps p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
@@ -247,7 +247,7 @@
   font: 600 12.5px/1 var(--body); color: var(--ink-soft);
   transition: border-color .35s var(--ease), color .35s var(--ease);
 }
-.partners span:hover { border-color: var(--flame-deep); color: var(--flame-deep); }
+.partners span:hover { border-color: var(--flame-deep); color: var(--acc-sm); }
 
 /* ---------- take part, over the crowd ---------- */
 .join-c { position: relative; overflow: hidden; }

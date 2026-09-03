@@ -69,6 +69,36 @@ the drawer on a phone), remembered in `localStorage`, and applied by a tiny
 inline script in every page's `<head>` so no page ever paints one frame of
 the wrong colour.
 
+**The palette is declared once.** Every themed colour is a
+`light-dark(light, dark)` pair on `:root`, and `color-scheme` decides which
+half applies — there is no second copy anywhere. That is not tidiness: the
+previous version wrote the dark palette out twice, once for a stated choice
+and once for a device preference, and the two drifted within a day
+(`--band` was `#2B1A15` in one and `#2E1A13` in the other), so pressing the
+dark button gave different colours from having a dark phone. Each token
+declares its plain light value first, so a browser too old for
+`light-dark()` discards the second declaration and keeps a working light
+site rather than an unstyled one.
+
+**The bands are no longer near-black.** They were `#1B2334` and `#0B101B`,
+at 1.7% and 0.6% relative luminance; five of them down a page made the site
+read heavy, nearer a printed annual report than a carnival. They are now a
+block-print indigo around 7% — four times lighter — which still leaves body
+copy on them at 5.2:1. The measured ceiling is about `#42528C`, where
+72%-alpha body copy lands at 4.55:1, so these sit deliberately short of it.
+
+**Lifting the bands broke every accent standing on them,** which is the one
+consequence worth knowing about. The flames and golds were mixed against
+near-black: flame on the new indigo is 2.15:1 and simply disappears. So
+every accent that colours *text* now reads through `--acc`, `--acc-sm` and
+`--acc-gold`, and a band context re-points them at a marigold that clears
+5.29:1 on the lightest band. Backgrounds, borders and rules keep the brand
+flame — this is about text, where contrast is a requirement rather than a
+preference. Two things are deliberately outside that: the nav, whose ground
+is a hardcoded near-black rather than a band, and the wordmark, which is
+the brand mark and stays flame everywhere (at 19px/800 it is large text and
+clears 3.26:1 even on the footer).
+
 A theme remaps **the bands as well as the page**, and that is the whole
 lesson of the first attempt, which flipped every light surface to one navy
 and left the dark sections where they were. It was correct and it was dull:
