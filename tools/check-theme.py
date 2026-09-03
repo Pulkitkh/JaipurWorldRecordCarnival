@@ -81,10 +81,25 @@ CONTRAST = r"""() => {
     const stack = []; let n = el;
     while (n && n !== document.documentElement) {
       const cs = getComputedStyle(n);
-      // text sitting on a picture or a gradient is a different problem,
-      // solved with a scrim rather than a colour pair
-      if (cs.backgroundImage && cs.backgroundImage !== 'none') return null;
+      // Text on a photograph is a different problem, solved with a scrim
+      // rather than a colour pair, and reading a pixel out of an image
+      // would be guesswork — so skip it.
+      //
+      // A gradient is not that. The dark bands paint two low-alpha glows
+      // over a solid band colour, and the shorthand still leaves that
+      // colour in background-color, so keep measuring against it. Slightly
+      // optimistic where a glow lightens the ground, by a couple of
+      // percent at these alphas.
+      if (cs.backgroundImage && cs.backgroundImage.includes('url(')) return null;
       const p = px(cs.backgroundColor), a = al(cs.backgroundColor);
+      const gradient = cs.backgroundImage && cs.backgroundImage !== 'none';
+      // A gradient laid over a solid colour is measurable — that colour is
+      // still in background-color and the glows only shift it a couple of
+      // percent. A gradient with nothing underneath is not: the painted
+      // ground exists only in the image, and walking further up would
+      // measure the page behind it, which is how this check first claimed
+      // that ivory text on a dark plate was ivory on cream.
+      if (gradient && (!p || a < 1)) return null;
       if (p && a > 0) { stack.push([p, a]); if (a >= 1) break; }
       n = n.parentElement;
     }

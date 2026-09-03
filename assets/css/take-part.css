@@ -20,7 +20,7 @@
    stay comfortably on top of it. */
 .tp-hero {
   position: relative; overflow: hidden; color: var(--ivory);
-  background: var(--navy-2);
+  background: var(--band-2);
   min-height: min(78svh, 760px);
   display: flex; align-items: center;
   padding-block: clamp(96px,11vw,140px) clamp(64px,7vw,96px);
@@ -67,7 +67,7 @@
   display: grid; grid-template-columns: minmax(0,.88fr) minmax(0,1.12fr);
   gap: 1px; background: var(--line-lt); border-block: 1px solid var(--line-lt);
 }
-.ledger-two .col { background: var(--navy); padding: clamp(28px,3.4vw,52px); }
+.ledger-two .col { background: var(--band); padding: clamp(28px,3.4vw,52px); }
 .ledger-two .col.yours { background: #1E2740; }
 .ledger-two h3 {
   font-size: clamp(21px,2.1vw,29px); color: var(--ivory); margin-bottom: 26px;

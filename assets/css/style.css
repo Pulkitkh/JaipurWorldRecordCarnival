@@ -45,9 +45,11 @@
      so that a dark theme can swap the grounds without touching anything
      that is already dark. In the light theme they are the same values the
      site has always used. */
-  --bg:         #FCF8F0;   /* the page itself */
-  --bg-2:       #F4EADA;   /* a panel raised off it */
-  --bg-3:       #E9DAC2;   /* a well sunk into it, and image placeholders */
+  --bg:         #FFFAF2;   /* the page itself — a shade warmer and brighter
+                              than the old cream, so the light theme reads
+                              as daylight rather than as paper */
+  --bg-2:       #FBF1E0;   /* a panel raised off it */
+  --bg-3:       #F0E1C6;   /* a well sunk into it, and image placeholders */
   --ink:        #191510;
   --ink-soft:   #4C443A;
   /* Carries every small uppercase label on the page. At its old value it sat
@@ -83,64 +85,102 @@
   --tap-min: 0px;                  /* raised to --tap on touch screens, below */
 }
 
-/* ---------- 1b. The dark theme ----------
+/* ---------- 1b. The themes ----------
 
-   Only the surfaces and the ink on them move. Everything already dark —
-   the hero, the .dark and .deep sections, the nav, the footer — is left
-   exactly as it is, because it was designed dark and it is already
-   correct. That is the whole reason --bg and --ivory are separate tokens:
-   remapping --ivory would have turned every headline standing on navy
-   into navy on navy.
+   The first attempt at this flipped every light surface to one navy and
+   left the dark sections where they were. It was correct and it was dull:
+   the landing page went from cream / navy / cream / navy to five bands
+   inside a single narrow navy, and the alternation that gives the page its
+   pulse simply vanished.
 
-   The grounds are not simply inverted. Pure black against this palette
-   looks like a different site, so they are the same navy family the dark
-   sections already use, one step lighter than --deep, which keeps the
-   light/dark rhythm of the page legible rather than flattening it.
+   So a theme remaps the bands as well as the page. Two rules do the work:
 
-   Written twice on purpose: once for a stated choice, once for a system
-   preference with no stated choice. A single :is() selector would be one
-   rule that fails whole if a browser does not understand one half of it. */
+     1. Keep the rhythm. A page ground and a feature band must never sit
+        within a few points of each other in either theme.
+     2. Keep it chromatic. A dull dark theme is almost always a desaturated
+        one — grey-blue everywhere. The grounds here carry real hue, and
+        the bands run WARM against a COOL page, so the alternation is felt
+        as temperature as well as tone. That is also what makes flame and
+        gold look lit rather than printed.
+
+   --ivory and --sand still never move. They are the ink on every dark
+   ground on this site; remapping them would turn every headline standing
+   on a band into the band. */
+
+:root {
+  /* The band family. Light keeps the navy the site was designed around. */
+  --band:       var(--navy);
+  --band-2:     var(--navy-2);
+  --band-deep:  var(--navy-3);
+}
+
+/* ── dark ── */
 :root[data-theme="dark"] {
-  --bg:         #121826;
-  --bg-2:       #182034;
-  --bg-3:       #202942;
-  --ink:        #F3EEE4;
-  --ink-soft:   rgba(243,238,228,.74);
-  --ink-faint:  rgba(243,238,228,.6);
-  --line:       rgba(243,238,228,.15);
+  /* A deep indigo-plum, not a grey. Flame and gold sit on this like light
+     rather than like paint. */
+  --bg:         #15111F;
+  --bg-2:       #1D1830;
+  --bg-3:       #271F3D;
+
+  /* The feature band runs warm against that cool ground — deep ember-brown
+     — so the page still alternates instead of flattening. */
+  --band:       #2B1A15;
+  --band-2:     #1B1526;
+  --band-deep:  #0C0812;
+
+  --ink:        #F6F0E6;
+  --ink-soft:   rgba(246,240,230,.76);
+  --ink-faint:  rgba(246,240,230,.62);
+  --line:       rgba(246,240,230,.16);
 
   /* The warm paper shadows read as brown smudges on a dark ground. */
-  --sh-1: 0 1px 2px rgba(0,0,0,.34), 0 8px 20px -10px rgba(0,0,0,.5);
-  --sh-2: 0 2px 6px rgba(0,0,0,.4), 0 22px 46px -18px rgba(0,0,0,.62);
-  --sh-3: 0 4px 10px rgba(0,0,0,.46), 0 44px 80px -28px rgba(0,0,0,.72);
+  --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -10px rgba(0,0,0,.56);
+  --sh-2: 0 2px 6px rgba(0,0,0,.46), 0 22px 46px -18px rgba(0,0,0,.68);
+  --sh-3: 0 4px 10px rgba(0,0,0,.5), 0 44px 80px -28px rgba(0,0,0,.78);
 
   /* Small type on a dark ground wants the lighter flame; the deep one was
      mixed for contrast against ivory and goes muddy here. */
-  --flame-deep: var(--flame-2);
+  --flame-deep: #FF7A4D;
   color-scheme: dark;
 }
 
+/* The console is a back office and is always dark by its own design. It
+   must not inherit a band remap meant for the public pages. */
+:root[data-theme="dark"] body.admin {
+  --band: var(--navy); --band-2: var(--navy-2); --band-deep: var(--navy-3);
+}
+
+/* Same values again for somebody who has stated no preference and whose
+   device asks for dark. Written out rather than folded into one :is()
+   selector, which would fail whole in a browser that did not understand
+   one half of it. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:         #121826;
-    --bg-2:       #182034;
-    --bg-3:       #202942;
-    --ink:        #F3EEE4;
-    --ink-soft:   rgba(243,238,228,.74);
-    --ink-faint:  rgba(243,238,228,.6);
-    --line:       rgba(243,238,228,.15);
-    --sh-1: 0 1px 2px rgba(0,0,0,.34), 0 8px 20px -10px rgba(0,0,0,.5);
-    --sh-2: 0 2px 6px rgba(0,0,0,.4), 0 22px 46px -18px rgba(0,0,0,.62);
-    --sh-3: 0 4px 10px rgba(0,0,0,.46), 0 44px 80px -28px rgba(0,0,0,.72);
-    --flame-deep: var(--flame-2);
+    --bg:         #15111F;
+    --bg-2:       #201A36;
+    --bg-3:       #2C2247;
+    --band:       #2E1A13;
+    --band-2:     #1B1526;
+    --band-deep:  #0C0812;
+    --ink:        #F6F0E6;
+    --ink-soft:   rgba(246,240,230,.76);
+    --ink-faint:  rgba(246,240,230,.62);
+    --line:       rgba(246,240,230,.16);
+    --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -10px rgba(0,0,0,.56);
+    --sh-2: 0 2px 6px rgba(0,0,0,.46), 0 22px 46px -18px rgba(0,0,0,.68);
+    --sh-3: 0 4px 10px rgba(0,0,0,.5), 0 44px 80px -28px rgba(0,0,0,.78);
+    --flame-deep: #FF7A4D;
     color-scheme: dark;
+  }
+  :root:not([data-theme="light"]) body.admin {
+    --band: var(--navy); --band-2: var(--navy-2); --band-deep: var(--navy-3);
   }
 }
 
 /* The grain is a paper texture. On a dark ground it reads as dust. */
-:root[data-theme="dark"] body::after { opacity: .12; }
+:root[data-theme="dark"] body::after { opacity: .1; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body::after { opacity: .12; }
+  :root:not([data-theme="light"]) body::after { opacity: .1; }
 }
 
 /* Components write `min-height: max(<design height>, var(--tap-min))`, so the
@@ -247,8 +287,24 @@ section { position: relative; }
 .mb-m { margin-bottom: 28px; } .mb-l { margin-bottom: 52px; }
 .tc { text-align: center; } .mxa { margin-inline: auto; }
 
-.dark { background: var(--navy); color: var(--ivory); }
-.deep { background: var(--navy-3); color: var(--ivory); }
+/* Two glows over the band colour keep a dark section from reading as a
+   flat rectangle. Layered gradients rather than a pseudo-element, so no
+   section has to give up its own ::before to get them. */
+.dark {
+  background:
+    radial-gradient(78% 62% at 8% -4%, rgba(232,70,28,.26), transparent 68%),
+    radial-gradient(70% 56% at 96% 104%, rgba(44,110,128,.24), transparent 70%),
+    radial-gradient(46% 40% at 62% 34%, rgba(217,164,65,.10), transparent 72%),
+    var(--band);
+  color: var(--ivory);
+}
+.deep {
+  background:
+    radial-gradient(66% 56% at 90% 0%, rgba(217,164,65,.20), transparent 68%),
+    radial-gradient(78% 62% at 6% 100%, rgba(232,70,28,.22), transparent 70%),
+    var(--band-deep);
+  color: var(--ivory);
+}
 .sandbg { background: var(--bg-2); }
 .dark h1,.dark h2,.dark h3,.deep h1,.deep h2,.deep h3 { color: var(--ivory); }
 
@@ -348,7 +404,7 @@ section { position: relative; }
 
 /* ---------- 6. Preloader ---------- */
 #preload {
-  position: fixed; inset: 0; z-index: 1000; background: var(--navy-2);
+  position: fixed; inset: 0; z-index: 1000; background: var(--band-2);
   display: grid; place-items: center; transition: opacity .7s var(--ease), visibility .7s;
 }
 #preload.done { opacity: 0; visibility: hidden; }
@@ -432,7 +488,7 @@ section { position: relative; }
   /* Declares its own ink. It is a dark surface, and anything inside it that
      inherits colour — the outline button, for one — needs to know that. */
   position: fixed; inset: var(--nav-h) 0 0; z-index: 880;
-  background: var(--navy-2); color: var(--ivory);
+  background: var(--band-2); color: var(--ivory);
   padding: 34px var(--gut) 40px; display: flex; flex-direction: column; gap: 4px;
   transform: translateY(-12px); opacity: 0; visibility: hidden;
   transition: opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
@@ -462,7 +518,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 .frame.sq { clip-path: none; padding: 10px; border-radius: 3px; }
 .frame.sq > .in { clip-path: none; border-radius: 2px; }
 
-.scene { position: relative; display: block; width: 100%; background: var(--navy-2); overflow: hidden; }
+.scene { position: relative; display: block; width: 100%; background: var(--band-2); overflow: hidden; }
 .scene svg { width: 100%; height: 100%; display: block; }
 .scene::after {
   content: attr(data-cap); position: absolute; inset: auto 0 0 0; z-index: 2;
@@ -559,7 +615,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   background:
     radial-gradient(120% 100% at 12% 0%, rgba(35,64,107,.7), transparent 58%),
     radial-gradient(100% 90% at 94% 12%, rgba(232,70,28,.34), transparent 60%),
-    var(--navy-2);
+    var(--band-2);
   padding-block: clamp(50px, 6vw, 92px) 0;
 }
 .hero::before {
@@ -588,7 +644,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 56% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
 /* ---------- 14. Marquee ---------- */
-.marquee { overflow: hidden; padding: 18px 0; border-block: 1px solid var(--line-lt); background: var(--navy-3); }
+.marquee { overflow: hidden; padding: 18px 0; border-block: 1px solid var(--line-lt); background: var(--band-deep); }
 .marquee .track { display: flex; gap: 0; width: max-content; animation: slide 42s linear infinite; }
 .marquee:hover .track { animation-play-state: paused; }
 @keyframes slide { to { transform: translateX(-50%); } }
@@ -652,7 +708,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
   transition: all .35s var(--ease);
 }
 .chip:hover { border-color: var(--flame); color: var(--flame); }
-.chip.on { background: var(--navy); border-color: var(--navy); color: var(--ivory); }
+.chip.on { background: var(--band); border-color: var(--band); color: var(--ivory); }
 
 .rec {
   display: block; text-align: left; width: 100%; padding: 0; border: 1px solid var(--line);
@@ -778,7 +834,7 @@ svg.defs { position: absolute; width: 0; height: 0; }
 }
 
 /* ---------- 22. Footer ---------- */
-.foot { background: var(--navy-3); color: rgba(252,248,240,.72); }
+.foot { background: var(--band-deep); color: rgba(252,248,240,.72); }
 .foot h4 { font: 600 11px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
 .foot a {
   display: flex; align-items: center; padding: 6px 0; font-size: 14.5px;
@@ -946,7 +1002,7 @@ html { overflow-x: clip; }
 .veil { position: fixed; inset: 0; z-index: 9990; display: grid;
   grid-template-columns: repeat(5, 1fr); pointer-events: none; }
 .veil.idle { display: none; }
-.veil i { display: block; background: var(--navy-2); height: 100%; }
+.veil i { display: block; background: var(--band-2); height: 100%; }
 .veil i:nth-child(2) { background: #16203a; }
 .veil i:nth-child(4) { background: #16203a; }
 
