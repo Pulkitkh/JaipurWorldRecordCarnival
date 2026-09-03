@@ -242,7 +242,7 @@
    ratio where it is not. The key line under each says which. */
 .plate {
   position: relative;
-  background: linear-gradient(150deg, var(--navy) 0%, var(--navy-3) 100%);
+  background: linear-gradient(150deg, var(--band) 0%, var(--band-deep) 100%);
   border-radius: 3px;
   box-shadow: var(--sh-2);
   overflow: hidden;
@@ -373,7 +373,7 @@
 .ev-rail figure { margin: 0; scroll-snap-align: start; }
 .ev-rail img {
   display: block; width: 100%; height: 210px; object-fit: cover;
-  border-radius: 3px; background: var(--navy-2);
+  border-radius: 3px; background: var(--band-2);
 }
 .ev-rail figcaption {
   margin-top: 10px;

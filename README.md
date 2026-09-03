@@ -69,8 +69,23 @@ the drawer on a phone), remembered in `localStorage`, and applied by a tiny
 inline script in every page's `<head>` so no page ever paints one frame of
 the wrong colour.
 
-Only **surfaces and the ink on them** change. `--bg`, `--bg-2`, `--bg-3`,
-`--ink*` and `--line` are what a theme remaps. The brand colours —
+A theme remaps **the bands as well as the page**, and that is the whole
+lesson of the first attempt, which flipped every light surface to one navy
+and left the dark sections where they were. It was correct and it was dull:
+the landing page went from cream / navy / cream / navy to five bands inside
+a single narrow navy, and the alternation that gives the page its pulse
+simply vanished. Two rules keep that from happening again:
+
+1. **Keep the rhythm.** A page ground and a feature band must never sit
+   within a few points of each other in either theme.
+2. **Keep it chromatic.** A dull dark theme is almost always a desaturated
+   one. The grounds carry real hue — a deep indigo-plum page — and the
+   bands run *warm* against it, so the alternation is felt as temperature
+   as well as tone. That is also what makes flame and gold look lit rather
+   than printed.
+
+Only **surfaces and the ink on them** change. `--bg`, `--bg-2`, `--bg-3`, the
+`--band*` family, `--ink*` and `--line` are what a theme remaps. The brand colours —
 `--ivory`, `--sand`, the flames, the gold — never move, and that separation
 is the whole design: `--ivory` is the ink used on every dark ground on the
 site, so remapping it for dark mode would have turned every headline

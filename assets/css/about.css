@@ -23,7 +23,7 @@
   background:
     radial-gradient(120% 100% at 14% 0%, rgba(35,64,107,.68), transparent 58%),
     radial-gradient(100% 90% at 92% 10%, rgba(232,70,28,.32), transparent 60%),
-    var(--navy-2);
+    var(--band-2);
   padding-block: clamp(56px,6.5vw,96px) clamp(48px,5.5vw,84px);
 }
 .ph::before {
@@ -61,7 +61,7 @@
 
 /* ---------- credential strip ---------- */
 .creds-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line-lt); }
-.creds-row > div { background: var(--navy); padding: 26px 22px; }
+.creds-row > div { background: var(--band); padding: 26px 22px; }
 .creds-row .n {
   font-family: var(--display); font-size: clamp(28px,3vw,42px); font-weight: 600;
   color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums;
@@ -81,7 +81,7 @@
 .role-card p { font-size: 14.5px; color: var(--ink-soft); }
 
 .bodies-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--line-lt); }
-.bodies-grid > div { background: var(--navy); padding: 30px 14px; text-align: center;
+.bodies-grid > div { background: var(--band); padding: 30px 14px; text-align: center;
   font: 600 12.5px/1.4 var(--body); color: rgba(252,248,240,.84); transition: background .4s var(--ease); }
 .bodies-grid > div:hover { background: #212B3F; }
 .bodies-grid span { display: block; font-weight: 500; font-size: 10px; letter-spacing: .15em;
@@ -180,7 +180,7 @@
   transition: color .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
 }
 .gal-chips button:hover { border-color: var(--flame-deep); color: var(--flame-deep); }
-.gal-chips button.on { background: var(--navy); border-color: var(--navy); color: var(--ivory); }
+.gal-chips button.on { background: var(--band); border-color: var(--band); color: var(--ivory); }
 .gal-chips button em { font-style: normal; opacity: .55; margin-left: 6px; font-size: 10.5px; }
 
 /* ---------- virtualised masonry ---------- */
