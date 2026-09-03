@@ -115,6 +115,89 @@
     </clipPath>
   </defs></svg>`;
 
+  /* ---------- the theme control ----------
+
+     Three states, not two. A two-way switch cannot express "follow my
+     device", which is what most people actually want and what the site
+     does before anybody touches it — so the middle option is the default
+     and it stays selectable, rather than being a thing you can only get
+     back to by clearing the site's storage.
+
+     The choice is written to <html data-theme> and to localStorage. The
+     tiny script in every page's <head> reads it back before first paint;
+     doing it here instead would show one frame of the wrong theme on
+     every single page load. */
+
+  const THEME_KEY = "jwrc-theme";
+
+  const THEME_ICONS = {
+    light: `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+      stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/>
+      <path d="M10 2v1.8M10 16.2V18M18 10h-1.8M3.8 10H2M15.7 4.3l-1.3 1.3M5.6 14.4l-1.3 1.3M15.7 15.7l-1.3-1.3M5.6 5.6 4.3 4.3"/></svg>`,
+    system: `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+      stroke-linejoin="round" aria-hidden="true"><rect x="2.6" y="3.6" width="14.8" height="10" rx="1.6"/>
+      <path d="M7 16.4h6"/></svg>`,
+    dark: `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+      stroke-linejoin="round" aria-hidden="true"><path d="M16.2 11.6A6.8 6.8 0 0 1 8.4 3.8a6.8 6.8 0 1 0 7.8 7.8Z"/></svg>`,
+  };
+
+  const THEME_LABELS = { light: "Light", system: "Match my device", dark: "Dark" };
+
+  function themeControl(cls) {
+    const buttons = ["light", "system", "dark"].map((mode) =>
+      `<button type="button" class="th-b" data-theme-set="${mode}" aria-pressed="false"
+        title="${THEME_LABELS[mode]}">${THEME_ICONS[mode]}<span class="vh">${THEME_LABELS[mode]}</span></button>`
+    ).join("");
+    return `<div class="theme ${cls || ""}" role="group" aria-label="Colour theme">${buttons}</div>`;
+  }
+
+  function storedTheme() {
+    try {
+      const v = localStorage.getItem(THEME_KEY);
+      return v === "light" || v === "dark" ? v : "system";
+    } catch (e) {
+      return "system";           // private browsing, or storage switched off
+    }
+  }
+
+  function applyTheme(mode) {
+    const root = document.documentElement;
+    if (mode === "system") root.removeAttribute("data-theme");
+    else root.dataset.theme = mode;
+
+    try {
+      if (mode === "system") localStorage.removeItem(THEME_KEY);
+      else localStorage.setItem(THEME_KEY, mode);
+    } catch (e) { /* nothing to do; the page still looks right this visit */ }
+
+    /* The browser's own chrome — the address bar on a phone — takes its
+       colour from this, so it has to be told too or the bar stays cream
+       above a dark page. */
+    const dark = mode === "dark"
+      || (mode === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+    for (const m of $$('meta[name="theme-color"]')) {
+      m.setAttribute("content", dark ? "#121826" : "#FCF8F0");
+    }
+
+    for (const b of $$("[data-theme-set]")) {
+      b.setAttribute("aria-pressed", String(b.dataset.themeSet === mode));
+    }
+  }
+
+  function wireTheme() {
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-theme-set]");
+      if (b) applyTheme(b.dataset.themeSet);
+    });
+    /* While following the device, follow it as it changes — somebody whose
+       phone flips to dark at sunset should not have to reload. */
+    const mq = matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => { if (storedTheme() === "system") applyTheme("system"); };
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+    applyTheme(storedTheme());
+  }
+
   /* ---------- chrome ---------- */
 
   function logo(cls) {
@@ -141,6 +224,7 @@
       <nav class="nav" id="nav">
         ${logo()}
         <div class="nav-links">${links}</div>
+        ${themeControl("in-nav")}
         <a class="btn sm" href="${CONTACT}">Take part ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
@@ -151,6 +235,10 @@
           Take part ${ARROW}</a>
         <a href="tel:+918003003000" class="btn ghost" style="justify-content:center;margin-top:10px">
           Call +91 80030 03000</a>
+        <div class="drawer-theme">
+          <span class="lbl">Theme</span>
+          ${themeControl("in-drawer")}
+        </div>
       </div>`);
   }
 
@@ -278,6 +366,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     mountFooter();
     wireChrome();
+    wireTheme();
     if (window.JWRCArt) window.JWRCArt.build();
     scrollFx(); preloadFallback();
   });

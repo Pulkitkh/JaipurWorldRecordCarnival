@@ -11,7 +11,13 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="canonical" href="https://jaipurworldrecordcarnival.in/">
 <meta name="theme-color" content="#121828">
-<meta name="color-scheme" content="dark light">
+<meta name="color-scheme" content="light dark">
+<!-- Runs before the first paint. The theme has to be on <html> by the time
+     the browser paints anything, or every page load shows one frame of the
+     wrong colour before the script that sets it gets a turn. It is inline
+     and tiny for the same reason: an external file is a round trip. -->
+<script>(function(){try{var t=localStorage.getItem("jwrc-theme");
+if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta name="format-detection" content="telephone=no">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jaipur World Record Carnival">
@@ -31,8 +37,8 @@
      on demand from fonts.css. -->
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=e8ba6f95">
-<link rel="stylesheet" href="assets/css/home.css?v=e8ba6f95">
+<link rel="stylesheet" href="assets/css/style.css?v=f4281aab">
+<link rel="stylesheet" href="assets/css/home.css?v=f4281aab">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,7 +61,7 @@
 <!-- Runs during parse, not after: the nav is position:sticky and so
      occupies layout space. Mounting it after first paint pushed the whole
      page down by its own height. -->
-<script src="assets/js/app.js?v=e8ba6f95"></script>
+<script src="assets/js/app.js?v=f4281aab"></script>
 
 <main id="main">
 
@@ -381,14 +387,14 @@
 
 </main>
 
-<script src="assets/vendor/lenis.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/gsap.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/ScrollTrigger.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/SplitText.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/DrawSVGPlugin.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/CustomEase.min.js?v=e8ba6f95"></script>
-<script src="assets/vendor/ScrollToPlugin.min.js?v=e8ba6f95"></script>
-<script src="assets/js/motion.js?v=e8ba6f95"></script>
-<script src="assets/js/home.js?v=e8ba6f95"></script>
+<script src="assets/vendor/lenis.min.js?v=f4281aab"></script>
+<script src="assets/vendor/gsap.min.js?v=f4281aab"></script>
+<script src="assets/vendor/ScrollTrigger.min.js?v=f4281aab"></script>
+<script src="assets/vendor/SplitText.min.js?v=f4281aab"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js?v=f4281aab"></script>
+<script src="assets/vendor/CustomEase.min.js?v=f4281aab"></script>
+<script src="assets/vendor/ScrollToPlugin.min.js?v=f4281aab"></script>
+<script src="assets/js/motion.js?v=f4281aab"></script>
+<script src="assets/js/home.js?v=f4281aab"></script>
 </body>
 </html>

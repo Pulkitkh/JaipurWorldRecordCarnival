@@ -124,7 +124,7 @@
 
 /* ---------- the eleven ---------- */
 
-.rec-all { background: var(--sand); }
+.rec-all { background: var(--bg-2); }
 
 .grp {
   margin: clamp(58px, 7vw, 104px) 0 clamp(26px, 3.4vw, 46px);
@@ -158,7 +158,7 @@
 .rfig img {
   display: block; width: 100%; height: auto;
   border-radius: 3px;
-  background: var(--sand-2);
+  background: var(--bg-3);
   box-shadow: var(--sh-2);
 }
 
@@ -171,7 +171,7 @@
   width: 62%;
   margin: -18% 0 0 auto;
   position: relative; z-index: 2;
-  border: 4px solid var(--sand);
+  border: 4px solid var(--bg-2);
   box-shadow: var(--sh-3);
 }
 .rrec.flip .rfig .r2 { margin-left: 0; margin-right: auto; }
@@ -222,7 +222,7 @@
   border-radius: 3px; overflow: hidden;
 }
 .rfacts li {
-  background: var(--sand);
+  background: var(--bg-2);
   padding: 13px 14px;
   display: flex; flex-direction: column; gap: 5px;
 }

@@ -14,10 +14,16 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0B101B">
 <meta name="color-scheme" content="dark">
+<!-- Runs before the first paint. The theme has to be on <html> by the time
+     the browser paints anything, or every page load shows one frame of the
+     wrong colour before the script that sets it gets a turn. It is inline
+     and tiny for the same reason: an external file is a round trip. -->
+<script>(function(){try{var t=localStorage.getItem("jwrc-theme");
+if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f03_6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeA.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/f07_UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=e8ba6f95">
-<link rel="stylesheet" href="assets/css/admin.css?v=e8ba6f95">
+<link rel="stylesheet" href="assets/css/style.css?v=f4281aab">
+<link rel="stylesheet" href="assets/css/admin.css?v=f4281aab">
 </head>
 <body class="admin">
 
@@ -134,6 +140,6 @@
   </main>
 </div>
 
-<script src="assets/js/admin.js?v=e8ba6f95"></script>
+<script src="assets/js/admin.js?v=f4281aab"></script>
 </body>
 </html>
