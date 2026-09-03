@@ -7,7 +7,7 @@
 /* ---------- chapter marker (shared idiom, page-local copy) ---------- */
 .chapter { display: flex; align-items: baseline; gap: 22px; margin-bottom: 44px; }
 .chapter .no { font-family: var(--display); font-size: clamp(36px,4.4vw,62px); font-weight: 600;
-  line-height: .82; color: var(--flame); letter-spacing: -.04em; }
+  line-height: .82; color: var(--acc); letter-spacing: -.04em; }
 .chapter .lbl { font: 600 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase;
   color: var(--ink-faint); }
 .dark .chapter .lbl, .deep .chapter .lbl { color: rgba(252,248,240,.62); }
@@ -76,8 +76,8 @@
 .col-k {
   font: 600 11px/1 var(--body); letter-spacing: .28em; text-transform: uppercase;
 }
-.yours .col-k { color: var(--gold); }
-.ours .col-k { color: var(--flame-2); }
+.yours .col-k { color: var(--acc-gold); }
+.ours .col-k { color: var(--acc); }
 .ledger-two ol { list-style: none; margin: 0; padding: 0; counter-reset: step; }
 .ledger-two li {
   counter-increment: step; position: relative;
@@ -116,12 +116,12 @@
 .reach li { padding: 16px 0; border-top: 1px solid rgba(252,248,240,.12);
   display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 14px; align-items: baseline; }
 .reach-k { font: 600 10.5px/1.6 var(--body); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--gold); }
+  color: var(--acc-gold); }
 .reach a, .reach-p { font-size: 15.5px; color: rgba(252,248,240,.86); margin: 0;
   overflow-wrap: anywhere; }
 .reach a { display: inline-flex; align-items: center; min-height: max(24px, var(--tap-min));
   transition: color .3s var(--ease); }
-.reach a:hover { color: var(--flame-2); }
+.reach a:hover { color: var(--acc); }
 
 /* ---------- the form ---------- */
 .start-form {
@@ -178,7 +178,7 @@
   color: rgba(252,248,240,.7); max-width: 52ch;
 }
 .send-note a {
-  color: var(--gold-lt); text-decoration: underline; text-underline-offset: 3px;
+  color: var(--acc-gold); text-decoration: underline; text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
 .send-note a:hover { color: var(--ivory); }
@@ -195,7 +195,7 @@
   user-select: all;
 }
 .form-status {
-  margin: 16px 0 0; font-size: 14px; line-height: 1.55; color: var(--gold-lt);
+  margin: 16px 0 0; font-size: 14px; line-height: 1.55; color: var(--acc-gold);
   min-height: 1.55em;
 }
 .form-status.err { color: #FFAF9B; }

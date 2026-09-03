@@ -131,8 +131,15 @@ CONTRAST = r"""() => {
     const need = large ? 3 : 4.5;
     const ratio = (Math.max(lum(fg), lum(bg)) + .05) / (Math.min(lum(fg), lum(bg)) + .05);
     if (ratio < need) {
+      // The ground is reported too. Without it every finding starts with
+      // ten minutes of working out which of the eleven identical elements
+      // on the page is the one standing on the wrong colour.
+      const hex = (p) => '#' + p.map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
+      const sec = el.closest('section, header, footer');
       out.push((el.className && el.className.baseVal === undefined ? el.className : el.tagName)
-        + ' "' + el.textContent.trim().slice(0, 24) + '" ' + ratio.toFixed(2) + ':1 (needs ' + need + ')');
+        + ' "' + el.textContent.trim().slice(0, 20) + '" '
+        + hex(fg) + ' on ' + hex(bg) + ' = ' + ratio.toFixed(2) + ':1 (needs ' + need + ')'
+        + (sec ? ' in #' + (sec.id || sec.className.split(' ')[0]) : ''));
     }
   }
   return [...new Set(out)].slice(0, 6);
