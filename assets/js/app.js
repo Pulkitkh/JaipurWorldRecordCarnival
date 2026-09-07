@@ -354,7 +354,12 @@
       burger.setAttribute("aria-expanded", String(open));
       lock(open);
       if (open) {
-        const first = drawer.querySelector("a, button");
+        /* The first destination, not the first focusable thing — which is
+           the grab handle, whose only job is to close the sheet again.
+           Landing there offers "close" as the opening move, and paints the
+           focus ring around a bar of empty space. */
+        const first = drawer.querySelector(".drawer-nav a")
+                   || drawer.querySelector("a, button");
         if (first) first.focus({ preventScroll: true });
       } else {
         burger.focus({ preventScroll: true });
