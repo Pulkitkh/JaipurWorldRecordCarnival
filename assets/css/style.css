@@ -272,7 +272,16 @@ body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 400 17px/1.65 var(--body);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  /* clip, not hidden. Both stop a stray element widening the page, but
+     overflow-x:hidden makes the body a scroll container — which computes
+     overflow-y to auto and quietly kills position:sticky for everything
+     inside it. The legal pages' contents list scrolled away with the page
+     and looked simply broken; the cause was five hundred lines away, in a
+     rule about horizontal overflow. clip clips without scrolling, so
+     sticky descendants stick to the viewport as intended. Declared as
+     hidden first for anything too old to know clip. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 /* Deliberately empty of anything that moves the page. overflow:hidden here
    would clamp the scrolling element's scrollTop to zero the moment it is
@@ -992,6 +1001,20 @@ svg.defs { position: absolute; width: 0; height: 0; }
   margin-top: 52px; padding-top: 24px; border-top: 1px solid rgba(252,248,240,.1);
   display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap;
   font-size: 13px; color: rgba(252,248,240,.6);
+}
+/* Two small links between two long spans. They need to stay hittable when
+   the row wraps onto three lines on a phone, which is why they carry their
+   own height rather than inheriting the 13px line beside them. */
+.foot-legal { display: flex; gap: 22px; align-items: center; }
+.foot-legal a {
+  display: inline-flex; align-items: center;
+  min-height: var(--tap-min); padding: 2px 0;
+  font-size: 13px; color: rgba(252,248,240,.72);
+  text-decoration: none; border-bottom: 1px solid rgba(252,248,240,.24);
+  transition: color .2s var(--ease), border-color .2s var(--ease);
+}
+.foot-legal a:hover, .foot-legal a:focus-visible {
+  color: var(--ivory); border-color: var(--acc-gold);
 }
 
 /* ---------- 23. Demo banner + back to top ---------- */

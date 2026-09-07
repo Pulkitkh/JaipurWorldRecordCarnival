@@ -121,7 +121,8 @@ CLIPPED = """() => {
 }"""
 
 ALL_PAGES=[(f"{B}/","landing"),(f"{B}/records","records"),
-           (f"{B}/take-part","take part"),(f"{B}/about","about")]
+           (f"{B}/take-part","take part"),(f"{B}/about","about"),
+           (f"{B}/privacy","privacy"),(f"{B}/terms","terms")]
 want=[a.replace(".html","") for a in sys.argv[1:]]
 PAGES=[p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
 

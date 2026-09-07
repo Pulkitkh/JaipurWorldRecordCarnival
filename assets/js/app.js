@@ -59,6 +59,19 @@
       ["index.html", "The Carnival"],
       ["about.html", "The Founder"],
     ],
+    /* The legal pages are the one place the nav carries no section anchors.
+       Their sections are listed beside the text instead, where a reader of a
+       ten-part document can see all ten at once — six of them in the nav
+       would be a table of contents with four parts missing. So the nav does
+       the other job here: getting back out to the site. */
+    legal: [
+      ["index.html", "The Carnival"],
+      ["records.html", "The records"],
+      ["take-part.html", "Take part"],
+      ["about.html", "The Founder"],
+      ["privacy.html", "Privacy"],
+      ["terms.html", "Terms"],
+    ],
   };
   /* Which page this is.
 
@@ -81,11 +94,13 @@
     if (name === "take-part") return "take";
     if (name === "records") return "records";
     if (name === "about") return "about";
+    if (name === "privacy" || name === "terms") return "legal";
     return "home";
   })();
   const DECLARED = document.body && document.body.dataset.page;
   const HERE = PAGES[DECLARED] ? DECLARED : FROM_URL;
   const NAV = PAGES[HERE];
+  const LEGAL = HERE === "legal";
   const CONTACT = HERE === "take" ? "#start" : "take-part.html#start";
 
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
@@ -276,8 +291,16 @@
               <p style="font-family:var(--display);font-style:italic;font-size:17px;color:var(--gold);margin-top:20px">
                 “Find your passion, and it’s no longer work.”</p>
             </div>
-            <nav aria-label="Sections of this page"><h4>On this page</h4>
-              ${NAV.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</nav>
+            <!-- On most pages this column is the page's own sections, which
+                 is what "On this page" means. A legal page's nav carries no
+                 section anchors at all — its sections are listed beside the
+                 text — so there the heading would be describing six links to
+                 somewhere else, and two of them would be the very documents
+                 already named in the bar below. Both are corrected here. -->
+            <nav aria-label="${LEGAL ? "Elsewhere on this site" : "Sections of this page"}">
+              <h4>${LEGAL ? "Elsewhere" : "On this page"}</h4>
+              ${NAV.filter(([h]) => !(LEGAL && /^(privacy|terms)\.html$/.test(h)))
+                   .map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</nav>
             <div><h4>Reach us</h4>
               <a href="tel:+918003003000">+91 80030 03000</a>
               <a href="mailto:manmohan.agarwal015@gmail.com">manmohan.agarwal015@gmail.com</a>
@@ -290,6 +313,14 @@
           </div>
           <div class="bottom">
             <span>© 2026 Manmohan Agarwal · Jaipur World Record Carnival®</span>
+            <!-- The two documents live here rather than in a column above.
+                 Nobody browses to a privacy notice; they look for it at the
+                 bottom of the page, which is the one place every reader
+                 already knows to check. -->
+            <nav class="foot-legal" aria-label="Legal">
+              <a href="privacy.html">Privacy</a>
+              <a href="terms.html">Terms</a>
+            </nav>
             <span class="deva">पधारो म्हारे देस — you are always welcome here.</span>
           </div>
         </div>

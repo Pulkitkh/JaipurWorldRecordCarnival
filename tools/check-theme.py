@@ -54,7 +54,8 @@ time.sleep(1.5)
 B = "http://127.0.0.1:8231"
 
 ALL_PAGES = [("/", "landing"), ("/records", "records"),
-             ("/take-part", "take part"), ("/about", "about")]
+             ("/take-part", "take part"), ("/about", "about"),
+             ("/privacy", "privacy"), ("/terms", "terms")]
 want = [a.replace(".html", "") for a in sys.argv[1:]]
 PAGES = [p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
 

@@ -8,6 +8,8 @@ Three pages and a small API.
 | `records.html` | the eleven world records, in full |
 | `take-part.html` | how to join, and the enquiry form |
 | `about.html` | Manmohan Agarwal, founder, and the record archive |
+| `privacy.html` | what the form collects, why, and how to have it deleted |
+| `terms.html` | what the site promises, and what it does not |
 | `admin.html` | the enquiries that came in — password only |
 
 The site itself is static: no build step, no framework, no external requests at
@@ -285,18 +287,22 @@ index.html              the Carnival
 records.html            the eleven records
 take-part.html          how to join, and the form
 about.html              the founder, and the record archive
+privacy.html            the privacy notice
+terms.html              the terms
 admin.html              the enquiries console
 assets/css/style.css    design system — tokens, type, components, motion
 assets/css/home.css     the Carnival page
 assets/css/records.css  the records page
 assets/css/take-part.css  the Take part page
 assets/css/about.css    portfolio-specific layout
+assets/css/legal.css    the privacy notice and the terms — both share it
 assets/css/admin.css    the console
 assets/js/app.js        nav, footer, scroll chrome — every page
 assets/js/motion.js     GSAP + Lenis motion system
 assets/js/media.js      photo library loader and helpers
 assets/js/gallery.js    virtualised, paginated masonry + lightbox
 assets/js/about.js      page controller
+assets/js/legal.js      the contents list on the two legal pages
 assets/vendor/          GSAP, Lenis — vendored, no CDN
 media/                  web-ready photographs + manifest.json
 media-source/           originals (gitignored)

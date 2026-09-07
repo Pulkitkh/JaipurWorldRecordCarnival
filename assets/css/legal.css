@@ -1,0 +1,256 @@
+/* ============================================================
+   Legal pages — the privacy notice and the terms.
+
+   These are the two pages nobody wants to read, which is exactly why
+   they are the two that most need to be readable. The usual treatment
+   is a wall of 13px grey text at full window width; that is a way of
+   publishing a document while making sure it is never read, and for a
+   notice that exists to tell somebody what happens to their phone
+   number it is close to dishonest.
+
+   So they are set like the rest of the site: one column at a real
+   reading measure, a table of contents that follows down the page, and
+   every section given a plain-English line before the careful one.
+
+   Both pages share this file. They have the same shape.
+   ============================================================ */
+
+/* ---------- the hero ----------
+   Deliberately short. A legal page's hero has one job — say which
+   document this is and when it started applying — and every pixel it
+   spends beyond that is a pixel between the reader and the text. The
+   .dark class on the element is what remaps the accent tokens for a
+   dark ground; a new surface name here would have gone unlisted and
+   painted flame at 2.1:1, which has happened three times already. */
+.lg-hero { padding: clamp(64px, 9vw, 120px) 0 clamp(44px, 6vw, 72px); }
+.lg-hero h1 { max-width: 16ch; }
+.lg-hero .lede { max-width: 54ch; color: rgba(252, 248, 240, .78); }
+
+/* The dates, as a row of small facts rather than a sentence. Somebody
+   checking whether a document has changed since they last read it is
+   looking for one number, and should not have to read a paragraph. */
+.lg-dates {
+  display: flex; flex-wrap: wrap; gap: 10px 32px;
+  margin-top: 28px; padding-top: 22px;
+  border-top: 1px solid rgba(252, 248, 240, .16);
+}
+.lg-dates div { min-width: 0; }
+.lg-dates dt {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(252, 248, 240, .55); margin: 0 0 4px;
+}
+.lg-dates dd {
+  margin: 0; font-family: var(--display); font-size: 17px;
+  color: var(--acc-gold);
+}
+
+/* ---------- the two-column shell ---------- */
+.lg-shell {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  gap: clamp(36px, 5vw, 84px);
+  align-items: start;
+}
+@media (max-width: 1060px) {
+  .lg-shell { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+}
+
+/* ---------- contents ----------
+   Sticky beside the text on a wide screen, a closed disclosure above it
+   on a narrow one. Not a sticky bar on a phone: it would eat the top of
+   a screen that is already carrying a 74px nav, on a page whose entire
+   purpose is a long read. */
+/* The sticky element has to be the grid item itself, not the list inside
+   it. A grid child under align-items:start is exactly as tall as its own
+   content, so a sticky box within it has no travel to stick through — it
+   scrolls away with the page and looks like sticky is simply broken.
+   Capped and scrollable as well, so a contents list taller than the window
+   is reachable rather than cut. */
+@media (min-width: 1061px) {
+  .lg-toc-side {
+    position: sticky; top: calc(var(--nav-h) + 26px);
+    max-height: calc(100dvh - var(--nav-h) - 60px);
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+}
+.lg-toc h2 {
+  font-family: var(--body); font-size: 11px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-faint); margin: 0 0 14px;
+}
+.lg-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.lg-toc li { counter-increment: toc; }
+.lg-toc a {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 9px 0; min-height: var(--tap-min);
+  font-size: 14.5px; line-height: 1.4; color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  transition: color .2s var(--ease);
+}
+.lg-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  flex: none; font-size: 11px; letter-spacing: .06em;
+  color: var(--acc-sm); font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+}
+.lg-toc a:hover, .lg-toc a:focus-visible { color: var(--ink); }
+/* The section being read, marked as the page scrolls. */
+.lg-toc a.on { color: var(--ink); font-weight: 600; }
+.lg-toc a.on::before { color: var(--acc-sm); }
+
+/* the phone form of the same list */
+.lg-toc-m {
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--bg-2); overflow: hidden;
+}
+.lg-toc-m > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 16px 18px; min-height: var(--tap);
+  font-family: var(--body); font-size: 13px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink);
+}
+.lg-toc-m > summary::-webkit-details-marker { display: none; }
+.lg-toc-m > summary svg { flex: none; transition: transform .3s var(--ease); }
+.lg-toc-m[open] > summary svg { transform: rotate(180deg); }
+.lg-toc-m .in { padding: 0 18px 10px; }
+.lg-toc-m .lg-toc { position: static; }
+.lg-toc-m .lg-toc h2 { display: none; }
+@media (min-width: 1061px) { .lg-toc-m { display: none; } }
+@media (max-width: 1060px) { .lg-toc-d { display: none; } }
+
+/* ---------- the text ----------
+   Around 70 characters at the widest. Past about 75 the eye loses the
+   start of the next line on the way back, and these are pages people are
+   already reluctant to be on.
+
+   Set in em, not ch. The ch unit is the width of the digit zero, which in
+   this face is a good deal wider than the average lowercase letter — 68ch
+   measured out at 87 characters a line, comfortably past the point the
+   limit exists to avoid. 35em lands at about 70. */
+.lg-body { max-width: 35em; }
+.lg-body > * + * { margin-top: 1.1em; }
+.lg-body p, .lg-body li { color: var(--ink-soft); }
+.lg-body strong, .lg-body b { color: var(--ink); font-weight: 600; }
+.lg-body a { color: var(--acc-sm); text-underline-offset: 3px; }
+
+.lg-sec { scroll-margin-top: calc(var(--nav-h) + 28px); }
+.lg-sec + .lg-sec { margin-top: clamp(48px, 6vw, 78px); }
+.lg-sec > h2 {
+  font-size: clamp(25px, 3.1vw, 34px); line-height: 1.2;
+  margin: 0 0 6px; max-width: 22ch;
+}
+/* The number sits above the heading rather than beside it, so a long
+   heading wrapping to two lines never leaves it stranded. */
+.lg-sec > .no {
+  display: block; font-family: var(--body);
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  color: var(--acc-sm); margin-bottom: 12px;
+}
+
+/* The plain-English line that opens each section. The careful wording
+   follows it; this is what somebody skimming actually reads, so it is
+   set larger than the text it summarises rather than smaller. */
+.lg-gist {
+  font-family: var(--display); font-size: clamp(17px, 2vw, 19.5px);
+  line-height: 1.55; color: var(--ink);
+  border-left: 3px solid var(--acc);
+  padding: 2px 0 2px 20px; margin: 20px 0 24px;
+}
+
+.lg-body ul, .lg-body ol { padding-left: 22px; }
+.lg-body li + li { margin-top: 9px; }
+.lg-body ul { list-style: none; padding-left: 0; }
+.lg-body ul > li { position: relative; padding-left: 22px; }
+.lg-body ul > li::before {
+  content: ""; position: absolute; left: 3px; top: .62em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--acc-sm); opacity: .55;
+}
+.lg-body ol { list-style: decimal; }
+.lg-body ol::marker { color: var(--acc-sm); }
+
+/* ---------- the data table ----------
+   What is collected, why, and what happens to it. A list of three
+   sentences per field is unreadable; a table is the honest shape for
+   this, and it is the one thing on these pages that legitimately needs
+   more width than the reading measure — so it gets its own scroller
+   rather than widening the page. */
+.lg-tw {
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  margin: 26px 0;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--bg-2);
+}
+.lg-t { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 14.5px; }
+.lg-t th, .lg-t td {
+  text-align: left; padding: 13px 16px; vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+.lg-t thead th {
+  font-family: var(--body); font-size: 10.5px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-faint); background: var(--bg-3);
+  white-space: nowrap;
+}
+.lg-t tbody th { font-weight: 600; color: var(--ink); white-space: nowrap; }
+.lg-t td { color: var(--ink-soft); }
+.lg-t tbody tr:last-child th, .lg-t tbody tr:last-child td { border-bottom: 0; }
+
+/* ---------- the "we don't" panel ----------
+   Everything a privacy notice does not have to say and most do not. It
+   is the most useful thing on the page, so it is not buried in prose. */
+.lg-nots { display: grid; gap: 12px; margin: 26px 0; }
+@media (min-width: 620px) { .lg-nots { grid-template-columns: 1fr 1fr; } }
+.lg-not {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 15px 17px; border-radius: 12px;
+  background: var(--bg-2); border: 1px solid var(--line);
+  font-size: 14.5px; line-height: 1.5; color: var(--ink-soft);
+}
+/* The tick is a mark, not a message — every one of these panels also says
+   its point in words, so the colour is free to be the quieter green rather
+   than one loud enough to carry meaning on its own. Declared plainly first
+   so a browser without light-dark() still gets the light value. */
+.lg-not svg { flex: none; margin-top: 2px; }
+.lg-not svg { color: #2E6A50; color: light-dark(#2E6A50, #6FCB9F); }
+.lg-not b { color: var(--ink); }
+
+/* ---------- the closing contact ---------- */
+.lg-reach { padding: clamp(48px, 7vw, 84px) 0; }
+.lg-reach h2 { max-width: 18ch; }
+.lg-reach .lede { max-width: 52ch; color: rgba(252, 248, 240, .78); }
+.lg-ways { display: grid; gap: 14px; margin-top: 30px; }
+@media (min-width: 700px) { .lg-ways { grid-template-columns: 1fr 1fr; } }
+.lg-way {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 18px 20px; border-radius: 14px;
+  background: rgba(252, 248, 240, .06);
+  border: 1px solid rgba(252, 248, 240, .14);
+  min-height: var(--tap);
+  color: var(--ivory); text-decoration: none;
+  transition: background .25s var(--ease), border-color .25s var(--ease);
+}
+a.lg-way:hover, a.lg-way:focus-visible {
+  background: rgba(252, 248, 240, .11);
+  border-color: rgba(252, 248, 240, .3);
+}
+.lg-way svg { flex: none; margin-top: 3px; color: var(--acc-gold); }
+.lg-way .k {
+  display: block; font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(252, 248, 240, .58);
+  margin-bottom: 5px;
+}
+.lg-way .v { font-family: var(--display); font-size: 17px; line-height: 1.35; }
+
+/* The sibling document, offered at the foot of each. Somebody who has
+   read one is the likeliest person in the world to want the other. */
+.lg-sib {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap;
+  margin-top: 36px; padding-top: 26px;
+  border-top: 1px solid rgba(252, 248, 240, .16);
+}
+.lg-sib p { margin: 0; color: rgba(252, 248, 240, .7); font-size: 15px; max-width: 44ch; }

@@ -182,6 +182,16 @@
   text-decoration-thickness: 1px;
 }
 .send-note a:hover { color: var(--ivory); }
+/* The consent line, set apart from the reassurance above it. One is a
+   promise about how we behave; this is the notice the law asks for, and
+   running the two together as one paragraph would let the second hide
+   inside the first. Kept at .62 rather than lower — a consent notice
+   nobody can read is not a consent notice. */
+.send-note.consent {
+  margin-top: 15px; padding-top: 15px;
+  border-top: 1px solid rgba(252,248,240,.14);
+  color: rgba(252,248,240,.62);
+}
 
 /* The reference the server hands back once an enquiry is stored. Somebody
    reads this out on the phone, so it is monospaced and selects in one
