@@ -91,6 +91,15 @@
   const ARROW = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7 2.5l4 4-4 4"/></svg>`;
 
+  const CHEV = `<svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none"
+    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+    aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>`;
+
+  const PHONE = `<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"
+    aria-hidden="true"><path d="M2.5 3.5C2.5 2.7 3.2 2 4 2h1.6c.4 0 .8.3.9.7l.7 2.3c.1.4 0 .8-.3 1
+    l-1 .8a9 9 0 0 0 3.3 3.3l.8-1c.2-.3.6-.4 1-.3l2.3.7c.4.1.7.5.7.9V12c0 .8-.7 1.5-1.5 1.5
+    A11.5 11.5 0 0 1 2.5 3.5Z"/></svg>`;
+
   const MARK = `<svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
     <path d="M20 1.6c-1.7 2.3-.5 3.6.5 4.4" stroke="#E8461C" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M4 39V19.6C4 11 11.2 4.2 20 4.2S36 11 36 19.6V39z" fill="#E8461C"/>
@@ -228,16 +237,27 @@
         <a class="btn sm" href="${CONTACT}">Take part ${ARROW}</a>
         <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
       </nav>
-      <div class="drawer" id="drawer">
-        ${NAV.map(([h, t], i) =>
-          `<a href="${h}"><span class="n">0${i + 1}</span>${t}</a>`).join("")}
-        <a href="${CONTACT}" class="btn mt-m" style="justify-content:center">
-          Take part ${ARROW}</a>
-        <a href="tel:+918003003000" class="btn ghost" style="justify-content:center;margin-top:10px">
-          Call +91 80030 03000</a>
-        <div class="drawer-theme">
-          <span class="lbl">Theme</span>
-          ${themeControl("in-drawer")}
+      <div class="scrim" id="scrim" hidden></div>
+      <div class="drawer" id="drawer" role="dialog" aria-modal="true"
+           aria-label="Menu" hidden>
+        <button class="drawer-grab" id="drawer-grab" type="button" aria-label="Close menu">
+          <i></i>
+        </button>
+        <nav class="drawer-nav" aria-label="Pages">
+          ${NAV.map(([h, t], i) =>
+            `<a href="${h}"><span class="n">${String(i + 1).padStart(2, "0")}</span>
+               <span class="t">${t}</span>${CHEV}</a>`).join("")}
+        </nav>
+        <div class="drawer-foot">
+          <div class="drawer-acts">
+            <a href="${CONTACT}" class="btn">Take part ${ARROW}</a>
+            <a href="tel:+918003003000" class="btn ghost" aria-label="Call +91 80030 03000">
+              ${PHONE}<span>Call</span></a>
+          </div>
+          <div class="drawer-theme">
+            <span class="lbl">Theme</span>
+            ${themeControl("in-drawer")}
+          </div>
         </div>
       </div>`);
   }
@@ -282,20 +302,115 @@
   }
 
   function wireChrome() {
-    // drawer
-    const burger = $("#burger"), drawer = $("#drawer");
-    burger.addEventListener("click", () => {
-      const open = drawer.classList.toggle("open");
+    const burger = $("#burger"), drawer = $("#drawer"), scrim = $("#scrim");
+
+    /* Holding the page still while the sheet is open.
+
+       Two obvious approaches both move the page, which is the one thing
+       that must not happen. Pinning the body with position:fixed changes
+       its layout, and ScrollTrigger puts the offset back to zero about a
+       second later. Setting overflow:hidden on the root is worse: the
+       scrolling element stops scrolling, so the browser clamps its
+       scrollTop to zero immediately. Either way the reader loses their
+       place, and reopening the page after closing the sheet drops them at
+       the top of a very long document.
+
+       So the document is never touched. Lenis — which is what actually
+       drives scrolling here — is stopped; the scrim refuses touch, so a
+       drag cannot pull the page behind it; and the wheel is blocked
+       everywhere except inside the sheet's own list, which still needs to
+       scroll when the menu is long. Nothing about the page's geometry
+       changes, so there is nothing to restore. */
+
+    function blockWheel(e) {
+      if (e.target.closest && e.target.closest(".drawer-nav")) return;
+      e.preventDefault();
+    }
+    function blockTouch(e) {
+      if (e.target.closest && e.target.closest(".drawer")) return;
+      e.preventDefault();
+    }
+
+    function lock(on) {
+      const lenis = window.__lenis;
+      if (lenis) {
+        if (on && lenis.stop) lenis.stop();
+        if (!on && lenis.start) lenis.start();
+      }
+      const fn = on ? "addEventListener" : "removeEventListener";
+      document[fn]("wheel", blockWheel, { passive: false });
+      document[fn]("touchmove", blockTouch, { passive: false });
+      document.documentElement.classList.toggle("is-locked", on);
+    }
+
+    function setOpen(open) {
+      if (open) { drawer.hidden = false; scrim.hidden = false; }
+      // a frame between unhiding and animating, or the transition never runs
+      requestAnimationFrame(() => {
+        drawer.classList.toggle("open", open);
+        scrim.classList.toggle("open", open);
+      });
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", String(open));
-      document.body.classList.toggle("is-locked", open);
+      lock(open);
+      if (open) {
+        const first = drawer.querySelector("a, button");
+        if (first) first.focus({ preventScroll: true });
+      } else {
+        burger.focus({ preventScroll: true });
+        // stay out of the accessibility tree once the animation is done
+        setTimeout(() => {
+          if (!drawer.classList.contains("open")) { drawer.hidden = true; scrim.hidden = true; }
+        }, 420);
+      }
+    }
+
+    const isOpen = () => drawer.classList.contains("open");
+
+    burger.addEventListener("click", () => setOpen(!isOpen()));
+    scrim.addEventListener("click", () => setOpen(false));
+    $("#drawer-grab").addEventListener("click", () => setOpen(false));
+    drawer.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+
+    document.addEventListener("keydown", (e) => {
+      if (!isOpen()) return;
+      if (e.key === "Escape") { setOpen(false); return; }
+      if (e.key !== "Tab") return;
+      /* While the sheet is open it is the whole interface, so Tab has to
+         cycle inside it rather than walking off into the page behind. */
+      const items = $$("a, button, [tabindex]:not([tabindex='-1'])", drawer)
+        .filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
 
-    drawer.addEventListener("click", (e) => {
-      if (!e.target.closest("a")) return;
-      drawer.classList.remove("open");
-      burger.classList.remove("open");
-      document.body.classList.remove("is-locked");
+    /* Drag the sheet down to dismiss it — the gesture both platforms have
+       taught people to expect from anything that rises from the bottom. */
+    let startY = 0, dy = 0, dragging = false;
+    drawer.addEventListener("touchstart", (e) => {
+      // only from the top of the sheet, so it never fights the list scrolling
+      if (!e.target.closest(".drawer-grab, .drawer-nav") || drawer.scrollTop > 0) {
+        const nav = $(".drawer-nav", drawer);
+        if (nav && nav.scrollTop > 0) return;
+      }
+      startY = e.touches[0].clientY; dy = 0; dragging = true;
+      drawer.style.transition = "none";
+    }, { passive: true });
+
+    drawer.addEventListener("touchmove", (e) => {
+      if (!dragging) return;
+      dy = e.touches[0].clientY - startY;
+      if (dy > 0) drawer.style.transform = `translateY(${dy}px)`;
+    }, { passive: true });
+
+    drawer.addEventListener("touchend", () => {
+      if (!dragging) return;
+      dragging = false;
+      drawer.style.transition = "";
+      drawer.style.transform = "";
+      if (dy > 90) setOpen(false);
     });
 
     $("#totop").addEventListener("click", () =>

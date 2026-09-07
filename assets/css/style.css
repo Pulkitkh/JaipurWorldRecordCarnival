@@ -241,17 +241,25 @@ body.admin {
 /* Everything that paints itself dark declares it once, here. The flame focus
    ring disappears into navy, so it swaps to gold (7:1 on every dark ground
    used on this page), and outline buttons pick up ivory instead of ink. */
-.dark, .deep, .ph, .hero-c, .nav, .foot {
+/* ── the dark surfaces ──
+   Two lists, and they differ by exactly one entry, so they are written
+   next to each other and any new dark surface must be added to both. That
+   has now been the cause of three separate contrast bugs — the outline
+   button on each new dark section, and the drawer's row numbers — every
+   one of them a surface that was added to one list and not the other. */
+
+.dark, .deep, .ph, .hero-c, .nav, .foot, .drawer {
   --focus: var(--gold); --focus-halo: rgba(217,164,65,.24);
   --ghost-fg: var(--ivory);
   --ghost-line: rgba(252,248,240,.34);
   --ghost-hov: var(--gold);
 }
 
-/* Every band re-points the text accents at marigold. The nav is not in this
-   list on purpose: its ground is a hardcoded near-black rather than a band,
-   so flame is legible on it and the wordmark keeps the brand colour. */
-.dark, .deep, .ph, .hero-c, .foot, .rec-hero, .tp-hero {
+/* The same list minus .nav, which re-points the text accents at marigold.
+   The nav stays out on purpose: its ground is a hardcoded near-black
+   rather than a band, so flame is legible on it and the wordmark keeps the
+   brand colour. */
+.dark, .deep, .ph, .hero-c, .foot, .drawer, .rec-hero, .tp-hero {
   --acc:      #FFC24D;
   --acc-sm:   #FFC24D;
   --acc-gold: var(--gold-lt);
@@ -266,7 +274,12 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
-body.is-locked { overflow: hidden; }
+/* Deliberately empty of anything that moves the page. overflow:hidden here
+   would clamp the scrolling element's scrollTop to zero the moment it is
+   applied, which is exactly the bug it looks like it is preventing. The
+   holding is done in app.js instead, by stopping Lenis and refusing wheel
+   and touch outside the sheet. The class stays as a hook. */
+html.is-locked { }
 img, svg { max-width: 100%; display: block; }
 button { font: inherit; cursor: pointer; }
 
@@ -545,28 +558,99 @@ section { position: relative; }
 .burger.open i:nth-child(2) { opacity: 0; }
 .burger.open i:nth-child(3) { transform: rotate(-45deg); }
 
+/* ---------- the menu, as a bottom sheet ----------
+
+   It used to be a full-height panel hanging from the nav, with six links
+   at ninety pixels each. That is 540px of nothing but labels, and the
+   three things anybody actually opens the menu for — Take part, Call, the
+   theme — ended up at 705px, 763px and 837px down. On a 390x844 phone the
+   content overflowed its box by 108px; on a 390x668 phone, by 284px, so
+   the theme control could not be reached at all without discovering that
+   the panel scrolled.
+
+   A sheet fixes both faults at once. It rises from the bottom, where the
+   thumb already is, it is only as tall as it needs to be, and the actions
+   sit at its bottom edge — the easiest place on a phone to reach rather
+   than the hardest. */
+
+.scrim {
+  position: fixed; inset: 0; z-index: 870;
+  background: rgba(8, 10, 18, .58);
+  touch-action: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0; transition: opacity .35s var(--ease);
+}
+.scrim.open { opacity: 1; }
+
 .drawer {
-  /* Declares its own ink. It is a dark surface, and anything inside it that
-     inherits colour — the outline button, for one — needs to know that. */
-  position: fixed; inset: var(--nav-h) 0 0; z-index: 880;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 880;
+  display: flex; flex-direction: column;
+  /* Capped rather than fixed, so a short menu is a short sheet. dvh, not
+     vh: on iOS the toolbar slides away and vh does not follow it, which is
+     how a sheet ends up with its last row under the home indicator. */
+  max-height: min(86dvh, 720px);
   background: var(--band-2); color: var(--ivory);
-  padding: 34px var(--gut) 40px; display: flex; flex-direction: column; gap: 4px;
-  transform: translateY(-12px); opacity: 0; visibility: hidden;
-  transition: opacity .4s var(--ease), transform .4s var(--ease), visibility .4s;
-  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -18px 50px -12px rgba(0, 0, 0, .6);
+  /* The home indicator on an iPhone, and the gesture bar on Android. */
+  padding-bottom: max(env(safe-area-inset-bottom), 10px);
+  transform: translateY(102%);
+  transition: transform .42s var(--ease-out);
+  overscroll-behavior: contain;
 }
-.drawer.open { opacity: 1; visibility: visible; transform: none; }
-/* :not(.btn) matters. This rule is more specific than .btn, so without it
-   the call-to-action at the foot of the drawer was being rendered at 30px
-   in the display face — the phone number wrapped to two lines and spilled
-   straight out of its own pill. */
-.drawer a:not(.btn) {
-  font-family: var(--display); font-size: clamp(24px, 6.5vw, 30px); font-weight: 600;
-  color: var(--ivory); padding: 15px 0;
-  border-bottom: 1px solid rgba(252,248,240,.1);
+.drawer.open { transform: translateY(0); }
+
+/* the handle: a real button, so it is reachable by keyboard too */
+.drawer-grab {
+  flex: none; width: 100%; border: 0; background: transparent;
+  padding: 12px 0 8px; display: flex; justify-content: center;
+  min-height: var(--tap);
 }
-.drawer .btn { align-self: stretch; text-align: center; white-space: nowrap; }
-.drawer a:not(.btn) .n { font: 600 10px/1 var(--body); letter-spacing: .2em; color: var(--acc); display: block; margin-bottom: 8px; }
+.drawer-grab i {
+  display: block; width: 42px; height: 4px; border-radius: 999px;
+  background: rgba(252, 248, 240, .3);
+  transition: background .3s var(--ease);
+}
+.drawer-grab:hover i, .drawer-grab:focus-visible i { background: rgba(252, 248, 240, .55); }
+
+/* the links: one compact row each, not a two-line block */
+.drawer-nav {
+  overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px var(--gut) 6px;
+  min-height: 0;                      /* so it, not the sheet, does the scrolling */
+}
+.drawer-nav a {
+  display: flex; align-items: center; gap: 14px;
+  min-height: max(54px, var(--tap));
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(252, 248, 240, .1);
+  color: var(--ivory);
+}
+.drawer-nav a:last-child { border-bottom: 0; }
+.drawer-nav a .n {
+  font: 600 10px/1 var(--body); letter-spacing: .18em;
+  color: var(--acc); flex: none; width: 20px;
+}
+.drawer-nav a .t {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(19px, 5vw, 23px); line-height: 1.15;
+  flex: 1 1 auto;
+}
+.drawer-nav a .chev { flex: none; opacity: .4; transition: transform .3s var(--ease); }
+.drawer-nav a:active .chev { transform: translateX(3px); }
+
+/* the actions, pinned at the thumb end */
+.drawer-foot {
+  flex: none;
+  padding: 14px var(--gut) 4px;
+  border-top: 1px solid rgba(252, 248, 240, .14);
+  background: var(--band-2);
+}
+.drawer-acts { display: flex; gap: 10px; }
+.drawer-acts .btn { flex: 1 1 0; justify-content: center; padding-inline: 14px; }
+.drawer-acts .btn.ghost { flex: 0 0 auto; gap: 8px; }
 
 /* ---------- 9. Jharokha frames & scenes ---------- */
 svg.defs { position: absolute; width: 0; height: 0; }
@@ -1197,6 +1281,43 @@ body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-ins
 /* Windows/Android: keep long record titles from forcing a scrollbar */
 h1, h2, h3, .rec-b h3 { overflow-wrap: break-word; }
 
+/* iOS inflates text in landscape unless told not to. It is the reason a
+   page looks right in portrait and enormous when the phone is turned. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* The grey box a tap leaves behind on iOS and Android. Removing it is only
+   honest if something replaces it, so everything tappable dims instead. */
+a, button, .btn, summary, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  /* also drops the 300ms wait a browser keeps in case of a double-tap */
+  touch-action: manipulation;
+}
+@media (hover: none) {
+  a:active, button:active, .btn:active,
+  summary:active, [role="button"]:active { opacity: .68; }
+  /* the press has to be felt immediately, so this one is not eased */
+  .btn:active { transform: translateY(1px); transition-duration: 0s; }
+}
+
+/* Scrolling a rail to its end must not start scrolling the page behind it,
+   and must not trigger Chrome's pull-to-refresh from inside one. */
+.rail-scroll, .hs-track, .strip, .ev-rail, .tally, .drawer-nav {
+  overscroll-behavior-x: contain;
+}
+
+/* A sticky element measured in vh is wrong on any phone whose toolbar
+   moves, which is all of them now. */
+@supports (height: 100dvh) {
+  .lightbox, .modal, #preload { min-height: 100dvh; }
+}
+
+/* Android Chrome renders a backdrop-filter on a scrolling ancestor by
+   repainting it every frame. On the nav, which is sticky and always on
+   screen, that is the single most expensive thing on the page. */
+@media (max-width: 900px) {
+  .nav { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
 /* Print — a portfolio gets printed more often than people expect */
 @media print {
   .nav, .chaprail, .cursor, .veil, #totop, .gal-pager, .gal-bar, #preload { display: none !important; }
@@ -1243,8 +1364,8 @@ h1, h2, h3, .rec-b h3 { overflow-wrap: break-word; }
 
 .drawer-theme {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  margin-top: 26px; padding-top: 22px;
-  border-top: 1px solid rgba(252,248,240,.14);
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid rgba(252,248,240,.1);
 }
 .drawer-theme .lbl {
   font: 600 10.5px/1 var(--body); letter-spacing: .2em; text-transform: uppercase;

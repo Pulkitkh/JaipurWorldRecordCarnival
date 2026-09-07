@@ -230,7 +230,24 @@ async def main():
                 if w < 900:
                     burger=await pg.query_selector("#burger")
                     if burger:
-                        await burger.click(); await pg.wait_for_timeout(700)
+                        # Open it from partway down the page. Opening at the
+                        # top would pass whatever the lock did — including
+                        # the two earlier attempts, which both jumped the
+                        # reader back to the top and were only visible
+                        # because the page had somewhere to jump from.
+                        await pg.evaluate("window.scrollTo(0,900)")
+                        await pg.wait_for_timeout(700)
+                        was=await pg.evaluate("Math.round(window.scrollY)")
+                        # Opened from script, not with burger.click(). Before
+                        # dispatching a click Playwright scrolls the target
+                        # into view over CDP, and Chrome resolves a fixed
+                        # element's document position to y≈0 — so the page is
+                        # already at the top by pointerdown, whoever handles
+                        # the click. A trace with our own handler removed
+                        # showed the same jump, which is how this was told
+                        # apart from a real lock failure.
+                        await pg.evaluate("document.querySelector('#burger').click()")
+                        await pg.wait_for_timeout(700)
                         d=await pg.evaluate("""() => {
                           const dr=document.querySelector('#drawer');
                           const W=document.documentElement.clientWidth;
@@ -247,11 +264,60 @@ async def main():
                           return {open:dr.classList.contains('open'), bad, bars,
                                   fs:getComputedStyle(dr.querySelector('.btn')||dr).fontSize};}""")
                         chk(d["open"], f"{label} {name}: drawer opens")
+
+                        # The sheet has to fit. It used to overflow its box by
+                        # 108px on a 390x844 phone and 284px on a 390x668 one,
+                        # which put the theme control off the bottom with
+                        # nothing on screen to say it was there.
+                        sheet = await pg.evaluate("""() => {
+                          const d = document.querySelector('#drawer');
+                          const nav = d.querySelector('.drawer-nav');
+                          const act = d.querySelector('.drawer-acts .btn');
+                          const r = d.getBoundingClientRect();
+                          return {
+                            hidden: Math.max(0, d.scrollHeight - d.clientHeight),
+                            bottomGap: act ? Math.round(innerHeight - act.getBoundingClientRect().bottom) : 999,
+                            onScreen: r.bottom <= innerHeight + 2 && r.top >= -2,
+                          };}""")
+                        chk(sheet["hidden"] == 0,
+                            f"{label} {name}: {sheet['hidden']}px of the sheet is unreachable")
+                        chk(sheet["onScreen"], f"{label} {name}: the sheet sits inside the screen")
+                        # the whole point of a sheet: the actions are at the
+                        # thumb, not at the far end of a scroll
+                        chk(sheet["bottomGap"] < 200,
+                            f"{label} {name}: primary action is {sheet['bottomGap']}px from the bottom")
+                        # The page behind has to stand still — and stand
+                        # still *where the reader left it*. Pinning the body
+                        # with position:fixed did hold it, at the top of the
+                        # document, which is not the same thing; so does
+                        # overflow:hidden on the root, which clamps scrollTop
+                        # to 0 the moment it lands. Both passed a check for
+                        # "is it locked". Neither passed this one.
+                        await pg.wait_for_timeout(900)   # past the reset that caught attempt one
+                        held=await pg.evaluate("Math.round(window.scrollY)")
+                        chk(abs(held-was)<=3,
+                            f"{label} {name}: the page moved {was}->{held} when the sheet opened")
+                        await pg.mouse.move(w//2, 120)
+                        await pg.mouse.wheel(0, 600)
+                        await pg.wait_for_timeout(400)
+                        pushed=await pg.evaluate("Math.round(window.scrollY)")
+                        chk(abs(pushed-was)<=3,
+                            f"{label} {name}: the page scrolled to {pushed} behind the open sheet")
                         chk(not d["bad"], f"{label} {name}: drawer {d['bad']}")
                         vis=[x for x in d["bars"] if x["op"]>0.05]
                         chk(len(vis)==2 and abs(vis[0]["y"]-vis[1]["y"])<=1,
                             f"{label} {name}: burger X bars at {[x['y'] for x in vis]}")
                         await pg.evaluate("document.querySelector('#burger').click()")
+                        await pg.wait_for_timeout(600)
+                        rest=await pg.evaluate("Math.round(window.scrollY)")
+                        chk(abs(rest-was)<=3,
+                            f"{label} {name}: closing the sheet left the reader at {rest}, not {was}")
+                        await pg.mouse.wheel(0, 500)
+                        await pg.wait_for_timeout(600)
+                        free=await pg.evaluate("Math.round(window.scrollY)")
+                        chk(free > rest+50,
+                            f"{label} {name}: the page is still frozen at {free} after the sheet closed")
+                        await pg.evaluate("window.scrollTo(0,0)")
                         await pg.wait_for_timeout(400)
                 await ctx.close()
         await b.close()
