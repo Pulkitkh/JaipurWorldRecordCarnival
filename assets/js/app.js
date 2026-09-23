@@ -59,11 +59,18 @@
       ["index.html", "The Carnival"],
       ["about.html", "The Founder"],
     ],
-    /* The legal pages are the one place the nav carries no section anchors.
-       Their sections are listed beside the text instead, where a reader of a
-       ten-part document can see all ten at once — six of them in the nav
-       would be a table of contents with four parts missing. So the nav does
-       the other job here: getting back out to the site. */
+    /* The long documents — the two legal pages and the questions page —
+       are where the nav carries no section anchors. Their sections are
+       listed beside the text instead, where a reader can see all ten at
+       once; six of them in the nav would be a table of contents with four
+       parts missing. So here the nav does the other job: getting back out
+       to the site. */
+    questions: [
+      ["index.html", "The Carnival"],
+      ["records.html", "The records"],
+      ["take-part.html", "Take part"],
+      ["about.html", "The Founder"],
+    ],
     legal: [
       ["index.html", "The Carnival"],
       ["records.html", "The records"],
@@ -95,6 +102,7 @@
     if (name === "records") return "records";
     if (name === "about") return "about";
     if (name === "privacy" || name === "terms") return "legal";
+    if (name === "questions") return "questions";
     return "home";
   })();
   const DECLARED = document.body && document.body.dataset.page;
@@ -302,6 +310,10 @@
               ${NAV.filter(([h]) => !(LEGAL && /^(privacy|terms)\.html$/.test(h)))
                    .map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</nav>
             <div><h4>Reach us</h4>
+              <!-- First, because it is the one that answers at midnight.
+                   It sits in this column rather than the legal bar below:
+                   it is a way of getting an answer, not small print. -->
+              <a href="questions.html">Questions &amp; answers</a>
               <a href="tel:+918003003000">+91 80030 03000</a>
               <a href="mailto:manmohan.agarwal015@gmail.com">manmohan.agarwal015@gmail.com</a>
               <!-- an address is information, not a destination: it was an

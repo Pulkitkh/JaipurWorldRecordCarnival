@@ -1,6 +1,6 @@
 # Jaipur World Record Carnival
 
-Three pages and a small API.
+Seven pages and a small API.
 
 | | |
 |---|---|
@@ -8,6 +8,7 @@ Three pages and a small API.
 | `records.html` | the eleven world records, in full |
 | `take-part.html` | how to join, and the enquiry form |
 | `about.html` | Manmohan Agarwal, founder, and the record archive |
+| `questions.html` | twenty-five questions and answers, and the FAQ markup |
 | `privacy.html` | what the form collects, why, and how to have it deleted |
 | `terms.html` | what the site promises, and what it does not |
 | `admin.html` | the enquiries that came in — password only |
@@ -287,6 +288,7 @@ index.html              the Carnival
 records.html            the eleven records
 take-part.html          how to join, and the form
 about.html              the founder, and the record archive
+questions.html          twenty-five questions and answers
 privacy.html            the privacy notice
 terms.html              the terms
 admin.html              the enquiries console
@@ -295,14 +297,16 @@ assets/css/home.css     the Carnival page
 assets/css/records.css  the records page
 assets/css/take-part.css  the Take part page
 assets/css/about.css    portfolio-specific layout
-assets/css/legal.css    the privacy notice and the terms — both share it
+assets/css/doc.css      long documents with a contents list — privacy, terms, questions
+assets/css/questions.css  the question accordions
 assets/css/admin.css    the console
 assets/js/app.js        nav, footer, scroll chrome — every page
 assets/js/motion.js     GSAP + Lenis motion system
 assets/js/media.js      photo library loader and helpers
 assets/js/gallery.js    virtualised, paginated masonry + lightbox
 assets/js/about.js      page controller
-assets/js/legal.js      the contents list on the two legal pages
+assets/js/doc.js        the contents list, on all three long documents
+assets/js/questions.js  open/close all, and deep links to one question
 assets/vendor/          GSAP, Lenis — vendored, no CDN
 media/                  web-ready photographs + manifest.json
 media-source/           originals (gitignored)

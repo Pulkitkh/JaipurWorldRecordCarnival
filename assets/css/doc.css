@@ -1,18 +1,26 @@
 /* ============================================================
-   Legal pages — the privacy notice and the terms.
+   Long documents with a contents list.
 
-   These are the two pages nobody wants to read, which is exactly why
-   they are the two that most need to be readable. The usual treatment
-   is a wall of 13px grey text at full window width; that is a way of
-   publishing a document while making sure it is never read, and for a
-   notice that exists to tell somebody what happens to their phone
-   number it is close to dishonest.
+   Three pages use this: the privacy notice, the terms, and the
+   questions page. They are different in tone and do different jobs, but
+   they are the same shape — a long read, in sections, that somebody
+   arrives at wanting one particular part of.
 
-   So they are set like the rest of the site: one column at a real
-   reading measure, a table of contents that follows down the page, and
-   every section given a plain-English line before the careful one.
+   It began as the legal pages' own file. The questions page wanted the
+   identical scaffolding, and the choice was to copy forty lines or to
+   rename the file to what it actually is. Copying is how a component
+   that has just had a subtle bug fixed grows a second copy that still
+   has it — the sticky fix below is exactly such a bug — so it was
+   renamed instead. The lg- prefix stayed: renaming the class names as
+   well would have touched two shipped pages for no gain.
 
-   Both pages share this file. They have the same shape.
+   The usual treatment for a page like this is a wall of 13px grey text
+   at full window width, which is a way of publishing a document while
+   making sure it is never read. For a notice that exists to tell
+   somebody what happens to their phone number, that is close to
+   dishonest. So these are set like the rest of the site: one column at
+   a real reading measure, a contents list that follows down the page,
+   and every section given a plain-English line before the careful one.
    ============================================================ */
 
 /* ---------- the hero ----------

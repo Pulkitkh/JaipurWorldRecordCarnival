@@ -55,7 +55,8 @@ B = "http://127.0.0.1:8231"
 
 ALL_PAGES = [("/", "landing"), ("/records", "records"),
              ("/take-part", "take part"), ("/about", "about"),
-             ("/privacy", "privacy"), ("/terms", "terms")]
+             ("/privacy", "privacy"), ("/terms", "terms"),
+             ("/questions", "questions")]
 want = [a.replace(".html", "") for a in sys.argv[1:]]
 PAGES = [p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
 
@@ -148,7 +149,27 @@ CONTRAST = r"""() => {
 
 
 async def walk(pg):
-    """Scroll the whole page so every reveal has fired before measuring."""
+    """Reveal everything on the page, so that everything gets measured.
+
+    Two things hide text from a contrast check, and both look like a pass.
+
+    The first is a reveal that has not fired: this scrolls the whole page
+    so every entrance animation has run.
+
+    The second is a closed disclosure. The questions page folds
+    twenty-five answers behind <details> elements, all shut on arrival —
+    so the first run of this check measured the twenty-five questions,
+    none of the answers, and reported ALL PASS on a page where the
+    majority of the words had never been looked at. Anything inside a
+    <details> is opened first now."""
+    n = await pg.evaluate("""() => {
+      const d = [...document.querySelectorAll('details')];
+      d.forEach(x => x.open = true);
+      return d.length;
+    }""")
+    if n:
+        await pg.wait_for_timeout(500)
+
     h = await pg.evaluate("document.body.scrollHeight")
     y = 0
     while y < h:

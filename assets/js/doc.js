@@ -1,5 +1,6 @@
 /* ============================================================
-   Legal pages — the contents list, and nothing else.
+   The contents list on a long document, and nothing else. Shared by the
+   privacy notice, the terms and the questions page.
 
    A ten-section document scrolled past the middle gives no clue where you
    are, and "where am I" is the question a reader of a privacy notice asks

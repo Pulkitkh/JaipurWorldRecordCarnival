@@ -1,0 +1,144 @@
+/* ============================================================
+   The questions page.
+
+   Layered on doc.css, which supplies the hero, the two-column shell and
+   the contents list. What is here is the one thing that page does not
+   have: a long list of questions somebody needs to scan before they read
+   any of them.
+
+   Twenty-five answers set out in full would be a page nobody reaches
+   the bottom of. So the questions are the page and the answers are
+   folded behind them — built on <details>, which means the disclosure
+   works with no JavaScript at all, keyboard support comes from the
+   browser, and the answers are still in the document for a search
+   engine to index.
+   ============================================================ */
+
+/* ---------- a group of questions ---------- */
+.qa-group + .qa-group { margin-top: clamp(46px, 6vw, 72px); }
+.qa-group > h2 {
+  font-size: clamp(24px, 3vw, 32px); line-height: 1.2;
+  margin: 0 0 6px; max-width: 20ch;
+}
+.qa-group > .no {
+  display: block; font-family: var(--body);
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  color: var(--acc-sm); margin-bottom: 12px;
+}
+.qa-group > .intro {
+  color: var(--ink-soft); margin: 0 0 6px; max-width: 46ch;
+}
+
+/* ---------- one question ---------- */
+.qa {
+  border-bottom: 1px solid var(--line);
+}
+.qa > summary {
+  /* list-style:none in both dialects, or Safari keeps its triangle and
+     the chevron ends up with a twin. */
+  list-style: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0;
+  min-height: var(--tap);
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(16.5px, 1.6vw, 19px); line-height: 1.35;
+  color: var(--ink);
+  transition: color .2s var(--ease);
+}
+.qa > summary::-webkit-details-marker { display: none; }
+.qa > summary:hover { color: var(--acc-sm); }
+
+/* The chevron is the only thing saying this row opens, so it is a real
+   circle rather than a hairline glyph — at 15px a stroke on a warm
+   ground is close to invisible on a phone in daylight. */
+.qa-mark {
+  flex: none; display: grid; place-items: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg-3);
+  color: var(--ink-soft);
+  transition: transform .32s var(--ease), background .25s var(--ease),
+              color .25s var(--ease);
+}
+.qa[open] > summary .qa-mark { transform: rotate(180deg); }
+.qa > summary:hover .qa-mark { background: var(--acc); color: var(--ivory); }
+.qa[open] > summary { color: var(--acc-sm); }
+
+.qa-a {
+  padding: 0 0 22px;
+  max-width: 35em;             /* the same measure as doc.css prose */
+}
+.qa-a > * { margin: 0; }
+.qa-a > * + * { margin-top: .9em; }
+/* A list wants more air than another paragraph does — it reads as a new
+   kind of thing, and .9em after the display-serif opening line ran the
+   two together. */
+.qa-a > * + ul, .qa-a > ul + * { margin-top: 1.3em; }
+.qa-a p, .qa-a li { color: var(--ink-soft); font-size: 15.5px; line-height: 1.68; }
+.qa-a strong, .qa-a b { color: var(--ink); font-weight: 600; }
+.qa-a a { color: var(--acc-sm); text-underline-offset: 3px; }
+.qa-a ul { list-style: none; margin: 0; padding: 0; }
+.qa-a ul > li { position: relative; padding-left: 20px; }
+.qa-a ul > li + li { margin-top: 8px; }
+.qa-a ul > li::before {
+  content: ""; position: absolute; left: 2px; top: .62em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--acc-sm); opacity: .55;
+}
+
+/* Answers that open with the short version. Same idea as the legal
+   pages' plain-English line: the sentence somebody skimming actually
+   reads, set above the one that qualifies it. */
+.qa-a .short {
+  font-family: var(--display); font-size: 16.5px; line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Reduced motion: the panel still opens, it just stops sliding. */
+@media (prefers-reduced-motion: reduce) {
+  .qa-mark { transition: none; }
+}
+
+/* ---------- open / close everything ---------- */
+.qa-all {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin: 0 0 4px;
+}
+.qa-all button {
+  border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; color: var(--ink-soft);
+  padding: 9px 16px; min-height: var(--tap-min);
+  font: 600 12.5px/1 var(--body); letter-spacing: .02em;
+  transition: border-color .2s var(--ease), color .2s var(--ease),
+              background .2s var(--ease);
+}
+.qa-all button:hover, .qa-all button:focus-visible {
+  border-color: var(--acc); color: var(--acc-sm); background: var(--bg-2);
+}
+
+/* ---------- still not answered ---------- */
+.qa-ask { padding: clamp(52px, 7vw, 88px) 0; }
+.qa-ask h2 { max-width: 17ch; }
+.qa-ask .lede { max-width: 50ch; color: rgba(252, 248, 240, .78); }
+.qa-ask .acts { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+/* The number, set large enough to read across a room — this is a page
+   whose whole argument is "ring us and ask". */
+.qa-num {
+  display: inline-flex; align-items: baseline; gap: 14px;
+  margin-top: 34px; padding-top: 26px;
+  border-top: 1px solid rgba(252, 248, 240, .16);
+  color: var(--ivory); text-decoration: none;
+  flex-wrap: wrap;
+}
+.qa-num .k {
+  font: 600 11px/1 var(--body); letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(252, 248, 240, .58);
+}
+.qa-num .v {
+  font-family: var(--display); font-size: clamp(24px, 3.4vw, 34px);
+  line-height: 1.1; color: var(--acc-gold);
+  transition: color .25s var(--ease);
+}
+a.qa-num:hover .v, a.qa-num:focus-visible .v { color: var(--ivory); }

@@ -104,6 +104,19 @@
 }
 .faq dd { margin: 0; font-size: 14.5px; line-height: 1.66; color: var(--ink-soft); }
 
+/* The way out to the full set. Sits on the rule the last row draws, so it
+   reads as the end of the list rather than a stray paragraph after it. */
+.takes-more {
+  margin: 0; padding: clamp(22px,2.4vw,30px) 0 0;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px; line-height: 1.66; color: var(--ink-soft); max-width: 62ch;
+}
+.takes-more a {
+  color: var(--acc-sm); font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
 /* ---------- start ---------- */
 .start-grid {
   display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr);
