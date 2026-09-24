@@ -123,7 +123,7 @@ CLIPPED = """() => {
 ALL_PAGES=[(f"{B}/","landing"),(f"{B}/records","records"),
            (f"{B}/take-part","take part"),(f"{B}/about","about"),
            (f"{B}/privacy","privacy"),(f"{B}/terms","terms"),
-           (f"{B}/questions","questions")]
+           (f"{B}/questions","questions"),(f"{B}/404","404")]
 want=[a.replace(".html","") for a in sys.argv[1:]]
 PAGES=[p for p in ALL_PAGES if not want or any(w in p[0] or w in p[1] for w in want)] or ALL_PAGES
 
@@ -232,6 +232,35 @@ async def main():
                 if w < 900:
                     burger=await pg.query_selector("#burger")
                     if burger:
+                        # BEFORE opening it: a shut drawer must be genuinely
+                        # shut. `[hidden]` is the weakest rule the browser
+                        # has, so any class setting display beats it, and the
+                        # element stays rendered and focusable while the
+                        # markup insists it is hidden. `.drawer{display:flex}`
+                        # did exactly that — twelve controls sat in the tab
+                        # order of every page, hidden only by a transform
+                        # parking them below the fold, and tabbing past the
+                        # burger dropped a keyboard user into a menu they
+                        # could not see. Every check here looked at the
+                        # drawer OPEN, so none of them could have caught it.
+                        shut=await pg.evaluate("""() => {
+                          const d=document.querySelector('#drawer');
+                          const cs=getComputedStyle(d);
+                          return {
+                            display: cs.display,
+                            vis: cs.visibility,
+                            // the real question, asked the way a keyboard asks it
+                            reachable: [...d.querySelectorAll('a,button,[tabindex]')]
+                              .filter(el => el.tabIndex >= 0
+                                         && getComputedStyle(el).display !== 'none'
+                                         && el.getClientRects().length > 0).length,
+                          };}""")
+                        chk(shut["display"]=="none",
+                            f"{label} {name}: the shut drawer computes display:{shut['display']}, not none")
+                        chk(shut["reachable"]==0,
+                            f"{label} {name}: {shut['reachable']} controls inside the shut drawer "
+                            "are still in the tab order")
+
                         # Open it from partway down the page. Opening at the
                         # top would pass whatever the lock did — including
                         # the two earlier attempts, which both jumped the
@@ -314,11 +343,23 @@ async def main():
                         rest=await pg.evaluate("Math.round(window.scrollY)")
                         chk(abs(rest-was)<=3,
                             f"{label} {name}: closing the sheet left the reader at {rest}, not {was}")
-                        await pg.mouse.wheel(0, 500)
+                        # Scrolling has to work again — but "works" means the
+                        # page moves, not that it moves DOWN. The 404 is short
+                        # enough that a tall iPad is already at the bottom of
+                        # it by the time the sheet opens, so wheeling down
+                        # proved nothing and reported the page as frozen. Push
+                        # whichever way there is room to go.
+                        room=await pg.evaluate(
+                            "document.documentElement.scrollHeight - innerHeight"
+                            " - Math.round(window.scrollY)")
+                        down = room > 60
+                        await pg.mouse.wheel(0, 500 if down else -500)
                         await pg.wait_for_timeout(600)
                         free=await pg.evaluate("Math.round(window.scrollY)")
-                        chk(free > rest+50,
-                            f"{label} {name}: the page is still frozen at {free} after the sheet closed")
+                        moved = (free > rest+50) if down else (free < rest-50)
+                        chk(moved,
+                            f"{label} {name}: the page is still frozen at {free} after the "
+                            f"sheet closed (wheeled {'down' if down else 'up'} from {rest})")
                         await pg.evaluate("window.scrollTo(0,0)")
                         await pg.wait_for_timeout(400)
                 await ctx.close()

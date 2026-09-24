@@ -1,6 +1,6 @@
 # Jaipur World Record Carnival
 
-Seven pages and a small API.
+Seven pages, a not-found page, and a small API.
 
 | | |
 |---|---|
@@ -11,6 +11,7 @@ Seven pages and a small API.
 | `questions.html` | twenty-five questions and answers, and the FAQ markup |
 | `privacy.html` | what the form collects, why, and how to have it deleted |
 | `terms.html` | what the site promises, and what it does not |
+| `404.html` | where a bad link lands, with every route out on it |
 | `admin.html` | the enquiries that came in — password only |
 
 The site itself is static: no build step, no framework, no external requests at
@@ -259,7 +260,18 @@ python3 tools/check-api.py    http://127.0.0.1:3000 whatever   # the endpoints
 python3 tools/check-admin.py  http://127.0.0.1:3000 whatever   # the whole path, in a browser
 python3 tools/check-devices.py                                 # every page, twelve screens
 python3 tools/check-images.py                                  # no photograph twice on a page
+python3 tools/check-theme.py                                   # every page, both themes
+python3 tools/check-schema.py                                  # the markup says what the page says
 ```
+
+`check-schema.py` is the cheap one — no browser, under a second — and it
+guards the two places where the page and its JSON-LD can drift apart
+silently: the twenty-five answers on the questions page and the eleven
+records on the records page. Structured data claiming something a page
+does not say is grounds for a manual action from Google, and markup is
+the one part of a page nobody ever reads. It earned its keep on the first
+run, finding a question count that was wrong in two places and a markup
+answer with a sentence that appeared nowhere on the page.
 
 `check-admin.py` **empties the enquiries table**. Point it at a scratch
 database.
@@ -289,6 +301,7 @@ records.html            the eleven records
 take-part.html          how to join, and the form
 about.html              the founder, and the record archive
 questions.html          twenty-five questions and answers
+404.html                the not-found page
 privacy.html            the privacy notice
 terms.html              the terms
 admin.html              the enquiries console
@@ -299,6 +312,7 @@ assets/css/take-part.css  the Take part page
 assets/css/about.css    portfolio-specific layout
 assets/css/doc.css      long documents with a contents list — privacy, terms, questions
 assets/css/questions.css  the question accordions
+assets/css/notfound.css   the not-found page
 assets/css/admin.css    the console
 assets/js/app.js        nav, footer, scroll chrome — every page
 assets/js/motion.js     GSAP + Lenis motion system

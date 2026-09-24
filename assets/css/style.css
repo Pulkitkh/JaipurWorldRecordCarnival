@@ -283,6 +283,25 @@ body {
   overflow-x: hidden;
   overflow-x: clip;
 }
+
+/* [hidden] must actually hide. The browser's own rule is
+   `[hidden] { display: none }` at the lowest possible weight, so ANY
+   class that sets display beats it — and the element stays rendered,
+   focusable, and in the accessibility tree while the markup says it is
+   hidden.
+
+   That is not hypothetical here. `.drawer { display: flex }` won against
+   `[hidden]`, so the closed phone menu was never hidden at all: it was
+   parked ten pixels below the fold by a transform, with twelve focusable
+   controls still in the tab order on every page of the site. Tabbing past
+   the burger dropped a keyboard user into an invisible menu they could
+   not see themselves moving through — and its `aria-modal="true"` was
+   permanently telling screen readers the rest of the page was inert.
+
+   The same rule had already been written once, scoped to `.admin`, after
+   the console rendered underneath its own sign-in card for exactly this
+   reason. Twice is enough: it belongs here, once, for everything. */
+[hidden] { display: none !important; }
 /* Deliberately empty of anything that moves the page. overflow:hidden here
    would clamp the scrolling element's scrollTop to zero the moment it is
    applied, which is exactly the bug it looks like it is preventing. The

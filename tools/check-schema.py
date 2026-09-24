@@ -1,27 +1,34 @@
 #!/usr/bin/env python3
 """
-Check that the questions page's structured data still matches the page.
+Check that the structured data on every page still matches the page.
 
-    python3 tools/check-faq.py
+    python3 tools/check-schema.py
 
-questions.html carries FAQPage JSON-LD so that search engines can show
-the answers directly. Google requires that markup to be visible content
-on the page — structured data claiming an answer the page does not give
-is grounds for a manual action, not merely a lost rich result.
+Several pages carry JSON-LD so search engines can show their contents
+directly — the twenty-five answers on the questions page, the eleven
+records on the records page. Google requires that markup to describe
+content actually visible on the page: structured data claiming something
+the page does not say is grounds for a manual action, not merely a lost
+rich result.
 
-Nothing enforces that on its own. Somebody reworks an answer, the visible
-text moves, the JSON-LD does not, and the two drift apart silently and
-stay that way for a year. So this walks both and compares them.
+Nothing enforces that on its own. Somebody reworks an answer or retitles
+a record, the visible text moves, the JSON-LD does not, and the two drift
+apart silently and stay that way for a year. Markup is also the one part
+of a page nobody ever looks at, so the drift is never noticed by eye. So
+this walks both and compares them.
 
-It checks four things:
+What it checks:
 
-  · every question in the JSON-LD appears on the page as a real <summary>
-  · every answer's text appears in that question's answer panel
-  · no question is listed twice
-  · the count promised in the hero is the number actually on the page
+  · every page's JSON-LD parses, and declares the @type it should
+  · every FAQ question in the markup is on the page as a real <summary>,
+    and every markup answer's words are in that question's panel
+  · every record in the ItemList is on the records page, with the same
+    title, in the same order, and its anchor exists
+  · nothing is listed twice
+  · the question count promised in two places is the number on the page
 
 No dependencies beyond the standard library — it is a parser, not a
-browser, and the point is that it can run anywhere in under a second.
+browser, and the point is that it runs anywhere in under a second.
 """
 
 import html
@@ -32,6 +39,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = ROOT / "questions.html"
+RECORDS = ROOT / "records.html"
 
 FAIL = []
 
@@ -136,6 +144,69 @@ def main():
             f"take-part.html promises {m.group(1)} questions, the page has {len(on_page)}")
 
 
+def records():
+    """The eleven records, as the markup lists them and as the page shows them.
+
+    A record being retitled is the likely drift here: the heading is
+    prose and gets edited, the ItemList entry is a string in a script
+    block at the top of the file and does not."""
+    src = RECORDS.read_text()
+
+    blocks = re.findall(
+        r'<script type="application/ld\+json">(.*?)</script>', src, re.S)
+    chk(len(blocks) == 1, f"records.html has exactly one JSON-LD block ({len(blocks)})")
+    if not blocks:
+        return
+    try:
+        data = json.loads(blocks[0])
+    except json.JSONDecodeError as e:
+        chk(False, f"records.html JSON-LD does not parse: {e}")
+        return
+
+    lst = (data.get("mainEntity") or {})
+    chk(lst.get("@type") == "ItemList", f'records mainEntity is an ItemList ({lst.get("@type")})')
+    entries = lst.get("itemListElement") or []
+
+    # what the page actually shows, in document order
+    on_page = []
+    ids = set(re.findall(r'id="([^"]+)"', src))
+    for m in re.finditer(
+            r'<article class="rrec[^"]*"[^>]*id="([a-z]+)"(.*?)</article>', src, re.S):
+        h3 = re.search(r"<h3[^>]*>(.*?)</h3>", m.group(2), re.S)
+        if h3:
+            on_page.append((m.group(1), text_of(h3.group(1))))
+
+    chk(bool(on_page), "records.html has records on it")
+    print(f"  {len(on_page)} records on the page, {len(entries)} in the structured data")
+
+    chk(lst.get("numberOfItems") == len(on_page),
+        f'numberOfItems says {lst.get("numberOfItems")}, the page has {len(on_page)}')
+    chk(len(entries) == len(on_page),
+        f"the ItemList has {len(entries)} entries, the page has {len(on_page)} records")
+
+    titles = {t: rid for rid, t in on_page}
+    order = [t for _, t in on_page]
+    for i, item in enumerate(entries):
+        name = (item.get("name") or "").strip()
+        url = item.get("url") or ""
+        pos = item.get("position")
+
+        chk(pos == i + 1, f"ItemList position {pos!r} out of order at index {i}")
+
+        if name not in titles:
+            chk(False, f"ItemList names a record the page does not show: {name!r}")
+            continue
+        # The order matters: an ItemList is a ranked list, and a reader
+        # who follows one into the page should land where they expected.
+        chk(i < len(order) and order[i] == name,
+            f"ItemList order differs from the page at {i + 1}: "
+            f"markup {name!r}, page {order[i] if i < len(order) else '-'!r}")
+
+        frag = url.partition("#")[2]
+        chk(frag in ids, f"ItemList url for {name!r} points at #{frag}, which is not on the page")
+
+
 main()
+records()
 print("\n" + ("ALL PASS" if not FAIL else f"{len(FAIL)} FAILURES:\n  " + "\n  ".join(FAIL)))
 sys.exit(1 if FAIL else 0)

@@ -71,6 +71,18 @@
       ["take-part.html", "Take part"],
       ["about.html", "The Founder"],
     ],
+    /* The 404 has no sections of its own, and the routes out are the
+       page's whole content — so the nav here is the shortest it gets.
+       Without an entry it would fall back to the home nav and paint
+       #gather and #build, which point at sections that do not exist on
+       it: the dead-anchor bug again, on the one page whose entire job is
+       getting somebody unstuck. */
+    notfound: [
+      ["index.html", "The Carnival"],
+      ["records.html", "The records"],
+      ["take-part.html", "Take part"],
+      ["questions.html", "Questions"],
+    ],
     legal: [
       ["index.html", "The Carnival"],
       ["records.html", "The records"],
@@ -103,6 +115,7 @@
     if (name === "about") return "about";
     if (name === "privacy" || name === "terms") return "legal";
     if (name === "questions") return "questions";
+    if (name === "404") return "notfound";
     return "home";
   })();
   const DECLARED = document.body && document.body.dataset.page;
